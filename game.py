@@ -6,10 +6,14 @@ from pygame.display import (
 
 from pygame.event import get as pygame_event_get
 from pygame.time import Clock
-from pygame import Surface, init as pygame_init
-from pygame import QUIT
+from pygame import (
+    Surface, 
+    QUIT,
+    init as pygame_init, 
+    quit as pygame_quit
+)
 
-from colors import *
+from utils.colors import *
 
 class Game:
     __res: tuple[int, int]
@@ -45,10 +49,12 @@ class Game:
 
             self.__display.fill(WHITE)
 
-
+            
 
             display_flip()
             self.__clock.tick(self.__max_fps)
+        
+        pygame_quit()
 
             
         

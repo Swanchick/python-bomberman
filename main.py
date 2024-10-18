@@ -1,7 +1,9 @@
-from server_network import ServerNetwork
-from client_network import ClientNetwork
+from networking import ServerNetwork
+from networking import ClientNetwork
+from game import Game
 from sys import argv
 
+RES = (800, 600)
 
 def main():
     print(argv)
@@ -13,10 +15,14 @@ def main():
 
         return
 
+    if "--multiplayer" in argv:
+        client = ClientNetwork("127.0.0.1", 50000)
+        client.init_client()
+        client.start()
+    
 
-    client = ClientNetwork("127.0.0.1", 50000)
-    client.init_client()
-    client.start()
+    game = Game(RES, "Bomber man")
+    game.start()
 
 
 if __name__ == "__main__":
