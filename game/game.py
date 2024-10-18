@@ -21,6 +21,8 @@ class Game:
     __max_fps: int
     __display: Surface
 
+    __game_surface: Surface
+
     __game_run: bool
     __clock: Clock
 
@@ -33,13 +35,9 @@ class Game:
         
         pygame_init()
         self.__display = display_set_mode(self.__res)
+        self.__game_surface = Surface(self.__res)
+        
         display_set_caption(self.__title)
-
-    def __update(self):
-        pass
-
-    def __draw(self):
-        pass
 
     def start(self):
         while self.__game_run:
@@ -49,7 +47,7 @@ class Game:
 
             self.__display.fill(WHITE)
 
-            
+            self.__display.blit(self.__game_surface, (0, 0))
 
             display_flip()
             self.__clock.tick(self.__max_fps)
