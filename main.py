@@ -1,13 +1,11 @@
 from networking import ServerNetwork
 from networking import ClientNetwork
-from game import Game
+from game.game import Game
 from sys import argv
 
 RES = (800, 600)
 
 def main():
-    print(argv)
-
     if "--server" in argv:
         server = ServerNetwork("127.0.0.1", 50000)
         server.init_server()

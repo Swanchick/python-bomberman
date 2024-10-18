@@ -15,6 +15,11 @@ from pygame import (
 
 from utils.colors import *
 
+from .game_object_manager import GameObjectManager
+
+from game_objects.test_object import TestObject
+
+
 class Game:
     __res: tuple[int, int]
     __title: str
@@ -25,6 +30,8 @@ class Game:
 
     __game_run: bool
     __clock: Clock
+
+    __game_object_manager: GameObjectManager
 
     def __init__(self, res: tuple[int, int], title: str, max_fps=60):
         self.__res = res
@@ -40,14 +47,23 @@ class Game:
         display_set_caption(self.__title)
 
     def start(self):
+        self.__game_object_manager = GameObjectManager()
+        test_object = TestObject()
+        self.__game_object_manager.add(test_object)
+
+
         while self.__game_run:
             for event in pygame_event_get():
                 if event.type == QUIT:
                     self.__game_run = False
 
-            self.__display.fill(WHITE)
+            self.__game_object_manager.update()
 
+            self.__display.fill(WHITE)
             self.__display.blit(self.__game_surface, (0, 0))
+            self.__game_surface.fill(WHITE)
+
+            self.__game_object_manager.draw(self.__game_surface)
 
             display_flip()
             self.__clock.tick(self.__max_fps)
