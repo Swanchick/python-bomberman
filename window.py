@@ -13,13 +13,10 @@ from pygame import (
     quit as pygame_quit
 )
 
-from networking import NETWORK
 from utils.colors import *
 from utils import Time, Vector
 
 from game.game import Game
-
-from game_objects.player import Player
 
 class Window:
     __res: Vector
@@ -44,14 +41,13 @@ class Window:
         pygame_init()
         self.__display = display_set_mode(tuple(self.__res))
         self.__game_surface = Surface(tuple(self.__res))
+        self.__game = Game()
         
         display_set_caption(self.__title)
 
     def start(self):
-        self.__game = Game()
-        test_object = Player()
-        test_object.network = NETWORK
-        self.__game.add(test_object)
+        self.__game.start()
+
         try:
             while self.__window_run:
                 Time.delta = self.__clock.tick(self.__max_fps) / 1000.0

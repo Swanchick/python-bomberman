@@ -35,13 +35,14 @@ class Player(GameObject):
 
         self.controls()
 
-        print(self.network)
-
-        # self.network.send("control-sync", {
+        # self.network.send("position-sync", {
         #     "pos": tuple(self._position)
         # })
         
     def controls(self):
+        if not self.network.is_client():
+            return
+
         keys = get_keys()
 
         horizontal = int(keys[K_d] or keys[K_RIGHT]) - int(keys[K_a] or keys[K_LEFT])

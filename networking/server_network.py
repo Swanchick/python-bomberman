@@ -1,7 +1,7 @@
 from socket import socket as Socket, timeout as SocketTimeout
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
-from .network import BaseNetwork
+from .network import BaseNetwork, ON_CONNECT, ON_RECEIVE
 from .client import Client
 from .network_keys import *
 
@@ -21,6 +21,8 @@ class ServerNetwork(BaseNetwork):
     __client_handlers: list[Thread]
     
     def __init__(self, host: str, port: int):
+        super().__init__()
+
         self.__host = host
         self.__port = port
         self.__clients = []
@@ -42,11 +44,11 @@ class ServerNetwork(BaseNetwork):
         self.__accept_clients_thread = Thread(target=self.__accept_handler)
         self.__accept_clients_thread.start()
 
-        try:
-            while self.__server_run:
-                time_sleep(1)
-        except KeyboardInterrupt:
-            self.stop()
+        # try:
+        #     while self.__server_run:
+        #         time_sleep(1)
+        # except KeyboardInterrupt:
+        #     self.stop()
 
     def stop(self):
         print("Stopping server...")
@@ -82,15 +84,37 @@ class ServerNetwork(BaseNetwork):
             except OSError:
                 break
 
+    def __get_client(self, id: str) -> Client:
+        for client in self.__clients:
+            if client.id == id:
+                return client
+
     def __on_client_connected(self, socket: Socket, data: dict):
         client_data = data["client"]
 
         client = Client(socket, client_data["name"], client_data["id"])
 
         self.__clients.append(client)
+
+        self._call(ON_CONNECT, client)
     
+    def __on_data_receive(self, data: dict):
+        client_data = data["client"]
+
+        client = self.__get_client(client_data["id"])
+        if client is None:
+            return
+
+        self._call(ON_RECEIVE, client, data["data"])
+
     def __on_client_dissconnected(self, data: dict):
-        pass
+        client_data = data["client"]
+
+        for client in self.__clients:
+            if client.id == client_data["id"]:
+                self.__clients.remove(client)
+
+                break
 
     def __handle_clients(self, client_socket: Socket):
         try:
@@ -107,9 +131,10 @@ class ServerNetwork(BaseNetwork):
                     if action == CLIENT_CONNECTED:
                         self.__on_client_connected(client_socket, data)
                     elif action == CLIENT_DISCONNECTED:
-                        self.__on_client_dissconnected(client_socket, data)
-
-                    print(f"Received: {data}")
+                        self.__on_client_dissconnected(data)
+                    else:
+                        self.__on_data_receive(data)
+                    
                 except (OSError, SocketTimeout):
                     break
 

@@ -18,6 +18,7 @@ class ClientNetwork(BaseNetwork):
     __client: Client
 
     def __init__(self, host: str, port: int):
+        super().__init__()
         self.__host = host
         self.__port = port
         self.__client_run = False

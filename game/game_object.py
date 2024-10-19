@@ -1,30 +1,25 @@
 from pygame.sprite import Sprite, Group
+from uuid import uuid4
 
-from networking import BaseNetwork, NETWORK
+from networking import BaseNetwork
 from utils import Vector
 from .abstract_game_object import GameObjectAbstract
 
 
 class GameObject(Sprite, GameObjectAbstract):
-    _current_group: Group
+    _id: str
     _layer: int
     _position: Vector
 
+    current_game: Group
     network: BaseNetwork
 
     def __init__(self):
-        global NETWORK
         self._layer = 1
         self._position = Vector.zero()
-
-        self.network = NETWORK
+        self._id = str(uuid4())
 
         super().__init__()
-
-    def add_internal(self, group):
-        self._current_group = group
-
-        return super().add_internal(group)
 
     def start(self):
         pass

@@ -2,20 +2,40 @@ from pygame.sprite import AbstractGroup
 
 from .abstract_game_object import GameObjectAbstract
 
-from networking import ClientNetwork, NETWORK
+from networking import ClientNetwork, BaseNetwork, Network
+
+from game_objects.player import Player
 
 class Game(AbstractGroup):
+    __network: BaseNetwork
+    
     def __init__(self):
-        global NETWORK
-        
         super().__init__()
-        if NETWORK is None:
-            NETWORK = ClientNetwork("127.0.0.1", 50000)
-            NETWORK.init_client()
+        
+        self.__network = Network.get()
 
-            NETWORK.start()
+        print(self.__network)
+
+        if self.__network is None:
+            self.__network = ClientNetwork("127.0.0.1", 50000)
+            
+            self.__network.init_client()
+            self.__network.start()
+
+            Network.set(self.__network)
+
+        self.__network.register_on_connect(self.on_player_connected)
+        self.__network.register_on_receive(self.on_player_data_receive)
+
+
+        player = Player()
+
+        self.add(player)
 
     def add(self, game_object: GameObjectAbstract):
+        game_object.network = self.__network
+        game_object.current_game = self
+        
         super().add(game_object)
 
     def start(self):
@@ -46,7 +66,15 @@ class Game(AbstractGroup):
 
         return dirty
     
-    def stop(self):
-        global NETWORK
+    def on_player_connected(self, client):
+        print(client.name)
 
-        NETWORK.stop()
+    def on_player_data_receive(self, client, data):
+        pass
+
+    def stop(self):
+        self.__network.stop()
+
+    @property
+    def network(self) -> BaseNetwork:
+        return self.__network 
