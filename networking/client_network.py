@@ -37,7 +37,7 @@ class ClientNetwork(BaseNetwork):
         self.__server_handler = Thread(target=self.__handle_server)
         self.__server_handler.start()
 
-        self.send(CLIENT_CONNECTED, Data())
+        self.send(CLIENT_CONNECTED, {})
     
     def __handle_server(self):
         while self.__client_run:
@@ -46,14 +46,14 @@ class ClientNetwork(BaseNetwork):
             except OSError:
                 break
 
-    def send(self, action: str, data: Data):
+    def send(self, action: str, data: dict):
         if not self.__client_run:
             return
 
         data = {
             "action": action,
             "client": self.__client.data,
-            "data": data.get()
+            "data": data
         }
 
         data_send = json_dumps(data)
@@ -63,7 +63,7 @@ class ClientNetwork(BaseNetwork):
     def stop(self):
         print("Stopping client...")
 
-        self.send("client-disconnected", Data())
+        self.send("client-disconnected", {})
 
         self.__client_run = False
 

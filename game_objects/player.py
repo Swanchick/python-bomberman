@@ -29,12 +29,17 @@ class Player(GameObject):
 
         self.__velocity = Vector.zero()
         self.__speed = 400
-        
 
     def update(self):
         self.image.fill((255, 0, 0))
 
         self.controls()
+
+        print(self.network)
+
+        # self.network.send("control-sync", {
+        #     "pos": tuple(self._position)
+        # })
         
     def controls(self):
         keys = get_keys()
@@ -48,5 +53,4 @@ class Player(GameObject):
         velocity = dir * self.__speed * Time.delta
 
         self.__velocity = self.__velocity.lerp(velocity, 10 * Time.delta)
-
         self._position += self.__velocity

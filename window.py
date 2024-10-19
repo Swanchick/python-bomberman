@@ -13,6 +13,7 @@ from pygame import (
     quit as pygame_quit
 )
 
+from networking import NETWORK
 from utils.colors import *
 from utils import Time, Vector
 
@@ -49,6 +50,7 @@ class Window:
     def start(self):
         self.__game = Game()
         test_object = Player()
+        test_object.network = NETWORK
         self.__game.add(test_object)
         try:
             while self.__window_run:

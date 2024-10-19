@@ -36,9 +36,6 @@ class Vector(object):
         self.__y += other
 
         return self
-    
-    def __tuple__(self):
-        return (self.__x, self.__y)
 
     def __getitem__(self, index):
         pos = (self.__x, self.__y)
@@ -47,7 +44,14 @@ class Vector(object):
 
         return pos[index]
 
-    def lerp(self, to, t) -> Self:
+    def __tuple__(self):
+        return (self.__x, self.__y)
+
+    def lerp(self, to: Self, t: float) -> Self:
+        if not isinstance(to, Vector):
+            return self
+
+        
         new_x = self.__x + (to.x - self.__x) * t
         new_y = self.__y + (to.y - self.__y) * t
         return Vector(new_x, new_y)

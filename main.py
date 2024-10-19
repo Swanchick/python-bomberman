@@ -3,10 +3,13 @@ from window import Window
 from sys import argv
 from settings import Settings
 
+
 RES = Settings.res()
 
 
 def main():
+    global NETWORK
+    
     if "--server" in argv:
         server = ServerNetwork("127.0.0.1", 50000)
         server.init_server()
