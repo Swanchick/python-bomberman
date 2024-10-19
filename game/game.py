@@ -1,74 +1,44 @@
-from pygame.display import (
-    set_mode as display_set_mode, 
-    set_caption as display_set_caption,
-    flip as display_flip
-)
+from pygame.sprite import AbstractGroup
 
-from pygame.event import get as pygame_event_get
-from pygame.time import Clock
-from pygame import (
-    Surface, 
-    QUIT,
-    init as pygame_init, 
-    quit as pygame_quit
-)
+from .abstract_game_object import GameObjectAbstract
 
-from utils.colors import *
+from networking import ClientNetwork
 
-from .game_object_manager import GameObjectManager
+class Game(AbstractGroup):
+    __network: ClientNetwork
 
-from game_objects.test_object import TestObject
+    def __init__(self):
+        super().__init__()
+        self.__network = ClientNetwork("127.0.0.1", 50000)
 
 
-class Game:
-    __res: tuple[int, int]
-    __title: str
-    __max_fps: int
-    __display: Surface
-
-    __game_surface: Surface
-
-    __game_run: bool
-    __clock: Clock
-
-    __game_object_manager: GameObjectManager
-
-    def __init__(self, res: tuple[int, int], title: str, max_fps=60):
-        self.__res = res
-        self.__title = title
-        self.__max_fps = max_fps
-        self.__game_run = True
-        self.__clock = Clock()
-        
-        pygame_init()
-        self.__display = display_set_mode(self.__res)
-        self.__game_surface = Surface(self.__res)
-        
-        display_set_caption(self.__title)
+    def add(self, game_object: GameObjectAbstract):
+        super().add(game_object)
 
     def start(self):
-        self.__game_object_manager = GameObjectManager()
-        test_object = TestObject()
-        self.__game_object_manager.add(test_object)
+        game_objects: list[AbstractGroup] = self.sprites()
 
+        for game_object in game_objects:
+            game_object.start()
 
-        while self.__game_run:
-            for event in pygame_event_get():
-                if event.type == QUIT:
-                    self.__game_run = False
+    def update(self):
+        game_objects: list[AbstractGroup] = self.sprites()
 
-            self.__game_object_manager.update()
+        for game_object in game_objects:
+            game_object.rect.x = game_object.position.x
+            game_object.rect.y = game_object.position.y
 
-            self.__display.fill(WHITE)
-            self.__display.blit(self.__game_surface, (0, 0))
-            self.__game_surface.fill(WHITE)
+            game_object.update()
 
-            self.__game_object_manager.draw(self.__game_surface)
+    def draw(self, surface, bgsurf=None, special_flags=0):
+        game_objects: list[AbstractGroup] = self.sprites()
 
-            display_flip()
-            self.__clock.tick(self.__max_fps)
-        
-        pygame_quit()
+        game_objects.sort(key=lambda x: x.layer)
 
-            
-        
+        for obj in game_objects:
+            self.spritedict[obj] = surface.blit(obj.image, obj.rect, None, special_flags)
+
+        self.lostsprites = []
+        dirty = self.lostsprites
+
+        return dirty

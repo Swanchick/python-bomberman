@@ -1,9 +1,10 @@
 from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
+from .network import BaseNetwork
 import time
 
-class ClientNetwork:
+class ClientNetwork(BaseNetwork):
     __host: str
     __port: int
     __sock: Socket
@@ -29,13 +30,13 @@ class ClientNetwork:
         self.__server_handler = Thread(target=self.__handle_server)
         self.__server_handler.start()
 
-        self.send("Hello World")
 
-        try:
-            while self.__client_run:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            self.stop()
+
+        # try:
+        #     while self.__client_run:
+        #         time.sleep(1)
+        # except KeyboardInterrupt:
+        #     self.stop()
     
     def send(self, data: str):
         if not self.__client_run:
@@ -48,10 +49,10 @@ class ClientNetwork:
 
         self.__client_run = False
         
+        self.__sock.close()
+
         if self.__server_handler.is_alive():
             self.__server_handler.join()
-
-        self.__sock.close()
 
         print("Client is stopped!")
 
@@ -62,3 +63,12 @@ class ClientNetwork:
                 print(data)
             except OSError:
                 break
+    
+    def is_server(self) -> bool:
+        return False
+
+    def is_client(self) -> bool:
+        return True
+    
+    def broadcast(self):
+        ...

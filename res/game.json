@@ -1,0 +1,10 @@
+{
+    "game-settings": {
+        "screen-width": 800,
+        "screen-height": 600
+    },
+
+    "player-settings": {
+        "name": "Swanchick"
+    }
+}

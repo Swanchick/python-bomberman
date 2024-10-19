@@ -9,19 +9,27 @@ from pygame import (
     K_SPACE
 )
 
+from utils import Time
 
 from game.game_object import GameObject
 from utils import Vector
 
 
-class TestObject(GameObject):
+class Player(GameObject):
+    __velocity: Vector
+    __speed: float
+
     def __init__(self):
         super().__init__()
 
         self._position = Vector(100, 100)
-        
-        self.image = Surface((100, 100))
+
+        self.image = Surface((32, 32))
         self.rect = self.image.get_rect()
+
+        self.__velocity = Vector.zero()
+        self.__speed = 200
+        
 
     def update(self):
         self.image.fill((255, 0, 0))
@@ -37,6 +45,8 @@ class TestObject(GameObject):
         dir = Vector(horizontal, vertical)
         dir.normalize()
 
-        self._position += dir * 5
-            
+        velocity = dir * self.__speed * Time.delta
 
+        self.__velocity = self.__velocity.lerp(velocity, 10 * Time.delta)
+
+        self._position += self.__velocity

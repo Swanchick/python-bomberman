@@ -1,10 +1,11 @@
 from socket import socket as Socket, timeout as SocketTimeout
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
-from signal import signal, SIGINT
+from .network import BaseNetwork
+
 from time import sleep as time_sleep
 
-class ServerNetwork:
+class ServerNetwork(BaseNetwork):
     __port: int
     __host: str
     __sock: Socket
@@ -100,5 +101,17 @@ class ServerNetwork:
                 self.__clients.remove(client)
             client.close()
             print("Client connection closed.")
+    
+    def send(self, id: str):
+        ...
+
+    def is_server(self) -> bool:
+        return False
+
+    def is_client(self) -> bool:
+        return True
+    
+    def broadcast(self):
+        ...
 
 

@@ -1,6 +1,6 @@
 from networking import ServerNetwork
 from networking import ClientNetwork
-from game.game import Game
+from window import Window
 from sys import argv
 
 RES = (800, 600)
@@ -19,8 +19,8 @@ def main():
         client.start()
     
 
-    game = Game(RES, "Bomber man")
-    game.start()
+    window = Window(RES, "Bomber man", 144)
+    window.start()
 
 
 if __name__ == "__main__":

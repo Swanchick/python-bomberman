@@ -14,6 +14,12 @@ class Vector(object):
         return f"Vector({self.__x}, {self.__y})"
 
     def __mul__(self, other):
+        if isinstance(other, Vector):
+            self.__x *= other.x
+            self.__y *= other.y
+
+            return self
+
         self.__x *= other
         self.__y *= other
         
@@ -41,8 +47,6 @@ class Vector(object):
 
         self.__x = vec.x
         self.__y = vec.y
-
-    
     
     @staticmethod
     def zero():
