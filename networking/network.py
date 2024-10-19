@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Callable
-
+from .client import Client
+from utils import Data
 
 ON_CONNECT = "on_connect"
 ON_RECEIVE = "on_receive"
@@ -28,7 +29,11 @@ class BaseNetwork(ABC):
         self.__registered_handlers[ON_RECEIVE] = func
 
     @abstractmethod
-    def send(self, data: str):
+    def stop(self):
+        ...
+
+    @abstractmethod
+    def send(self, action: str, data: Data):
         ...
 
     @abstractmethod
@@ -40,5 +45,9 @@ class BaseNetwork(ABC):
         ...
     
     @abstractmethod
-    def broadcast(self):
+    def is_proxy(self) -> bool:
         ...
+
+    @property
+    def client(self) -> Client:
+        return None

@@ -36,6 +36,16 @@ class Vector(object):
         self.__y += other
 
         return self
+    
+    def __tuple__(self):
+        return (self.__x, self.__y)
+
+    def __getitem__(self, index):
+        pos = (self.__x, self.__y)
+        if index > len(pos):
+            raise Exception("Out of index!")
+
+        return pos[index]
 
     def lerp(self, to, t) -> Self:
         new_x = self.__x + (to.x - self.__x) * t

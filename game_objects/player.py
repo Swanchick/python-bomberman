@@ -28,7 +28,7 @@ class Player(GameObject):
         self.rect = self.image.get_rect()
 
         self.__velocity = Vector.zero()
-        self.__speed = 200
+        self.__speed = 400
         
 
     def update(self):

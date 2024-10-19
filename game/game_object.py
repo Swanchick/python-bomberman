@@ -1,6 +1,6 @@
 from pygame.sprite import Sprite, Group
 
-from networking import ClientNetwork
+from networking import BaseNetwork
 from utils import Vector
 from .abstract_game_object import GameObjectAbstract
 
@@ -9,6 +9,7 @@ class GameObject(Sprite, GameObjectAbstract):
     _current_group: Group
     _layer: int
     _position: Vector
+    _network: BaseNetwork
 
     def __init__(self):
         self._layer = 1

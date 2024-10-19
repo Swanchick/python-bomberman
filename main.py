@@ -1,9 +1,10 @@
-from networking import ServerNetwork
-from networking import ClientNetwork
+from networking import ServerNetwork, NETWORK
 from window import Window
 from sys import argv
+from settings import Settings
 
-RES = (800, 600)
+RES = Settings.res()
+
 
 def main():
     if "--server" in argv:
@@ -11,13 +12,9 @@ def main():
         server.init_server()
         server.start()
 
-        return
+        NETWORK = server
 
-    if "--multiplayer" in argv:
-        client = ClientNetwork("127.0.0.1", 50000)
-        client.init_client()
-        client.start()
-    
+        return
 
     window = Window(RES, "Bomber man", 144)
     window.start()

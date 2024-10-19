@@ -2,15 +2,18 @@ from pygame.sprite import AbstractGroup
 
 from .abstract_game_object import GameObjectAbstract
 
-from networking import ClientNetwork
+from networking import ClientNetwork, NETWORK
 
 class Game(AbstractGroup):
-    __network: ClientNetwork
-
     def __init__(self):
+        global NETWORK
+        
         super().__init__()
-        self.__network = ClientNetwork("127.0.0.1", 50000)
+        if NETWORK is None:
+            NETWORK = ClientNetwork("127.0.0.1", 50000)
+            NETWORK.init_client()
 
+            NETWORK.start()
 
     def add(self, game_object: GameObjectAbstract):
         super().add(game_object)
@@ -42,3 +45,8 @@ class Game(AbstractGroup):
         dirty = self.lostsprites
 
         return dirty
+    
+    def stop(self):
+        global NETWORK
+
+        NETWORK.stop()
