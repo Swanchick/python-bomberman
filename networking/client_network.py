@@ -40,8 +40,6 @@ class ClientNetwork(BaseNetwork):
 
         self.__server_handler = Thread(target=self.__handle_server)
         self.__server_handler.start()
-
-        self.send(CLIENT_CONNECTED, {})
     
     def __handle_server(self):
         while self.__client_run:
@@ -88,6 +86,9 @@ class ClientNetwork(BaseNetwork):
 
         print("Client is stopped!")
     
+    def register(self, action, command):
+        ...
+
     def is_server(self) -> bool:
         return False
 
@@ -96,9 +97,6 @@ class ClientNetwork(BaseNetwork):
     
     def is_proxy(self) -> bool:
         return False
-
-    def broadcast(self):
-        ...
 
     @property
     def client(self) -> Client:

@@ -22,14 +22,6 @@ class Game(AbstractGroup):
 
             Network.set(self.__network)
 
-        self.__network.register_on_connect(self.on_player_connected)
-        self.__network.register_on_receive(self.on_player_data_receive)
-
-
-        player = Player()
-
-        self.add(player)
-
     def add(self, game_object: GameObjectAbstract):
         game_object.network = self.__network
         game_object.current_game = self
@@ -63,29 +55,6 @@ class Game(AbstractGroup):
         dirty = self.lostsprites
 
         return dirty
-    
-    def on_player_connected(self, client):
-        print(client.name)
-
-        self.__network.broadcast("create-player", {}, client)
-
-    def on_player_data_receive(self, action, client, data):
-        if self.__network.is_server():
-            if action == "position-sync":
-                self.__network.broadcast("position-sync", data, client)
-
-        if self.__network.is_client():
-            if action == "create-player":
-                if client is None:
-                    return
-
-                print(f"{client.name} {client.id}")
-
-                new_player = Player()
-                new_player.network = ProxyNetwork(client)
-                print(new_player.network.is_proxy())
-                new_player.current_game = self
-                self.add(new_player)
 
     def stop(self):
         self.__network.stop()

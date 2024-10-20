@@ -9,6 +9,20 @@ from json import loads as json_loads
 
 from time import sleep as time_sleep
 
+from protocol import MessageHandler, Command, MessageProtocol 
+
+
+class OnClientConnect(Command):
+    def execute(self, message_protocol: MessageProtocol, socket: Socket, server_network: BaseNetwork):
+        client = Client(socket, client["name"])
+
+        server_network.add_client(client)
+
+class OnClientDisconnect(Command):
+    def execute(self, message_protocol: MessageProtocol, socket: Socket, server_network: BaseNetwork):
+        client = message_protocol.client
+
+        server_network.remove_client(client["id"])
 
 
 class ServerNetwork(BaseNetwork):
@@ -19,6 +33,7 @@ class ServerNetwork(BaseNetwork):
     __accept_clients_thread: Thread
     __clients: list[Client]
     __client_handlers: list[Thread]
+    __message_handler: MessageHandler
     
     def __init__(self, host: str, port: int):
         super().__init__()
@@ -27,13 +42,15 @@ class ServerNetwork(BaseNetwork):
         self.__port = port
         self.__clients = []
         self.__client_handlers = []
+        self.__message_handler = MessageHandler()
     
     def init_server(self):
         self.__sock = Socket(AF_INET, SOCK_STREAM)
         
         self.__sock.bind((self.__host, self.__port))
-
         self.__server_run = True
+
+        self.__message_handler.handle(ON_CLIENT_CONNECTED)
 
     def start(self):
         if not self.__server_run:
@@ -62,6 +79,18 @@ class ServerNetwork(BaseNetwork):
             self.__accept_clients_thread.join()
         
         print("Server stopped.")
+
+    def add_client(self, client: Client):
+        self.__clients.append(client)
+
+    def remove_client(self, id: str):
+        for client in self.__clients:
+            if client.id == id:
+                self.__clients.remove(client)
+                break
+
+    def register(self, action: str, command: Command):
+        self.__message_handler.handle(action, command)
 
     def __accept_handler(self):
         while self.__server_run:
@@ -114,20 +143,12 @@ class ServerNetwork(BaseNetwork):
         try:
             while self.__server_run:
                 try:
-                    data_receive = client_socket.recv(1024).decode("utf-8")
-                    
+                    data_receive = client_socket.recv(1024)
                     if not data_receive:
                         break
                     
-                    data = json_loads(data_receive)
-                    action = data.get("action")
-
-                    if action == CLIENT_CONNECTED:
-                        self.__on_client_connected(client_socket, data)
-                    elif action == CLIENT_DISCONNECTED:
-                        self.__on_client_dissconnected(data)
-                    else:
-                        self.__on_data_receive(data)
+                    data: MessageProtocol = MessageProtocol.decode(data_receive)
+                    self.__message_handler.handle(data.action, client_socket, self)
                     
                 except (OSError, SocketTimeout):
                     break
@@ -154,3 +175,7 @@ class ServerNetwork(BaseNetwork):
     
     def is_proxy(self) -> bool:
         return False
+
+    @property
+    def clients(self) -> list[Client]:
+        return self.__clients

@@ -2,9 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Callable
 from .client import Client
 from utils import Data
-
-ON_CONNECT = "on_connect"
-ON_RECEIVE = "on_receive"
+from protocol import Command
 
 
 class BaseNetwork(ABC):
@@ -22,16 +20,20 @@ class BaseNetwork(ABC):
         
         func(*args)
 
-    def register_on_connect(self, func: Callable):
-        self.__registered_handlers[ON_CONNECT] = func
-
-    def register_on_receive(self, func: Callable):
-        self.__registered_handlers[ON_RECEIVE] = func
-
     def broadcast(self, action: str, data: Data, client_out: Client):
         ...
 
-    def send(self, action: str, data: Data):
+    def send(self, data: dict):
+        ...
+
+    def add_client(self):
+        ...
+
+    def remove_client(self):
+        ...
+
+    @abstractmethod
+    def register(self, action: str, command: Command):
         ...
 
     @abstractmethod
@@ -52,4 +54,8 @@ class BaseNetwork(ABC):
 
     @property
     def client(self) -> Client:
-        return None
+        ...
+
+    @property
+    def clients(self) -> list[Client]:
+        ...
