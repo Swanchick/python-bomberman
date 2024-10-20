@@ -1,7 +1,8 @@
 from .client_network import ClientNetwork
 from .server_network import ServerNetwork
 from .proxy_network import ProxyNetwork
-from .network import BaseNetwork
+from .base_network import BaseNetwork
+from .base_client import BaseClient
 
 class Network:
     instance = None

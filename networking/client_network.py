@@ -1,7 +1,7 @@
 from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
-from .network import BaseNetwork, ON_RECEIVE
+from .base_network import BaseNetwork, ON_RECEIVE
 from .client import Client
 from json import (
     dumps as json_dumps,

@@ -1,7 +1,7 @@
 from socket import socket as Socket, timeout as SocketTimeout
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
-from .network import BaseNetwork, ON_CONNECT, ON_RECEIVE
+from .base_network import BaseNetwork, ON_CONNECT, ON_RECEIVE
 from .client import Client
 from .network_keys import *
 
@@ -43,12 +43,6 @@ class ServerNetwork(BaseNetwork):
 
         self.__accept_clients_thread = Thread(target=self.__accept_handler)
         self.__accept_clients_thread.start()
-
-        # try:
-        #     while self.__server_run:
-        #         time_sleep(1)
-        # except KeyboardInterrupt:
-        #     self.stop()
 
     def stop(self):
         print("Stopping server...")

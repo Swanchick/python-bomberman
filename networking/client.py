@@ -3,8 +3,9 @@ from uuid import uuid4
 from typing import Optional
 from json import dumps as json_dumps
 from typing import Self
+from .base_client import BaseClient
 
-class Client:
+class Client(BaseClient):
     __sock: Socket 
     __id: str
     __name: str
