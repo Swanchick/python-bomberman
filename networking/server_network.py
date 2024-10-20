@@ -84,7 +84,7 @@ class ServerNetwork(BaseNetwork):
             except OSError:
                 break
 
-    def __get_client(self, id: str) -> Client:
+    def get_client(self, id: str) -> Client:
         for client in self.__clients:
             if client.id == id:
                 return client
@@ -101,11 +101,11 @@ class ServerNetwork(BaseNetwork):
     def __on_data_receive(self, data: dict):
         client_data = data["client"]
 
-        client = self.__get_client(client_data["id"])
+        client = self.get_client(client_data["id"])
         if client is None:
             return
 
-        self._call(ON_RECEIVE, client, data["data"])
+        self._call(ON_RECEIVE, data["action"], client, data["data"])
 
     def __on_client_dissconnected(self, data: dict):
         client_data = data["client"]
@@ -145,14 +145,18 @@ class ServerNetwork(BaseNetwork):
             client_socket.close()
             print("Client connection closed.")
     
-    def send(self):
-        ...
+    def broadcast(self, action: str, data: dict, client_out: Client = None):
+        for client in self.__clients:
+            if client.id == client_out.id:
+                continue
 
+            client.send(action, data, client_sender=client_out)
+    
     def is_server(self) -> bool:
         return True
 
     def is_client(self) -> bool:
         return False
     
-    def is_proxy(self):
+    def is_proxy(self) -> bool:
         return False

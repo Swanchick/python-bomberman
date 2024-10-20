@@ -1,5 +1,6 @@
 from .client_network import ClientNetwork
 from .server_network import ServerNetwork
+from .proxy_network import ProxyNetwork
 from .network import BaseNetwork
 
 class Network:

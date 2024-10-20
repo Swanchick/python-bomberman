@@ -14,10 +14,13 @@ class GameObject(Sprite, GameObjectAbstract):
     current_game: Group
     network: BaseNetwork
 
-    def __init__(self):
+    def __init__(self, id: str = None):
         self._layer = 1
         self._position = Vector.zero()
-        self._id = str(uuid4())
+        if id is None:
+            self._id = str(uuid4())
+        else:
+            self._id = id
 
         super().__init__()
 
@@ -34,3 +37,7 @@ class GameObject(Sprite, GameObjectAbstract):
     @property
     def layer(self) -> int:
         return self._layer
+
+    @property
+    def id(self) -> str:
+        return self._id

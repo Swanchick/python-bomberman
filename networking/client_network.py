@@ -1,9 +1,12 @@
 from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
-from .network import BaseNetwork
+from .network import BaseNetwork, ON_RECEIVE
 from .client import Client
-from json import dumps as json_dumps
+from json import (
+    dumps as json_dumps,
+    loads as json_loads
+    )
 from utils import Data
 from .network_keys import *
 
@@ -43,7 +46,17 @@ class ClientNetwork(BaseNetwork):
     def __handle_server(self):
         while self.__client_run:
             try:
-                data = self.__sock.recv(1024).decode("utf-8")
+                received_data = self.__sock.recv(1024).decode("utf-8")
+                data = json_loads(received_data)
+
+                action = data["action"]
+                
+                client = None
+                client_data = data.get("client")
+                if client_data is not None:
+                    client = Client(None, client_data["name"], client_data["id"])
+
+                self._call(ON_RECEIVE, action, client, data["data"])
             except OSError:
                 break
 

@@ -28,12 +28,14 @@ class BaseNetwork(ABC):
     def register_on_receive(self, func: Callable):
         self.__registered_handlers[ON_RECEIVE] = func
 
-    @abstractmethod
-    def stop(self):
+    def broadcast(self, action: str, data: Data, client_out: Client):
+        ...
+
+    def send(self, action: str, data: Data):
         ...
 
     @abstractmethod
-    def send(self, action: str, data: Data):
+    def stop(self):
         ...
 
     @abstractmethod

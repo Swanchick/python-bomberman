@@ -33,16 +33,17 @@ class Player(GameObject):
     def update(self):
         self.image.fill((255, 0, 0))
 
-        self.controls()
-
-        # self.network.send("position-sync", {
-        #     "pos": tuple(self._position)
-        # })
-        
-    def controls(self):
         if not self.network.is_client():
             return
 
+        self.controls()
+
+        self.network.send("position-sync", {
+            "id": self._id,
+            "pos": tuple(self._position)
+        })
+        
+    def controls(self):
         keys = get_keys()
 
         horizontal = int(keys[K_d] or keys[K_RIGHT]) - int(keys[K_a] or keys[K_LEFT])

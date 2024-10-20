@@ -2,7 +2,7 @@ from pygame.sprite import AbstractGroup
 
 from .abstract_game_object import GameObjectAbstract
 
-from networking import ClientNetwork, BaseNetwork, Network
+from networking import ClientNetwork, ProxyNetwork, BaseNetwork, Network
 
 from game_objects.player import Player
 
@@ -13,8 +13,6 @@ class Game(AbstractGroup):
         super().__init__()
         
         self.__network = Network.get()
-
-        print(self.__network)
 
         if self.__network is None:
             self.__network = ClientNetwork("127.0.0.1", 50000)
@@ -69,8 +67,25 @@ class Game(AbstractGroup):
     def on_player_connected(self, client):
         print(client.name)
 
-    def on_player_data_receive(self, client, data):
-        pass
+        self.__network.broadcast("create-player", {}, client)
+
+    def on_player_data_receive(self, action, client, data):
+        if self.__network.is_server():
+            if action == "position-sync":
+                self.__network.broadcast("position-sync", data, client)
+
+        if self.__network.is_client():
+            if action == "create-player":
+                if client is None:
+                    return
+
+                print(f"{client.name} {client.id}")
+
+                new_player = Player()
+                new_player.network = ProxyNetwork(client)
+                print(new_player.network.is_proxy())
+                new_player.current_game = self
+                self.add(new_player)
 
     def stop(self):
         self.__network.stop()
