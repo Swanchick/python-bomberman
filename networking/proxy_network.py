@@ -10,9 +10,8 @@ from .network_keys import *
 import time
 
 class ProxyNetwork(BaseNetwork):
-    __client: Client
 
-    def __init__(self, client: Client):
+    def __init__(self):
         super().__init__()
 
     def send(self, action: str, data: dict):
