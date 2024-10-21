@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Callable
+from socket import socket as Socket
+
 from .client import Client
-from utils import Data
 from protocol import MessageHandler, Command
 
 
@@ -20,7 +20,7 @@ class BaseNetwork(ABC):
         
         func(*args)
 
-    def broadcast(self, action: str, data: Data, client_out: Client):
+    def broadcast(self, action: str, data: dict, client_out: Client):
         ...
 
     def send(self, data: dict):
@@ -34,6 +34,9 @@ class BaseNetwork(ABC):
     
     def register(self, action: str, command: Command):
         self._message_handler.handle(action, command)
+
+    def set_client(self, client: Client):
+        ...
 
     @abstractmethod
     def stop(self):
@@ -49,6 +52,10 @@ class BaseNetwork(ABC):
     
     @abstractmethod
     def is_proxy(self) -> bool:
+        ...
+
+    @property
+    def socket(self) -> Socket:
         ...
 
     @property

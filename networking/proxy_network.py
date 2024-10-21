@@ -1,16 +1,9 @@
-from socket import socket as Socket
-from socket import AF_INET, SOCK_STREAM
-from threading import Thread
 from .base_network import BaseNetwork
 from .client import Client
-from json import dumps as json_dumps
-from utils import Data
 from .network_keys import *
 
-import time
 
 class ProxyNetwork(BaseNetwork):
-
     def __init__(self):
         super().__init__()
 

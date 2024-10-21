@@ -6,14 +6,24 @@ from .base_network import BaseNetwork
 from .client import Client
 from protocol import MessageHandler, MessageProtocol, Command
 
-from utils import Data
 from .network_keys import *
 
 class ClientCommand(Command):
-    __network: BaseNetwork
+    _network: BaseNetwork
     
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, client_network: BaseNetwork):
+        self._network = client_network
+    
+    def execute(self, message_protocol, *args):
+        ...
+
+
+class OnClientInitialized(ClientCommand):
+    def execute(self, message_protocol: MessageProtocol):
+        
+        
+        self._network.set_client()
+
 
 class ClientNetwork(BaseNetwork):
     __host: str
@@ -29,6 +39,8 @@ class ClientNetwork(BaseNetwork):
         self.__port = port
         self.__client_run = False
         self.__client = None
+
+        self._message_handler.register(ON_CLIENT_CONNECTED, OnClientInitialized(self))
     
     def init_client(self):
         self.__sock = Socket(AF_INET, SOCK_STREAM)
@@ -80,9 +92,9 @@ class ClientNetwork(BaseNetwork):
             self.__server_handler.join()
 
         print("Client is stopped!")
-    
-    def register(self, action, command):
-        ...
+
+    def set_client(self, client: Client):
+        self.__client = client
 
     def is_server(self) -> bool:
         return False

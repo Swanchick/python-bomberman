@@ -5,17 +5,18 @@ from networking import BaseNetwork, Network, ProxyNetwork
 from utils import Vector
 from .abstract_game_object import GameObjectAbstract
 
+
 class GameObject(Sprite, GameObjectAbstract):
     _id: str
     _layer: int
-    _position: Vector
 
+    position: Vector
     current_game: Group
     network: BaseNetwork
 
     def __init__(self, id: str = None, is_proxy: bool = True):
         self._layer = 1
-        self._position = Vector.zero()
+        self.position = Vector.zero()
         if id is None:
             self._id = str(uuid4())
         else:
@@ -39,13 +40,12 @@ class GameObject(Sprite, GameObjectAbstract):
 
     def is_client(self) -> bool:
         return self.network.is_client()
-    
+
     def is_proxy(self) -> bool:
         return self.network.is_proxy()
 
-    @property
-    def position(self) -> Vector:
-        return self._position
+    def network_spawn(self, game_object):
+        ...
 
     @property
     def layer(self) -> int:

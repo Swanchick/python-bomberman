@@ -17,9 +17,10 @@ def main():
 
         Network.set(server)
 
-        console = Console()
-        console.start()
-        return
+        if "--gui" not in argv:
+            console = Console()
+            console.start()
+            return
 
     window = Window(RES, "Bomber man", 60)
     window.start()

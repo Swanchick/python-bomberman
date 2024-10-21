@@ -4,12 +4,9 @@ from threading import Thread
 from .base_network import BaseNetwork
 from .client import Client
 from .network_keys import *
-from protocol import MessageHandler, Command, MessageProtocol 
-
+from protocol import Command, MessageProtocol 
 
 from json import loads as json_loads
-
-
 
 
 class ServerCommand(Command):
