@@ -1,7 +1,7 @@
 from socket import socket as Socket, timeout as SocketTimeout
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
-from .base_network import BaseNetwork, ON_CONNECT, ON_RECEIVE
+from .base_network import BaseNetwork
 from .client import Client
 from .network_keys import *
 
@@ -12,17 +12,24 @@ from time import sleep as time_sleep
 from protocol import MessageHandler, Command, MessageProtocol 
 
 
-class OnClientConnect(Command):
-    def execute(self, message_protocol: MessageProtocol, socket: Socket, server_network: BaseNetwork):
+class ServerCommand(Command):
+    _server_network: BaseNetwork
+    
+    def __init__(self, server_network: BaseNetwork):
+        self._server_network = server_network
+
+
+class OnClientConnect(ServerCommand):
+    def execute(self, message_protocol: MessageProtocol, socket: Socket):
         client = Client(socket, client["name"])
 
-        server_network.add_client(client)
+        self._server_network.add_client(client)
 
-class OnClientDisconnect(Command):
-    def execute(self, message_protocol: MessageProtocol, socket: Socket, server_network: BaseNetwork):
+class OnClientDisconnect(ServerCommand):
+    def execute(self, message_protocol: MessageProtocol, socket: Socket):
         client = message_protocol.client
 
-        server_network.remove_client(client["id"])
+        self._server_network.remove_client(client["id"])
 
 
 class ServerNetwork(BaseNetwork):
@@ -33,7 +40,6 @@ class ServerNetwork(BaseNetwork):
     __accept_clients_thread: Thread
     __clients: list[Client]
     __client_handlers: list[Thread]
-    __message_handler: MessageHandler
     
     def __init__(self, host: str, port: int):
         super().__init__()
@@ -42,7 +48,6 @@ class ServerNetwork(BaseNetwork):
         self.__port = port
         self.__clients = []
         self.__client_handlers = []
-        self.__message_handler = MessageHandler()
     
     def init_server(self):
         self.__sock = Socket(AF_INET, SOCK_STREAM)
@@ -50,16 +55,19 @@ class ServerNetwork(BaseNetwork):
         self.__sock.bind((self.__host, self.__port))
         self.__server_run = True
 
-        self.__message_handler.handle(ON_CLIENT_CONNECTED)
+        self._message_handler.register(ON_CLIENT_CONNECTED, OnClientConnect(self))
+        self._message_handler.register(ON_CLIENT_DISCONNECTED, OnClientDisconnect(self))
 
     def start(self):
         if not self.__server_run:
             raise Exception("Server is not initialised!")
-        
+
         self.__sock.listen()
 
         self.__accept_clients_thread = Thread(target=self.__accept_handler)
         self.__accept_clients_thread.start()
+
+        print("Server started")
 
     def stop(self):
         print("Stopping server...")
@@ -89,9 +97,6 @@ class ServerNetwork(BaseNetwork):
                 self.__clients.remove(client)
                 break
 
-    def register(self, action: str, command: Command):
-        self.__message_handler.handle(action, command)
-
     def __accept_handler(self):
         while self.__server_run:
             try:
@@ -111,33 +116,6 @@ class ServerNetwork(BaseNetwork):
         for client in self.__clients:
             if client.id == id:
                 return client
-
-    def __on_client_connected(self, socket: Socket, data: dict):
-        client_data = data["client"]
-
-        client = Client(socket, client_data["name"], client_data["id"])
-
-        self.__clients.append(client)
-
-        self._call(ON_CONNECT, client)
-    
-    def __on_data_receive(self, data: dict):
-        client_data = data["client"]
-
-        client = self.get_client(client_data["id"])
-        if client is None:
-            return
-
-        self._call(ON_RECEIVE, data["action"], client, data["data"])
-
-    def __on_client_dissconnected(self, data: dict):
-        client_data = data["client"]
-
-        for client in self.__clients:
-            if client.id == client_data["id"]:
-                self.__clients.remove(client)
-
-                break
 
     def __handle_clients(self, client_socket: Socket):
         try:
@@ -165,7 +143,7 @@ class ServerNetwork(BaseNetwork):
             if client.id == client_out.id:
                 continue
 
-            client.send(action, data, client_sender=client_out)
+            client.send(action, data, client_out)
     
     def is_server(self) -> bool:
         return True

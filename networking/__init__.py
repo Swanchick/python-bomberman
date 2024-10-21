@@ -4,6 +4,7 @@ from .proxy_network import ProxyNetwork
 from .base_network import BaseNetwork
 from .base_client import BaseClient
 
+
 class Network:
     instance = None
     __network: BaseNetwork

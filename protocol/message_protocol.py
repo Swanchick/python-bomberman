@@ -4,7 +4,6 @@ from json import (
     JSONDecodeError
 )
 
-from networking import BaseClient
 from typing import Self, Optional
 
 
@@ -21,7 +20,7 @@ class MessageProtocol:
         self.__from_server = from_server
     
     @staticmethod
-    def encode(action: str, client: BaseClient = None, data: dict = {}, from_server: bool = False) -> bytes:
+    def encode(action: str, client = None, data: dict = {}, from_server: bool = False) -> bytes:
         data_to_send = {
             "action": action,
             "data" : data,

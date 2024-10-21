@@ -22,7 +22,7 @@ def main():
         console.start()
         return
 
-    window = Window(RES, "Bomber man", 144)
+    window = Window(RES, "Bomber man", 60)
     window.start()
 
 

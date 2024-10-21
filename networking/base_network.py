@@ -2,16 +2,16 @@ from abc import ABC, abstractmethod
 from typing import Callable
 from .client import Client
 from utils import Data
-from protocol import Command
+from protocol import MessageHandler, Command
 
 
 class BaseNetwork(ABC):
-    __registered_handlers: dict[str, Callable]
+    _message_handler: MessageHandler
 
     def __init__(self):
         super().__init__()
 
-        self.__registered_handlers = {}
+        self._message_handler = MessageHandler()
 
     def _call(self, name: str, *args):
         func = self.__registered_handlers.get(name)
@@ -31,10 +31,9 @@ class BaseNetwork(ABC):
 
     def remove_client(self):
         ...
-
-    @abstractmethod
+    
     def register(self, action: str, command: Command):
-        ...
+        self._message_handler.handle(action, command)
 
     @abstractmethod
     def stop(self):
