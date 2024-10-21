@@ -37,11 +37,6 @@ class Player(GameObject):
             return
 
         self.controls()
-
-        self.network.send("position-sync", {
-            "id": self._id,
-            "pos": tuple(self._position)
-        })
         
     def controls(self):
         keys = get_keys()

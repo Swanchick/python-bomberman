@@ -2,17 +2,18 @@ from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
 
-from json import (
-    dumps as json_dumps,
-    loads as json_loads
-)
-
 from .base_network import BaseNetwork
 from .client import Client
 from protocol import MessageHandler, MessageProtocol, Command
 
 from utils import Data
 from .network_keys import *
+
+class ClientCommand(Command):
+    __network: BaseNetwork
+    
+    def __init__(self) -> None:
+        super().__init__()
 
 class ClientNetwork(BaseNetwork):
     __host: str
@@ -27,7 +28,7 @@ class ClientNetwork(BaseNetwork):
         self.__host = host
         self.__port = port
         self.__client_run = False
-        
+        self.__client = None
     
     def init_client(self):
         self.__sock = Socket(AF_INET, SOCK_STREAM)
@@ -38,39 +39,38 @@ class ClientNetwork(BaseNetwork):
             raise Exception("Client is not initialized!")
         
         self.__sock.connect((self.__host, self.__port))
-        self.__client = Client(self.__sock, "Swanchick")
 
         self.__server_handler = Thread(target=self.__handle_server)
         self.__server_handler.start()
     
     def __handle_server(self):
+        self.send(ON_CLIENT_CONNECTED, {"client_name": "Swanchick"})
+        
         while self.__client_run:
             try:
                 received_data = self.__sock.recv(1024)
+                print(received_data.decode("utf-8"))
+                
                 data: MessageProtocol = MessageProtocol.decode(received_data)
-
-                self._message_handler.handle(data.action)
+                print(data)
+                
+                if data is None:
+                    continue
+                
+                self._message_handler.handle(data)
             except OSError:
                 break
 
     def send(self, action: str, data: dict):
         if not self.__client_run:
             return
+        
+        data = MessageProtocol.encode(action, self.client, data)
 
-        data = {
-            "action": action,
-            "client": self.__client.data,
-            "data": data
-        }
-
-        data_send = json_dumps(data)
-
-        self.__sock.send(data_send.encode("utf-8"))
+        self.__sock.send(data)
 
     def stop(self):
         print("Stopping client...")
-
-        self.send("client-disconnected", {})
 
         self.__client_run = False
 

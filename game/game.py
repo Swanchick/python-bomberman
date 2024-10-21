@@ -22,11 +22,9 @@ class Game(AbstractGroup):
 
             Network.set(self.__network)
         
-
-        if self.__network.is_server():
-            player = Player()
-
-            self.add(player)
+        player = Player()
+        self.add(player)
+        player.current_game = self
 
     def add(self, game_object: GameObjectAbstract):
         game_object.network = self.__network

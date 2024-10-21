@@ -13,18 +13,33 @@ class MessageProtocol:
     __data: dict
     __from_server: bool
 
-    def __init__(self, action: str, client: dict, data: dict, from_server: bool):
+    def __init__(self, action: str = None, client: dict = None, data: dict = None, from_server: bool = None):
         self.__action = action
         self.__client = client
         self.__data = data
         self.__from_server = from_server
     
+    def __repr__(self) -> str:
+        data = {
+            "action": self.__action,
+            "client": self.__client,
+            "data" : self.__data,
+            "from_server": self.__from_server
+        }
+        
+        return str(data)
+    
     @staticmethod
-    def encode(action: str, client = None, data: dict = {}, from_server: bool = False) -> bytes:
+    def encode(action: str = None, client = None, data: dict = {}, from_server: bool = False) -> bytes:
+        client_data = None
+        
+        if client is not None:
+            client_data = client.data
+        
         data_to_send = {
             "action": action,
+            "client": client_data,
             "data" : data,
-            "client": client.data,
             "from_server": from_server
         }
 
@@ -36,14 +51,17 @@ class MessageProtocol:
     def decode(message: bytes) -> Optional[Self]:
         message_string = message.decode("utf-8") 
 
+        message_data = {}
+        
         try:
             message_data = json_loads(message_string)
         except JSONDecodeError:
             return None
-        finally:
-            message_protocol = MessageProtocol(message_data["action"], message_data["client"], message_data["data"], message_data["from_server"])
+        
+        message_protocol = MessageProtocol(message_data.get("action"), message_data.get("client"), message_data.get("data"), message_data.get("from_server"))
 
-            return message_protocol
+        return message_protocol         
+            
 
     @property
     def action(self) -> str:

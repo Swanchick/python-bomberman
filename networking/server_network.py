@@ -4,12 +4,12 @@ from threading import Thread
 from .base_network import BaseNetwork
 from .client import Client
 from .network_keys import *
+from protocol import MessageHandler, Command, MessageProtocol 
+
 
 from json import loads as json_loads
 
-from time import sleep as time_sleep
 
-from protocol import MessageHandler, Command, MessageProtocol 
 
 
 class ServerCommand(Command):
@@ -17,13 +17,22 @@ class ServerCommand(Command):
     
     def __init__(self, server_network: BaseNetwork):
         self._server_network = server_network
+    
+    def execute(self, message_protocol: MessageProtocol, socket: Socket):
+        ...
 
 
 class OnClientConnect(ServerCommand):
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
-        client = Client(socket, client["name"])
-
+        # print("Hello World")
+        data = message_protocol.data
+        client = Client(socket, data["client_name"])
         self._server_network.add_client(client)
+        
+        send_data = MessageProtocol.encode(ON_CLIENT_CONNECTED, None, {"client_id": client.id, "client_name": client.name}, from_server=True)
+        # print(send_data)
+        socket.send(send_data)
+        
 
 class OnClientDisconnect(ServerCommand):
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
@@ -126,7 +135,12 @@ class ServerNetwork(BaseNetwork):
                         break
                     
                     data: MessageProtocol = MessageProtocol.decode(data_receive)
-                    self.__message_handler.handle(data.action, client_socket, self)
+                    if data is None:
+                        continue
+                    
+                    print(data)
+                    
+                    self._message_handler.handle(data, client_socket)
                     
                 except (OSError, SocketTimeout):
                     break

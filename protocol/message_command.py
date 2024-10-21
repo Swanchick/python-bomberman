@@ -1,9 +1,14 @@
 from abc import ABC
 from .message_protocol import MessageProtocol
 from socket import socket as Socket
-
+from networking import Network, BaseNetwork
 
 class Command(ABC):
+    _network: BaseNetwork
+    
+    def __init__(self) -> None:
+        self._network = Network.get()
+    
     def execute(self, message_protocol: MessageProtocol, *args):
         ...
 
