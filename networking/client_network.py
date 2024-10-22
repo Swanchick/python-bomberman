@@ -4,7 +4,7 @@ from threading import Thread
 
 from .base_network import BaseNetwork
 from .client import Client
-from protocol import MessageHandler, MessageProtocol, Command
+from protocol import MessageProtocol, Command
 
 from .network_keys import *
 
@@ -14,15 +14,20 @@ class ClientCommand(Command):
     def __init__(self, client_network: BaseNetwork):
         self._network = client_network
     
-    def execute(self, message_protocol, *args):
+    def execute(self, message_protocol: MessageProtocol, *args):
         ...
 
 
 class OnClientInitialized(ClientCommand):
     def execute(self, message_protocol: MessageProtocol):
+        data = message_protocol.data
+        name = data["client_name"]
+        client_id = data["client_id"]
         
+        client = Client(self._network.socket, name, client_id)
+        self._network.set_client(client)
         
-        self._network.set_client()
+        self._network.send(ON_CLINET_INITIALIZE, {})
 
 
 class ClientNetwork(BaseNetwork):
@@ -64,10 +69,10 @@ class ClientNetwork(BaseNetwork):
                 print(received_data.decode("utf-8"))
                 
                 data: MessageProtocol = MessageProtocol.decode(received_data)
-                print(data)
-                
                 if data is None:
-                    continue
+                    break
+
+                print(data)
                 
                 self._message_handler.handle(data)
             except OSError:

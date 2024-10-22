@@ -23,7 +23,7 @@ class BaseNetwork(ABC):
     def broadcast(self, action: str, data: dict, client_out: Client):
         ...
 
-    def send(self, data: dict):
+    def send(self, action: str, data: dict = {}):
         ...
 
     def add_client(self):
