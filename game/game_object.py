@@ -10,7 +10,7 @@ class GameObject(Sprite, GameObjectAbstract):
     _id: str
     _layer: int
 
-    position: Vector
+    _position: Vector
     current_game: Group
     network: BaseNetwork
 
@@ -30,10 +30,10 @@ class GameObject(Sprite, GameObjectAbstract):
         super().__init__()
 
     def start(self):
-        pass
+        ...
 
     def update(self):
-        pass
+        ...
 
     def is_server(self) -> bool:
         return self.network.is_server()
@@ -54,3 +54,11 @@ class GameObject(Sprite, GameObjectAbstract):
     @property
     def id(self) -> str:
         return self._id
+    
+    @property
+    def position(self) -> Vector:
+        return self._position
+
+    @position.setter
+    def position(self, value: Vector):
+        self._position = value

@@ -2,9 +2,11 @@ from abc import ABC
 from .message_protocol import MessageProtocol
 from socket import socket as Socket
 
+
 class Command(ABC):    
     def execute(self, message_protocol: MessageProtocol, *args):
         ...
+
 
 class MessageHandler:
     __commands: dict[str, Command]
