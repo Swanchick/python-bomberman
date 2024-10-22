@@ -1,33 +1,22 @@
 from socket import socket as Socket, timeout as SocketTimeout
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
+
+from protocol import Command, MessageProtocol 
+
 from .base_network import BaseNetwork
 from .client import Client
 from .network_keys import *
-from protocol import Command, MessageProtocol 
-
-from json import loads as json_loads
-
-
-class ServerCommand(Command):
-    _server_network: BaseNetwork
-    
-    def __init__(self, server_network: BaseNetwork):
-        self._server_network = server_network
-    
-    def execute(self, message_protocol: MessageProtocol, socket: Socket):
-        ...
+from .network_commands import ServerCommand
 
 
 class OnClientConnect(ServerCommand):
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
-        # print("Hello World")
         data = message_protocol.data
         client = Client(socket, data["client_name"])
         self._server_network.add_client(client)
         
         send_data = MessageProtocol.encode(ON_CLIENT_CONNECTED, None, {"client_id": client.id, "client_name": client.name}, from_server=True)
-        # print(send_data)
         socket.send(send_data)
         
 
@@ -149,6 +138,13 @@ class ServerNetwork(BaseNetwork):
             client_socket.close()
             print("Client connection closed.")
     
+    def send(self, action: str, data: dict, client_id: str, client_from: Client = None):
+        for client in self.__clients:
+            if client == client_id:
+                client.send(action, data, client_from)
+
+                break 
+
     def broadcast(self, action: str, data: dict, client_out: Client = None):
         for client in self.__clients:
             if client.id == client_out.id:

@@ -2,21 +2,12 @@ from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
 
+from protocol import MessageProtocol
+
 from .base_network import BaseNetwork
 from .client import Client
-from protocol import MessageProtocol, Command
-
 from .network_keys import *
-
-class ClientCommand(Command):
-    _network: BaseNetwork
-    
-    def __init__(self, client_network: BaseNetwork):
-        self._network = client_network
-    
-    def execute(self, message_protocol: MessageProtocol, *args):
-        ...
-
+from .network_commands import ClientCommand
 
 class OnClientInitialized(ClientCommand):
     def execute(self, message_protocol: MessageProtocol):

@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from networking import BaseNetwork, Network, ProxyNetwork
 from utils import Vector
-from .abstract_game_object import GameObjectAbstract
+from .game_object_abstract import GameObjectAbstract
 
 
 class GameObject(Sprite, GameObjectAbstract):
@@ -11,7 +11,7 @@ class GameObject(Sprite, GameObjectAbstract):
     _layer: int
 
     _position: Vector
-    current_game: Group
+    game: Group
     network: BaseNetwork
 
     def __init__(self, id: str = None, is_proxy: bool = True):
@@ -28,7 +28,7 @@ class GameObject(Sprite, GameObjectAbstract):
             self.network = Network.get()
 
         super().__init__()
-
+    
     def start(self):
         ...
 

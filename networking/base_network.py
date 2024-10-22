@@ -33,7 +33,7 @@ class BaseNetwork(ABC):
         ...
     
     def register(self, action: str, command: Command):
-        self._message_handler.handle(action, command)
+        self._message_handler.register(action, command)
 
     def set_client(self, client: Client):
         ...

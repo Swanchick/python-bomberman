@@ -1,5 +1,4 @@
 from pygame.key import get_pressed as get_keys
-
 from pygame import (
     Surface,
     K_a, K_LEFT,
@@ -9,20 +8,21 @@ from pygame import (
     K_SPACE
 )
 
-from utils import Time
-
+from utils import Time, Vector
+from game import GameObjectNetwork
 from game.game_object import GameObject
-from utils import Vector
 
 
+@GameObjectNetwork.register
 class Player(GameObject):
     __velocity: Vector
     __speed: float
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args):
+        super().__init__(*args)
 
-        self._position = Vector(100, 100)
+        self._position = Vector(200, 100)
+        self._layer = -1
 
         self.image = Surface((32, 32))
         self.rect = self.image.get_rect()
@@ -33,7 +33,7 @@ class Player(GameObject):
     def update(self):
         self.image.fill((255, 0, 0))
 
-        if not self.network.is_client():
+        if not self.is_client():
             return
 
         self.controls()

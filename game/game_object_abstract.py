@@ -7,7 +7,16 @@ from networking import BaseNetwork
 
 class GameObjectAbstract(ABC):
     network: BaseNetwork
-    current_game: Group
+    game: Group
+
+    def start(self):
+        ...
+    
+    def update(self):
+        ...
+
+    def draw(self):
+        ...
 
     @property
     def position(self) -> Vector:

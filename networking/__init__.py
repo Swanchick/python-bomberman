@@ -3,6 +3,7 @@ from .server_network import ServerNetwork
 from .proxy_network import ProxyNetwork
 from .base_network import BaseNetwork
 from .base_client import BaseClient
+from .network_commands import ServerCommand, ClientCommand
 
 
 class Network:
