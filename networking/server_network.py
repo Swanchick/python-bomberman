@@ -140,7 +140,7 @@ class ServerNetwork(BaseNetwork):
     
     def send(self, action: str, data: dict, client_id: str, client_from: Client = None):
         for client in self.__clients:
-            if client == client_id:
+            if client.id == client_id:
                 client.send(action, data, client_from)
 
                 break 

@@ -1,11 +1,33 @@
 from pygame.sprite import AbstractGroup
 
-from networking import ClientNetwork, BaseNetwork, Network
+from networking import ClientNetwork, BaseNetwork, Network, ClientCommand, ServerCommand
 from networking.network_keys import *
 from game_objects.player_spawn import PlayerSpawn
+from game_objects.player import Player
 from protocol import Command
-
+from protocol.message_protocol import MessageProtocol
 from .game_object_abstract import GameObjectAbstract
+from .game_object_network import GameObjectNetwork
+
+
+class SpawnObjectOnClient(ClientCommand):
+    def __init__(self, client_network: BaseNetwork, game):
+        super().__init__(client_network)
+        
+        self.__game = game
+    
+    def execute(self, message_protocol: MessageProtocol, *args):
+        print("Hello World")
+        
+        data = message_protocol.data
+        go_name = data["gameobject_name"]
+        go_id = data["gameobject_id"]
+        
+        cls = GameObjectNetwork.get(go_name)
+        
+        gameobject = cls(go_id)
+        
+        self.__game.add(gameobject)
 
 
 class Game(AbstractGroup):
@@ -23,24 +45,25 @@ class Game(AbstractGroup):
             self.__network.start()
 
             Network.set(self.__network)
-        
-        if self.__network.is_server():
-            player_spawn = PlayerSpawn()
-            self.add(player_spawn)
-            player_spawn.game = self
 
     def add(self, game_object: GameObjectAbstract):
         game_object.network = self.__network
-        game_object.current_game = self
+        game_object.game = self
         
         super().add(game_object)
 
     def start(self):
+        if self.__network.is_server():
+            player_spawn = PlayerSpawn()
+            self.add(player_spawn)
+        else:
+            self.register(SPAWN_OBJECT, SpawnObjectOnClient(self.__network, self))
+        
+        
         game_objects: list[GameObjectAbstract] = self.sprites()
 
         for game_object in game_objects:
             game_object.start()
-                
 
     def update(self):
         game_objects: list[GameObjectAbstract] = self.sprites()

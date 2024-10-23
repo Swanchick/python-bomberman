@@ -24,8 +24,6 @@ class OnClientConnect(ServerCommand):
             "gameobject_id": player.id
         }
 
-        print("Ajhdkahskjdjkasd")
-
         self._server_network.send(SPAWN_OBJECT, data, client_id)
 
 
