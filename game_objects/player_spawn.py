@@ -15,9 +15,11 @@ class OnClientConnect(ServerCommand):
     
     def execute(self, message_protocol, socket):
         client_id = message_protocol.client["id"]
-
+        client = self._server_network.get_client(client_id)
+        
+        
         player = Player()
-        self.__game.add(player)
+        self.__game.spawn(player, client)
 
         data = {
             "gameobject_name": player.__class__.__name__,

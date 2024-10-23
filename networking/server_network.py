@@ -152,6 +152,11 @@ class ServerNetwork(BaseNetwork):
 
             client.send(action, data, client_out)
     
+    def get_client(self, client_id: str) -> Client:
+        for client in self.__clients:
+            if client.id == client_id:
+                return client
+    
     def is_server(self) -> bool:
         return True
 

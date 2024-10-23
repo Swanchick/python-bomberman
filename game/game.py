@@ -1,6 +1,7 @@
 from pygame.sprite import AbstractGroup
 
 from networking import ClientNetwork, BaseNetwork, Network, ClientCommand, ServerCommand
+from networking.client import Client
 from networking.network_keys import *
 from game_objects.player_spawn import PlayerSpawn
 from game_objects.player import Player
@@ -46,16 +47,20 @@ class Game(AbstractGroup):
 
             Network.set(self.__network)
 
-    def add(self, game_object: GameObjectAbstract):
+    def spawn(self, game_object: GameObjectAbstract, client: Client = None):
+        if self.__network.is_server():
+            game_object.owner = client
+        
         game_object.network = self.__network
         game_object.game = self
+        
         
         super().add(game_object)
 
     def start(self):
         if self.__network.is_server():
             player_spawn = PlayerSpawn()
-            self.add(player_spawn)
+            self.spawn(player_spawn)
         else:
             self.register(SPAWN_OBJECT, SpawnObjectOnClient(self.__network, self))
         

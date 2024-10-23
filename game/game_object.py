@@ -2,6 +2,7 @@ from pygame.sprite import Sprite, Group
 from uuid import uuid4
 
 from networking import BaseNetwork, Network, ProxyNetwork
+from networking.client import Client
 from utils import Vector
 from .game_object_abstract import GameObjectAbstract
 
@@ -13,6 +14,8 @@ class GameObject(Sprite, GameObjectAbstract):
     _position: Vector
     game: Group
     network: BaseNetwork
+    
+    owner: Client
 
     def __init__(self, id: str = None, is_proxy: bool = True):
         self._layer = 1

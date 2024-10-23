@@ -38,6 +38,9 @@ class BaseNetwork(ABC):
     def set_client(self, client: Client):
         ...
 
+    def get_client(self, client_id: str) -> Client:
+        ...
+    
     @abstractmethod
     def stop(self):
         ...
