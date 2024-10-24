@@ -18,17 +18,17 @@ class SpawnObjectOnClient(ClientCommand):
         self.__game = game
     
     def execute(self, message_protocol: MessageProtocol, *args):
-        print("Hello World")
-        
         data = message_protocol.data
+        client_data = message_protocol.client
+        client = Client(None, client_data["name"], client_data["id"])
         go_name = data["gameobject_name"]
         go_id = data["gameobject_id"]
         
         cls = GameObjectNetwork.get(go_name)
         
-        gameobject = cls(go_id)
+        gameobject = cls(go_id, client.id != self._network.client.id)
         
-        self.__game.add(gameobject)
+        self.__game.spawn(gameobject, client)
 
 
 class Game(AbstractGroup):
@@ -47,13 +47,11 @@ class Game(AbstractGroup):
 
             Network.set(self.__network)
 
-    def spawn(self, game_object: GameObjectAbstract, client: Client = None):
+    def spawn(self, game_object: GameObjectAbstract, client: Client = None):        
         if self.__network.is_server():
             game_object.owner = client
         
-        game_object.network = self.__network
         game_object.game = self
-        
         
         super().add(game_object)
 

@@ -69,7 +69,7 @@ class ClientNetwork(BaseNetwork):
             except OSError:
                 break
 
-    def send(self, action: str, data: dict):
+    def send(self, action: str, data: dict = {}):
         if not self.__client_run:
             return
         
@@ -80,6 +80,8 @@ class ClientNetwork(BaseNetwork):
     def stop(self):
         print("Stopping client...")
 
+        self.send(ON_CLIENT_DISCONNECTED)
+        
         self.__client_run = False
 
         self.__sock.close()

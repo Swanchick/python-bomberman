@@ -34,7 +34,7 @@ class MessageProtocol:
         client_data = None
         
         if client is not None:
-            client_data = client.data
+            client_data = client
         
         data_to_send = {
             "action": action,

@@ -131,8 +131,8 @@ class ServerNetwork(BaseNetwork):
                 except (OSError, SocketTimeout):
                     break
 
-        except Exception as e:
-            print(f"Error handling client: {e}")
+        # except Exception as e:
+        #     print(f"Error handling client: {e}")
 
         finally:            
             client_socket.close()
@@ -145,10 +145,12 @@ class ServerNetwork(BaseNetwork):
 
                 break 
 
-    def broadcast(self, action: str, data: dict, client_out: Client = None):
+    def broadcast(self, action: str, data: dict, client_out: Client = None, ignore: bool = False):
         for client in self.__clients:
-            if client.id == client_out.id:
-                continue
+            if client_out is not None:
+                if client.id == client_out.id and ignore:
+                    print("YES")
+                    continue
 
             client.send(action, data, client_out)
     

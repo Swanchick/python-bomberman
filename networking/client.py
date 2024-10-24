@@ -18,12 +18,8 @@ class Client(BaseClient):
         else:
             self.__id = id
 
-    def send(self, action: str, data: dict, client_sender: Self = None):       
-        client_data = None
-        if client_sender is not None:
-            client_data = client_sender.data
-        
-        data = MessageProtocol.encode(action, client_data, data, True)
+    def send(self, action: str, data: dict, client_sender: Self = None):        
+        data = MessageProtocol.encode(action, client_sender, data, True)
         self.__sock.send(data)
 
     def close(self):

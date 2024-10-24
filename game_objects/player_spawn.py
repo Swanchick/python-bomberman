@@ -23,10 +23,12 @@ class OnClientConnect(ServerCommand):
 
         data = {
             "gameobject_name": player.__class__.__name__,
-            "gameobject_id": player.id
+            "gameobject_id": player.id,
         }
+        
+        print("Hello World")
 
-        self._server_network.send(SPAWN_OBJECT, data, client_id)
+        self._server_network.broadcast(SPAWN_OBJECT, data, client)
 
 
 class PlayerSpawn(GameObject):

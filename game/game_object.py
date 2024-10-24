@@ -17,7 +17,7 @@ class GameObject(Sprite, GameObjectAbstract):
     
     owner: Client
 
-    def __init__(self, id: str = None, is_proxy: bool = True):
+    def __init__(self, id: str = None, is_proxy: bool = False):
         self._layer = 1
         self.position = Vector.zero()
         if id is None:
