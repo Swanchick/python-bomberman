@@ -25,8 +25,6 @@ class OnClientConnect(ServerCommand):
             "gameobject_name": player.__class__.__name__,
             "gameobject_id": player.id,
         }
-        
-        print("Hello World")
 
         self._server_network.broadcast(SPAWN_OBJECT, data, client)
 
@@ -36,7 +34,7 @@ class PlayerSpawn(GameObject):
     def __init__(self, *args):
         super().__init__(*args)
 
-        self._position = Vector(100, 100)
+        self.position = Vector(100, 100)
         self._layer = 0
 
         self.image = Surface((32, 32))
@@ -47,7 +45,6 @@ class PlayerSpawn(GameObject):
             return
         
         self.game.register(ON_CLINET_INITIALIZE, OnClientConnect(self.network, self.game))
-        print("Hello World")
 
     def update(self):
         self.image.fill((0, 255, 0))

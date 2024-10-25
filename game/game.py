@@ -11,24 +11,18 @@ from .game_object_abstract import GameObjectAbstract
 from .game_object_network import GameObjectNetwork
 
 
-class SpawnObjectOnClient(ClientCommand):
+class SyncAllObjectsServer(ServerCommand):
+    pass
+
+
+class SyncAllObjectsClient(ClientCommand):
     def __init__(self, client_network: BaseNetwork, game):
         super().__init__(client_network)
         
         self.__game = game
-    
+        
     def execute(self, message_protocol: MessageProtocol, *args):
-        data = message_protocol.data
-        client_data = message_protocol.client
-        client = Client(None, client_data["name"], client_data["id"])
-        go_name = data["gameobject_name"]
-        go_id = data["gameobject_id"]
-        
-        cls = GameObjectNetwork.get(go_name)
-        
-        gameobject = cls(go_id, client.id != self._network.client.id)
-        
-        self.__game.spawn(gameobject, client)
+        ...
 
 
 class Game(AbstractGroup):
@@ -46,21 +40,17 @@ class Game(AbstractGroup):
             self.__network.start()
 
             Network.set(self.__network)
-
-    def spawn(self, game_object: GameObjectAbstract, client: Client = None):        
-        if self.__network.is_server():
-            game_object.owner = client
-        
-        game_object.game = self
-        
-        super().add(game_object)
-
+    
     def start(self):
         if self.__network.is_server():
             player_spawn = PlayerSpawn()
             self.spawn(player_spawn)
-        else:
+        
+        if self.__network.is_client():
             self.register(SPAWN_OBJECT, SpawnObjectOnClient(self.__network, self))
+            
+            
+            self.__network.send(REQUEST_SYNC_OBJECTS, {})
         
         
         game_objects: list[GameObjectAbstract] = self.sprites()
@@ -91,6 +81,14 @@ class Game(AbstractGroup):
 
         return dirty
 
+    def spawn(self, game_object: GameObjectAbstract, client: Client = None):        
+        if self.__network.is_server():
+            game_object.owner = client
+        
+        game_object.game = self
+        
+        super().add(game_object)
+    
     def register(self, action: str, command: Command):
         self.__network.register(action, command)
 

@@ -21,7 +21,7 @@ class Player(GameObject):
     def __init__(self, *args):
         super().__init__(*args)
 
-        self._position = Vector(200, 100)
+        self.position = Vector(200, 100)
         self._layer = -1
 
         self.image = Surface((32, 32))
@@ -50,4 +50,4 @@ class Player(GameObject):
         velocity = dir * self.__speed * Time.delta
 
         self.__velocity = self.__velocity.lerp(velocity, 10 * Time.delta)
-        self._position += self.__velocity
+        self.position += self.__velocity

@@ -25,7 +25,7 @@ class GameObjectNetwork:
         return cls
 
     @staticmethod
-    def get(name) -> dict:
+    def get(name):
         gon = GameObjectNetwork()
         
         return gon.get_internal(name)

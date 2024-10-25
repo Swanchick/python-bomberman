@@ -7,6 +7,7 @@ from networking.client import Client
 
 
 class GameObjectAbstract(ABC):
+    position: Vector
     network: BaseNetwork
     game: Group
     owner: Client

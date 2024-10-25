@@ -11,12 +11,6 @@ class GameObject(Sprite, GameObjectAbstract):
     _id: str
     _layer: int
 
-    _position: Vector
-    game: Group
-    network: BaseNetwork
-    
-    owner: Client
-
     def __init__(self, id: str = None, is_proxy: bool = False):
         self._layer = 1
         self.position = Vector.zero()
@@ -57,11 +51,3 @@ class GameObject(Sprite, GameObjectAbstract):
     @property
     def id(self) -> str:
         return self._id
-    
-    @property
-    def position(self) -> Vector:
-        return self._position
-
-    @position.setter
-    def position(self, value: Vector):
-        self._position = value
