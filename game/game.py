@@ -7,22 +7,10 @@ from game_objects.player_spawn import PlayerSpawn
 from game_objects.player import Player
 from protocol import Command
 from protocol.message_protocol import MessageProtocol
+
+
 from .game_object_abstract import GameObjectAbstract
 from .game_object_network import GameObjectNetwork
-
-
-class SyncAllObjectsServer(ServerCommand):
-    pass
-
-
-class SyncAllObjectsClient(ClientCommand):
-    def __init__(self, client_network: BaseNetwork, game):
-        super().__init__(client_network)
-        
-        self.__game = game
-        
-    def execute(self, message_protocol: MessageProtocol, *args):
-        ...
 
 
 class Game(AbstractGroup):
@@ -92,9 +80,12 @@ class Game(AbstractGroup):
     def register(self, action: str, command: Command):
         self.__network.register(action, command)
 
-    def network_spawn(self, game_object):
+    def network_spawn(self, game_object, client: Client):
         if self.__network.is_client():
             self.__network.send(SPAWN_OBJECT, {"gameobject_id": game_object.id})
+        
+
+
 
     def stop(self):
         self.__network.stop()
