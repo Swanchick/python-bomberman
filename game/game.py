@@ -7,7 +7,6 @@ from protocol import Command
 from game_objects import *
 
 from .game_object_abstract import GameObjectAbstract
-from .game_object_network import GameObjectNetwork
 
 
 class Game(AbstractGroup):
@@ -16,8 +15,7 @@ class Game(AbstractGroup):
     def __init__(self):
         super().__init__()
 
-        player = Player()
-        self.spawn(player)
+        
     
     def start(self):        
         game_objects: list[GameObjectAbstract] = self.sprites()
