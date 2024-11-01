@@ -14,6 +14,7 @@ class GameObject(Sprite, GameObjectAbstract):
     def __init__(self, id: str = None, is_proxy: bool = False):
         self._layer = 1
         self.position = Vector.zero()
+
         if id is None:
             self._id = str(uuid4())
         else:
@@ -32,16 +33,7 @@ class GameObject(Sprite, GameObjectAbstract):
     def update(self):
         ...
 
-    def is_server(self) -> bool:
-        return self.network.is_server()
-
-    def is_client(self) -> bool:
-        return self.network.is_client()
-
-    def is_proxy(self) -> bool:
-        return self.network.is_proxy()
-
-    def network_spawn(self, game_object):
+    def stop(self):
         ...
 
     @property

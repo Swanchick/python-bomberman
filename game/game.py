@@ -3,11 +3,8 @@ from pygame.sprite import AbstractGroup
 from networking import ClientNetwork, BaseNetwork, Network, ClientCommand, ServerCommand
 from networking.client import Client
 from networking.network_keys import *
-from game_objects.player_spawn import PlayerSpawn
-from game_objects.player import Player
 from protocol import Command
-from protocol.message_protocol import MessageProtocol
-
+from game_objects import *
 
 from .game_object_abstract import GameObjectAbstract
 from .game_object_network import GameObjectNetwork
@@ -18,29 +15,11 @@ class Game(AbstractGroup):
     
     def __init__(self):
         super().__init__()
-        
-        self.__network = Network.get()
 
-        if self.__network is None:
-            self.__network = ClientNetwork("127.0.0.1", 50000)
-            
-            self.__network.init_client()
-            self.__network.start()
-
-            Network.set(self.__network)
+        player = Player()
+        self.spawn(player)
     
-    def start(self):
-        if self.__network.is_server():
-            player_spawn = PlayerSpawn()
-            self.spawn(player_spawn)
-        
-        if self.__network.is_client():
-            self.register(SPAWN_OBJECT, SpawnObjectOnClient(self.__network, self))
-            
-            
-            self.__network.send(REQUEST_SYNC_OBJECTS, {})
-        
-        
+    def start(self):        
         game_objects: list[GameObjectAbstract] = self.sprites()
 
         for game_object in game_objects:
@@ -53,8 +32,7 @@ class Game(AbstractGroup):
             game_object.rect.x = game_object.position.x
             game_object.rect.y = game_object.position.y
 
-            game_object.update()
-                
+            game_object.update()       
 
     def draw(self, surface, bgsurf=None, special_flags=0):
         game_objects: list[GameObjectAbstract] = self.sprites()
@@ -70,9 +48,6 @@ class Game(AbstractGroup):
         return dirty
 
     def spawn(self, game_object: GameObjectAbstract, client: Client = None):        
-        if self.__network.is_server():
-            game_object.owner = client
-        
         game_object.game = self
         
         super().add(game_object)
@@ -80,16 +55,8 @@ class Game(AbstractGroup):
     def register(self, action: str, command: Command):
         self.__network.register(action, command)
 
-    def network_spawn(self, game_object, client: Client):
-        if self.__network.is_client():
-            self.__network.send(SPAWN_OBJECT, {"gameobject_id": game_object.id})
-        
-
-
-
     def stop(self):
-        self.__network.stop()
+        game_objects: list[GameObjectAbstract] = self.sprites()
 
-    @property
-    def network(self) -> BaseNetwork:
-        return self.__network 
+        for game_object in game_objects:
+            game_object.stop()

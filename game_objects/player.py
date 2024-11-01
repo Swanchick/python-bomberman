@@ -9,11 +9,9 @@ from pygame import (
 )
 
 from utils import Time, Vector
-from game import GameObjectNetwork
 from game.game_object import GameObject
 
 
-@GameObjectNetwork.register
 class Player(GameObject):
     __velocity: Vector
     __speed: float
@@ -32,9 +30,6 @@ class Player(GameObject):
 
     def update(self):
         self.image.fill((255, 0, 0))
-
-        if not self.is_client():
-            return
 
         self.controls()
         

@@ -20,10 +20,9 @@ class GameObjectAbstract(ABC):
 
     def draw(self):
         ...
-
-    @property
-    def position(self) -> Vector:
-        return
+    
+    def stop(self):
+        ...
 
     @property
     def layer(self) -> int:
