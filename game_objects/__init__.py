@@ -3,8 +3,6 @@ from os.path import dirname, isdir
 
 from importlib import import_module
 
-from .network_objects import *
-
 package_name = __name__
 package_dir = dirname(__file__)
 ignored_units = ["__pycache__", "__init__.py"]

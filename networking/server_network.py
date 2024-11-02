@@ -43,8 +43,7 @@ class ServerNetwork(BaseNetwork):
         self.__port = port
         self.__clients = []
         self.__client_handlers = []
-    
-    def init_server(self):
+
         self.__sock = Socket(AF_INET, SOCK_STREAM)
         
         self.__sock.bind((self.__host, self.__port))

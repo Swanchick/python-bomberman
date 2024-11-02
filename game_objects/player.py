@@ -11,17 +11,14 @@ from pygame import (
 from utils import Time, Vector
 from game.game_object import GameObject
 
-print("hello from player")
 
 class Player(GameObject):
     __velocity: Vector
     __speed: float
 
-    def __init__(self, *args):
-        super().__init__(*args)
-
+    def start(self):
         self.position = Vector(200, 100)
-        self._layer = -1
+        self._layer = 1
 
         self.image = Surface((32, 32))
         self.rect = self.image.get_rect()

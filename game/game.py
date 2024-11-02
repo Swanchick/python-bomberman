@@ -5,10 +5,18 @@ from game_objects import *
 
 from .game_object_abstract import GameObjectAbstract
 
+from game_objects.player import Player
+from game_objects.network_manager import NetworkManager
 
 class Game(AbstractGroup):    
     def __init__(self):
         super().__init__()
+
+        player = Player()
+        self.spawn(player)
+
+        network = NetworkManager()
+        self.spawn(network)
     
     def start(self):        
         game_objects: list[GameObjectAbstract] = self.sprites()
@@ -22,6 +30,7 @@ class Game(AbstractGroup):
         for game_object in game_objects:
             game_object.rect.x = game_object.position.x
             game_object.rect.y = game_object.position.y
+
 
             game_object.update()       
 

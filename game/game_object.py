@@ -11,7 +11,7 @@ class GameObject(Sprite, GameObjectAbstract):
     _id: str
     _layer: int
 
-    def __init__(self, id: str = None, is_proxy: bool = False):
+    def __init__(self, id: str = None):
         self._layer = 1
         self.position = Vector.zero()
 
@@ -19,11 +19,6 @@ class GameObject(Sprite, GameObjectAbstract):
             self._id = str(uuid4())
         else:
             self._id = id
-
-        if is_proxy:
-            self.network = ProxyNetwork()
-        else:
-            self.network = Network.get()
 
         super().__init__()
     

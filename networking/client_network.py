@@ -37,8 +37,7 @@ class ClientNetwork(BaseNetwork):
         self.__client = None
 
         self._message_handler.register(ON_CLIENT_CONNECTED, OnClientInitialized(self))
-    
-    def init_client(self):
+
         self.__sock = Socket(AF_INET, SOCK_STREAM)
         self.__client_run = True
     
@@ -73,6 +72,9 @@ class ClientNetwork(BaseNetwork):
         if not self.__client_run:
             return
         
+        print(action)
+        print(self.client)
+        print(data)
         data = MessageProtocol.encode(action, self.client, data)
 
         self.__sock.send(data)

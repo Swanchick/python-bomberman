@@ -10,17 +10,11 @@ RES = Settings.res()
 
 
 def main():    
-    if "--server" in argv:
-        server = ServerNetwork("127.0.0.1", 50000)
-        server.init_server()
-        server.start()
-
-        Network.set(server)
-
-        if "--gui" not in argv:
-            console = Console()
-            console.start()
-            return
+    if "--console" in argv:
+        console = Console()
+        console.start()
+        
+        return
 
     window = Window(RES, "Bomber man", 60)
     window.start()
