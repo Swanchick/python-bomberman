@@ -27,8 +27,15 @@ def initialize_all(dir, import_dirs: list[str]=[]):
 
         if not unit.endswith(".py"):
             continue
+        
+        sub_dir = ""
 
-        print(".".join(import_dirs))
+        if import_dirs != []:
+            sub_dir = ".".join(import_dirs) + "."
+
+        imoprt_name = f".{sub_dir}{unit[:-3]}"
+
+        import_module(imoprt_name, package_name)
 
 
 initialize_all(package_dir)

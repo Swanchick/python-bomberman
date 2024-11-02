@@ -8,6 +8,8 @@ from networking.network_keys import *
 from .player import Player
 
 
+print("hello from player spawn")
+
 class OnClientConnect(ServerCommand):
     def __init__(self, server_network, game):
         super().__init__(server_network)

@@ -11,6 +11,7 @@ from pygame import (
 from utils import Time, Vector
 from game.game_object import GameObject
 
+print("hello from player")
 
 class Player(GameObject):
     __velocity: Vector
