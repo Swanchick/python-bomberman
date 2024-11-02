@@ -2,7 +2,7 @@ from socket import socket as Socket, timeout as SocketTimeout
 from socket import AF_INET, SOCK_STREAM
 from threading import Thread
 
-from protocol import Command, MessageProtocol 
+from protocol import MessageProtocol 
 
 from .base_network import BaseNetwork
 from .client import Client
@@ -124,16 +124,10 @@ class ServerNetwork(BaseNetwork):
                     if data is None:
                         continue
                     
-                    print(data)
-                    
                     self._message_handler.handle(data, client_socket)
                     
                 except (OSError, SocketTimeout):
                     break
-
-        # except Exception as e:
-        #     print(f"Error handling client: {e}")
-
         finally:            
             client_socket.close()
             print("Client connection closed.")

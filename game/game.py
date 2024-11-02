@@ -1,21 +1,14 @@
 from pygame.sprite import AbstractGroup
 
-from networking import ClientNetwork, BaseNetwork, Network, ClientCommand, ServerCommand
-from networking.client import Client
 from networking.network_keys import *
-from protocol import Command
 from game_objects import *
 
 from .game_object_abstract import GameObjectAbstract
 
 
-class Game(AbstractGroup):
-    __network: BaseNetwork
-    
+class Game(AbstractGroup):    
     def __init__(self):
         super().__init__()
-
-        
     
     def start(self):        
         game_objects: list[GameObjectAbstract] = self.sprites()
@@ -45,16 +38,17 @@ class Game(AbstractGroup):
 
         return dirty
 
-    def spawn(self, game_object: GameObjectAbstract, client: Client = None):        
+    def spawn(self, game_object: GameObjectAbstract):        
         game_object.game = self
         
         super().add(game_object)
-    
-    def register(self, action: str, command: Command):
-        self.__network.register(action, command)
 
     def stop(self):
         game_objects: list[GameObjectAbstract] = self.sprites()
 
         for game_object in game_objects:
             game_object.stop()
+
+    @property
+    def gameobjects(self) -> list[GameObjectAbstract]:
+        return self.sprites()

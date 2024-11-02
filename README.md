@@ -3,7 +3,6 @@ Bomber man with multiplayer
 
 
 ## ToDo
-
-* Object synchronization
-    1. When client connects, it should request all object that exists within server, and can be sened to client.
-    2. Synchronize gameobject values.
+1. Make network manager, which will deal with all network stuff
+2. Make player be connected and synchronize all gameobjects that are exists in this current game
+3. Synchronize variables between clients
