@@ -71,11 +71,12 @@ class ClientNetwork(BaseNetwork):
     def send(self, action: str, data: dict = {}):
         if not self.__client_run:
             return
+
+        client_data = None
+        if self.client is not None:
+            client_data = self.client.data
         
-        print(action)
-        print(self.client)
-        print(data)
-        data = MessageProtocol.encode(action, self.client, data)
+        data = MessageProtocol.encode(action, client_data, data)
 
         self.__sock.send(data)
 

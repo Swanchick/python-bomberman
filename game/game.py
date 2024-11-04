@@ -1,31 +1,30 @@
 from pygame.sprite import AbstractGroup
 
-from networking.network_keys import *
+from networking import Network
+# from networking.network_keys import *
 from game_objects import *
 
-from .game_object_abstract import GameObjectAbstract
+from .base_game_object import BaseGameObject
+from .base_game import BaseGame
 
-from game_objects.player import Player
 from game_objects.network_manager import NetworkManager
+from game_objects.player import Player
 
-class Game(AbstractGroup):    
+class Game(AbstractGroup, BaseGame):
     def __init__(self):
         super().__init__()
-
-        player = Player()
-        self.spawn(player)
 
         network = NetworkManager()
         self.spawn(network)
     
     def start(self):        
-        game_objects: list[GameObjectAbstract] = self.sprites()
+        game_objects: list[BaseGameObject] = self.sprites()
 
         for game_object in game_objects:
             game_object.start()
 
     def update(self):
-        game_objects: list[GameObjectAbstract] = self.sprites()
+        game_objects: list[BaseGameObject] = self.sprites()
 
         for game_object in game_objects:
             game_object.rect.x = game_object.position.x
@@ -35,7 +34,7 @@ class Game(AbstractGroup):
             game_object.update()       
 
     def draw(self, surface, bgsurf=None, special_flags=0):
-        game_objects: list[GameObjectAbstract] = self.sprites()
+        game_objects: list[BaseGameObject] = self.sprites() 
 
         game_objects.sort(key=lambda x: x.layer)
 
@@ -47,17 +46,19 @@ class Game(AbstractGroup):
 
         return dirty
 
-    def spawn(self, game_object: GameObjectAbstract):        
+    def spawn(self, game_object: BaseGameObject):
         game_object.game = self
         
         super().add(game_object)
+        
+        game_object.start()
 
     def stop(self):
-        game_objects: list[GameObjectAbstract] = self.sprites()
+        game_objects: list[BaseGameObject] = self.sprites()
 
         for game_object in game_objects:
             game_object.stop()
 
     @property
-    def gameobjects(self) -> list[GameObjectAbstract]:
+    def gameobjects(self) -> list[BaseGameObject]:
         return self.sprites()

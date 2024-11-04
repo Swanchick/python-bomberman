@@ -1,13 +1,11 @@
 from pygame.sprite import Sprite, Group
 from uuid import uuid4
 
-from networking import BaseNetwork, Network, ProxyNetwork
-from networking.client import Client
 from utils import Vector
-from .game_object_abstract import GameObjectAbstract
+from .base_game_object import BaseGameObject
 
 
-class GameObject(Sprite, GameObjectAbstract):
+class GameObject(Sprite, BaseGameObject):
     _id: str
     _layer: int
 
@@ -22,15 +20,9 @@ class GameObject(Sprite, GameObjectAbstract):
 
         super().__init__()
     
-    def start(self):
-        ...
-
-    def update(self):
-        ...
-
-    def stop(self):
-        ...
-
+    def spawn(self, game_object):
+        self.game.spawn(game_object)
+    
     @property
     def layer(self) -> int:
         return self._layer

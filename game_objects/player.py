@@ -9,15 +9,35 @@ from pygame import (
 )
 
 from utils import Time, Vector
-from game.game_object import GameObject
+from .network_object import NetworkObject, NETWORK_CLASSES
 
 
-class Player(GameObject):
+class Player(NetworkObject):
     __velocity: Vector
     __speed: float
 
+    def setup_properties(self, **kwargs):
+        if "position" in kwargs:
+            self.position = Vector(kwargs["position"][0], kwargs["position"][1])
+        else:
+            self.position = Vector.zero()
+    
+    def get_data_to_sync(self) -> dict:
+        data = {
+            "position": [self.position.x, self.position.y]
+        }
+        
+        return data
+    
+    def sync_data(self, data: dict):
+        position = data.get("position")
+        
+        if position is None:
+            return
+        
+        self.position = Vector(position[0], position[1]) 
+    
     def start(self):
-        self.position = Vector(200, 100)
         self._layer = 1
 
         self.image = Surface((32, 32))
@@ -25,10 +45,15 @@ class Player(GameObject):
 
         self.__velocity = Vector.zero()
         self.__speed = 400
-
+    
     def update(self):
+        super().update()
+        
         self.image.fill((255, 0, 0))
 
+        if self.is_server():
+            return
+        
         self.controls()
         
     def controls(self):
@@ -44,3 +69,6 @@ class Player(GameObject):
 
         self.__velocity = self.__velocity.lerp(velocity, 10 * Time.delta)
         self.position += self.__velocity
+
+
+NETWORK_CLASSES[Player.__name__] = Player

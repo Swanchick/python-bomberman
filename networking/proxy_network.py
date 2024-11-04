@@ -4,8 +4,12 @@ from .network_keys import *
 
 
 class ProxyNetwork(BaseNetwork):
-    def __init__(self):
+    __client: Client
+    
+    def __init__(self, name: str):
         super().__init__()
+        
+        self.__client = Client(None, name, "")
 
     def send(self, action: str, data: dict):
         ...
