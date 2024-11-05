@@ -192,8 +192,7 @@ class NetworkManager(GameObject):
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
             self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game))
     
-    def update(self):
-        ...
+    def sync_data_between_clients(self):
         if not self.__network.is_server():
             return
         
@@ -222,6 +221,9 @@ class NetworkManager(GameObject):
             }
             
             self.__network.broadcast(SYNC_OBJECT, data, client.data, True)
+    
+    def update(self):
+        self.sync_data_between_clients()
     
     def stop(self):
         self.__network.stop()
