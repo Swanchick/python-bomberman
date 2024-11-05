@@ -97,8 +97,6 @@ class SyncObjectWithServer(ServerCommand):
                 continue
             
             game_object.sync_data(sync_data)
-        
-        self._server_network.broadcast(SYNC_OBJECT, data, client.data, True)
 
 # Client
 
@@ -196,36 +194,34 @@ class NetworkManager(GameObject):
     
     def update(self):
         ...
-        # if not self.__network.is_server():
-        #     return
+        if not self.__network.is_server():
+            return
         
-        # self.__time += Time.delta
+        self.__time += Time.delta
         
-        # if self.__time < 0.1:
-        #     return
+        if self.__time < 0.1:
+            return
         
-        # self.__time = 0
+        self.__time = 0
         
-        # game_objects = self.game.sprites()
+        game_objects = self.game.sprites()
         
-        # data = {}
-        
-        # for game_object in game_objects:
-        #     if not isinstance(game_object, NetworkObject):
-        #         continue
+        for game_object in game_objects:
+            if not isinstance(game_object, NetworkObject):
+                continue
             
-        #     client = game_object.client
-        #     if client is None:
-        #         continue
+            client = game_object.client
+            if client is None:
+                continue
             
-        #     data[game_object.id] = {
-        #         "id": game_object.id,
-        #         "name": game_object.__class__.__name__,
-        #         "owner_id": client.id,
-        #         "sync_data": game_object.get_data_to_sync()
-        #     }
+            data = {
+                "id": game_object.id,
+                "name": game_object.__class__.__name__,
+                "owner_id": client.id,
+                "sync_data": game_object.get_data_to_sync()
+            }
             
-        # self.__network.broadcast(SYNC_OBJECT, data)
+            self.__network.broadcast(SYNC_OBJECT, data, client.data, True)
     
     def stop(self):
         self.__network.stop()

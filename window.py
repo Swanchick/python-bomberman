@@ -9,6 +9,7 @@ from pygame.time import Clock
 from pygame import (
     Surface, 
     QUIT,
+    ACTIVEEVENT,
     init as pygame_init, 
     quit as pygame_quit
 )
@@ -30,6 +31,8 @@ class Window:
     __clock: Clock
 
     __game: Game
+    
+    __focus: bool
 
     def __init__(self, res: Vector, title: str, max_fps=60):
         self.__res = res
@@ -37,6 +40,7 @@ class Window:
         self.__max_fps = max_fps
         self.__window_run = True
         self.__clock = Clock()
+        self.__focus = True
         
         pygame_init()
         self.__display = display_set_mode(tuple(self.__res))
@@ -50,13 +54,23 @@ class Window:
 
         try:
             while self.__window_run:
-                Time.delta = self.__clock.tick(self.__max_fps) / 1000.0
-                Time.cur_time += Time.delta
-
                 for event in pygame_event_get():
                     if event.type == QUIT:
                         self.__window_run = False
+                    
+                    if event.type == ACTIVEEVENT:
+                        if event.gain == 0:
+                            self.__focus = False
+                        elif event.gain == 1:
+                            self.__focus = True
 
+                if self.__focus:
+                    Time.delta = self.__clock.tick(self.__max_fps) / 1000.0
+                else:
+                    Time.delta = self.__clock.tick(self.__max_fps / 2) / 1000.0
+                
+                Time.cur_time += Time.delta
+                
                 self.__game.update()
 
                 self.__display.fill(WHITE)
