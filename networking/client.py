@@ -18,7 +18,7 @@ class Client(BaseClient):
         else:
             self.__id = id
 
-    def send(self, action: str, data: dict, client_sender: Self = None):        
+    def send(self, action: str, data: dict, client_sender: dict = None):        
         data = MessageProtocol.encode(action, client_sender, data, True)
         self.__sock.send(data)
 
@@ -32,6 +32,10 @@ class Client(BaseClient):
     @property
     def name(self) -> str:
         return self.__name
+
+    @property
+    def socket(self) -> Socket:
+        return self.__sock
     
     @property
     def data(self) -> dict:

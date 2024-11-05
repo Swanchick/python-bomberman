@@ -115,7 +115,7 @@ class ServerNetwork(BaseNetwork):
         try:
             while self.__server_run:
                 try:
-                    data_receive = client_socket.recv(1024)
+                    data_receive = client_socket.recv(2048)
                     if not data_receive:
                         break
                     
@@ -138,14 +138,15 @@ class ServerNetwork(BaseNetwork):
 
                 break 
 
-    def broadcast(self, action: str, data: dict, client_out: Client = None, ignore: bool = False):
+    def broadcast(self, action: str, data: dict, client_out: dict = None, ignore: bool = False):
         for client in self.__clients:
             if client_out is not None:
-                if client.id == client_out.id and ignore:
-                    print("YES")
+                if client.id == client_out["id"] and ignore:
                     continue
 
             client.send(action, data, client_out)
+            
+            print(f"Sended to: {client.id}")
     
     def get_client(self, client_id: str) -> Client:
         for client in self.__clients:

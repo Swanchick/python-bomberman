@@ -16,6 +16,8 @@ class Player(NetworkObject):
     __velocity: Vector
     __speed: float
 
+    __position_to: Vector
+    
     def setup_properties(self, **kwargs):
         if "position" in kwargs:
             self.position = Vector(kwargs["position"][0], kwargs["position"][1])
@@ -35,8 +37,11 @@ class Player(NetworkObject):
         if position is None:
             return
         
-        self.position = Vector(position[0], position[1]) 
-    
+        if self.is_proxy():
+            self.__position_to = Vector(position[0], position[1]) 
+        else:
+            self.position = Vector(position[0], position[1])
+        
     def start(self):
         self._layer = 1
 
@@ -49,13 +54,17 @@ class Player(NetworkObject):
     def update(self):
         super().update()
         
-        self.image.fill((255, 0, 0))
-
-        if self.is_server():
-            return
+        if self.is_proxy():
+            self.image.fill((0, 255, 0))
+            self.move_smoothly()
+        elif self.is_client():
+            self.image.fill((255, 0, 0))
         
-        self.controls()
-        
+            self.controls()
+    
+    def move_smoothly(self):
+        self.position = self.position.lerp(self.__position_to, 10 * Time.delta)
+    
     def controls(self):
         keys = get_keys()
 

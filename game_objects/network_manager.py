@@ -8,13 +8,16 @@ from game.base_game import BaseGame
 from networking import BaseNetwork, ServerNetwork, ClientNetwork, Network, ProxyNetwork
 from networking.network_commands import ClientCommand, ServerCommand
 from networking.network_keys import *
+from utils import Time
 
-from protocol import MessageHandler, MessageProtocol
+from protocol import MessageProtocol
 
 from .player import Player
 from .network_object import NetworkObject, NETWORK_CLASSES
 
+
 # Server
+
 class OnClientInitialize(ServerCommand):
     __game: BaseGame
     
@@ -36,12 +39,35 @@ class OnClientInitialize(ServerCommand):
                 "sync_data": game_object.get_data_to_sync(),
             }
             
-            message = MessageProtocol.encode(SPAWN_OBJECT, client_data, data, True)
+            message = MessageProtocol.encode(SPAWN_OBJECT, {}, data, True)
             
             socket.send(message)
     
+    def create_player(self, client_data: dict):
+        client = self._server_network.get_client(client_data.get("id"))
+        if client is None:
+            return
+        
+        player = Player(client=client)
+        
+        player.setup_properties(position=(100, 100))
+        self.__game.spawn(player)
+        
+        data = {
+            "id": player.id,
+            "name": player.__class__.__name__,
+            "sync_data": player.get_data_to_sync()
+        }
+        
+        self._server_network.broadcast(SPAWN_OBJECT, data, client_data)
+        
+    
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
-        self.sync_all_objects(message_protocol.client, socket)
+        client_data = message_protocol.client
+        
+        self.sync_all_objects(client_data, socket)
+        self.create_player(client_data)
+
 
 class SyncObjectWithServer(ServerCommand):
     __game: BaseGame
@@ -58,7 +84,9 @@ class SyncObjectWithServer(ServerCommand):
         id = data.get("id")
         sync_data = data.get("sync_data")
         
-        if id is None or sync_data is None:
+        client = self._server_network.get_client(message_protocol.client["id"])
+        
+        if id is None or sync_data is None or client is None:
             return 
         
         for game_object in game_objects:
@@ -69,6 +97,8 @@ class SyncObjectWithServer(ServerCommand):
                 continue
             
             game_object.sync_data(sync_data)
+        
+        self._server_network.broadcast(SYNC_OBJECT, data, client.data, True)
 
 # Client
 
@@ -79,13 +109,13 @@ class SpawnObject(ClientCommand):
         super().__init__(client_network)
 
         self.__game = game
-        
     
     def execute(self, message_protocol: MessageProtocol, *args):
         data = message_protocol.data
         id = data.get("id") 
         name = data.get("name")
         sync_data = data.get("sync_data")
+        client_data = message_protocol.client
         
         if id is None or name is None or sync_data is None:
             return
@@ -94,13 +124,47 @@ class SpawnObject(ClientCommand):
         if cls is None:
             return
 
-        game_object: NetworkObject = cls(id=id, is_proxy=False)
+        is_proxy = True
+        if client_data is not None:
+            is_proxy = not self._network.client.id == client_data.get("id")
+
+        game_object: NetworkObject = cls(id=id, is_proxy=is_proxy)
         game_object.sync_data(sync_data)
         
         self.__game.spawn(game_object)
 
+
+class SyncObjectOnClient(ClientCommand):
+    __game: BaseGame
+    
+    def __init__(self, client_network: BaseNetwork, game: BaseGame):
+        super().__init__(client_network)
+        
+        self.__game = game
+    
+    def execute(self, message_protocol: MessageProtocol, *args):
+        data = message_protocol.data
+        id = data.get("id")
+        sync_data = data.get("sync_data")
+        
+        if id is None or sync_data is None:
+            return
+        
+        game_objects = self.__game.sprites()
+        
+        for game_object in game_objects:
+            if not isinstance(game_object, NetworkObject):
+                continue
+            
+            if game_object.id != id:
+                continue
+            
+            game_object.sync_data(sync_data)
+
+
 class NetworkManager(GameObject):
     __network: BaseNetwork
+    __time: float
     
     def __init__(self, id: str = None):
         super().__init__(id)
@@ -113,6 +177,8 @@ class NetworkManager(GameObject):
         Network.set(self.__network)
 
         self.__network.start()
+        
+        self.__time = 0
     
     def start(self):        
         self.image = Surface((32, 32))
@@ -123,16 +189,43 @@ class NetworkManager(GameObject):
         if self.__network.is_server():
             self.__network.register(ON_CLINET_INITIALIZE, OnClientInitialize(self.__network, self.game))
             self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game))
-
-            player = Player()
-            player.setup_properties(position=(200, 100))
-            self.spawn(player)
         
         if self.__network.is_client():
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
+            self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game))
     
     def update(self):
         ...
+        # if not self.__network.is_server():
+        #     return
+        
+        # self.__time += Time.delta
+        
+        # if self.__time < 0.1:
+        #     return
+        
+        # self.__time = 0
+        
+        # game_objects = self.game.sprites()
+        
+        # data = {}
+        
+        # for game_object in game_objects:
+        #     if not isinstance(game_object, NetworkObject):
+        #         continue
+            
+        #     client = game_object.client
+        #     if client is None:
+        #         continue
+            
+        #     data[game_object.id] = {
+        #         "id": game_object.id,
+        #         "name": game_object.__class__.__name__,
+        #         "owner_id": client.id,
+        #         "sync_data": game_object.get_data_to_sync()
+        #     }
+            
+        # self.__network.broadcast(SYNC_OBJECT, data)
     
     def stop(self):
         self.__network.stop()

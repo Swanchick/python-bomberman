@@ -1,5 +1,6 @@
 from game.game_object import GameObject
 from networking import BaseNetwork, ProxyNetwork, Network
+from networking.client import Client
 
 from networking.network_keys import *
 
@@ -9,13 +10,18 @@ NETWORK_CLASSES = {}
 class NetworkObject(GameObject):
     _network: BaseNetwork
     
-    def __init__(self, id = None, is_proxy: bool = False):
+    client: Client # Only server-side attribute
+    
+    def __init__(self, id = None, is_proxy: bool = False, client: Client = None):
         super().__init__(id)
         
         if is_proxy:
             self._network = ProxyNetwork("Test")
         else:
             self._network = Network.get()
+        
+        if self._network.is_server():
+            self.client = client
     
     def get_data_to_sync(self) -> dict:
         ...
