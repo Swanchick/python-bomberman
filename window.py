@@ -1,7 +1,8 @@
 from pygame.display import (
     set_mode as display_set_mode, 
     set_caption as display_set_caption,
-    flip as display_flip
+    flip as display_flip,
+    update as display_update
 )
 
 from pygame.event import get as pygame_event_get
@@ -57,18 +58,8 @@ class Window:
                 for event in pygame_event_get():
                     if event.type == QUIT:
                         self.__window_run = False
-                    
-                    if event.type == ACTIVEEVENT:
-                        if event.gain == 0:
-                            self.__focus = False
-                        elif event.gain == 1:
-                            self.__focus = True
-
-                if self.__focus:
-                    Time.delta = self.__clock.tick(self.__max_fps) / 1000.0
-                else:
-                    Time.delta = self.__clock.tick(self.__max_fps / 2) / 1000.0
                 
+                Time.delta = self.__clock.tick(self.__max_fps) / 1000.0
                 Time.cur_time += Time.delta
                 
                 self.__game.update()
@@ -79,7 +70,7 @@ class Window:
 
                 self.__game.draw(self.__game_surface)
 
-                display_flip()
+                display_update()
         except KeyboardInterrupt:
             pass
         finally:

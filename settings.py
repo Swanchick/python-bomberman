@@ -1,9 +1,8 @@
 from utils import resources, Vector
-from typing import Self
 from json import loads as json_loads
 
 class Settings:
-    instance: Self = None
+    instance = None
     __res: tuple[int, int]
     
     __player_name: str

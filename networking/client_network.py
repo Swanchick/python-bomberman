@@ -1,5 +1,6 @@
 from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM
+from socket import timeout as SocketTimeOut
 from threading import Thread
 
 from protocol import MessageProtocol
@@ -56,13 +57,11 @@ class ClientNetwork(BaseNetwork):
         while self.__client_run:
             try:
                 received_data = self.__sock.recv(2048)
-                print(received_data.decode("utf-8"))
                 
                 data: MessageProtocol = MessageProtocol.decode(received_data)
+                
                 if data is None:
                     break
-
-                print(data)
                 
                 self._message_handler.handle(data)
             except OSError:

@@ -162,7 +162,6 @@ class SyncObjectOnClient(ClientCommand):
 
 class NetworkManager(GameObject):
     __network: BaseNetwork
-    __time: float
     
     def __init__(self, id: str = None):
         super().__init__(id)
@@ -175,8 +174,6 @@ class NetworkManager(GameObject):
         Network.set(self.__network)
 
         self.__network.start()
-        
-        self.__time = 0
     
     def start(self):        
         self.image = Surface((32, 32))
@@ -195,13 +192,6 @@ class NetworkManager(GameObject):
     def sync_data_between_clients(self):
         if not self.__network.is_server():
             return
-        
-        self.__time += Time.delta
-        
-        if self.__time < 0.1:
-            return
-        
-        self.__time = 0
         
         game_objects = self.game.sprites()
         

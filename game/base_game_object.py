@@ -1,6 +1,5 @@
 from pygame.sprite import Group
 from abc import ABC
-from typing import Self
 
 from utils import Vector
 from networking import BaseNetwork
@@ -24,7 +23,7 @@ class BaseGameObject(ABC):
     def stop(self):
         ...
         
-    def spawn(self, game_object: Self):
+    def spawn(self, game_object):
         ...
     
     def setup_properties(self, **kwargs):

@@ -56,7 +56,7 @@ class ServerNetwork(BaseNetwork):
         if not self.__server_run:
             raise Exception("Server is not initialised!")
 
-        self.__sock.listen()
+        self.__sock.listen(2)
 
         self.__accept_clients_thread = Thread(target=self.__accept_handler)
         self.__accept_clients_thread.start()

@@ -1,4 +1,3 @@
-from typing import Self
 from math import sqrt
 
 
@@ -47,7 +46,7 @@ class Vector(object):
     def __tuple__(self):
         return (self.__x, self.__y)
 
-    def lerp(self, to: Self, t: float) -> Self:
+    def lerp(self, to, t: float):
         if not isinstance(to, Vector):
             return self
 
@@ -89,7 +88,7 @@ class Vector(object):
         return sqrt(self.__x ** 2 + self.__y ** 2)
 
     @property
-    def normal(self) -> Self:
+    def normal(self):
         length = self.magnitude
         if length == 0:
             return Vector.zero()

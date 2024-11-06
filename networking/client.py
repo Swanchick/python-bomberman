@@ -1,7 +1,6 @@
 from socket import socket as Socket
 from uuid import uuid4
 from typing import Optional
-from typing import Self
 from .base_client import BaseClient
 from protocol import MessageProtocol
 

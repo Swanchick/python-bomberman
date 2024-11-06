@@ -4,7 +4,7 @@ from json import (
     JSONDecodeError
 )
 
-from typing import Self, Optional
+from typing import Optional
 
 
 class MessageProtocol:
@@ -48,7 +48,7 @@ class MessageProtocol:
         return data_json.encode("utf-8")
     
     @staticmethod
-    def decode(message: bytes) -> Optional[Self]:
+    def decode(message: bytes):
         message_string = message.decode("utf-8") 
 
         message_data = {}
