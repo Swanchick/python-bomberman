@@ -208,7 +208,7 @@ class NetworkManager(GameObject):
                 continue
             
             client = game_object.client
-            cliend_data = {"name": "Swanchick", "id": "BOT"}
+            client_data = {"name": "Swanchick", "id": "BOT"}
             if client is not None:
                 client_data = client.data
             

@@ -143,8 +143,10 @@ class ServerNetwork(BaseNetwork):
             if client_out is not None:
                 if client.id == client_out["id"] and ignore:
                     continue
-
-            client.send(action, data, client_out)
+            
+            socket = client.socket
+            socket.send(MessageProtocol.encode(action, client_out, data, True))
+            
     
     def get_client(self, client_id: str) -> Client:
         for client in self.__clients:
