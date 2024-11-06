@@ -145,8 +145,6 @@ class ServerNetwork(BaseNetwork):
                     continue
 
             client.send(action, data, client_out)
-            
-            print(f"Sended to: {client.id}")
     
     def get_client(self, client_id: str) -> Client:
         for client in self.__clients:

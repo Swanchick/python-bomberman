@@ -84,7 +84,9 @@ class SyncObjectWithServer(ServerCommand):
         id = data.get("id")
         sync_data = data.get("sync_data")
         
-        client = self._server_network.get_client(message_protocol.client["id"])
+        client_id = "BOT" if message_protocol.client is None else message_protocol.client.get("id")
+        
+        client = self._server_network.get_client(client_id)
         
         if id is None or sync_data is None or client is None:
             return 
@@ -188,6 +190,12 @@ class NetworkManager(GameObject):
         if self.__network.is_client():
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
             self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game))
+        
+        bot = Player()
+        
+        bot.set_bot(True)
+        self.game.spawn(bot)
+        
     
     def sync_data_between_clients(self):
         if not self.__network.is_server():
@@ -200,17 +208,22 @@ class NetworkManager(GameObject):
                 continue
             
             client = game_object.client
-            if client is None:
+            cliend_data = {"name": "Swanchick", "id": "BOT"}
+            if client is not None:
+                client_data = client.data
+            
+            sync_data = game_object.get_data_to_sync()
+            if sync_data is None:
                 continue
             
             data = {
                 "id": game_object.id,
                 "name": game_object.__class__.__name__,
-                "owner_id": client.id,
-                "sync_data": game_object.get_data_to_sync()
+                "owner_id": client_data["id"],
+                "sync_data": sync_data
             }
             
-            self.__network.broadcast(SYNC_OBJECT, data, client.data, True)
+            self.__network.broadcast(SYNC_OBJECT, data, client_data, True)
     
     def update(self):
         self.sync_data_between_clients()

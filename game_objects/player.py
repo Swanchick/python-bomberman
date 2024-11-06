@@ -7,16 +7,31 @@ from pygame import (
     K_s, K_DOWN,
     K_SPACE
 )
+from networking import ProxyNetwork
 
+from networking.client import Client
 from utils import Time, Vector
 from .network_object import NetworkObject, NETWORK_CLASSES
 
+
+import math
 
 class Player(NetworkObject):
     __velocity: Vector
     __speed: float
 
     __position_to: Vector
+    __bot: bool
+    
+    def __init__(self, id: str = None, is_proxy: bool = False, client: Client = None):
+        super().__init__(id, is_proxy, client)
+        
+        self.position = Vector(100, 100)
+        self.__position_to = self.position
+        self.__bot = False
+    
+    def set_bot(self, bot):
+        self.__bot = bot
     
     def setup_properties(self, **kwargs):
         if "position" in kwargs:
@@ -26,7 +41,7 @@ class Player(NetworkObject):
     
     def get_data_to_sync(self) -> dict:
         data = {
-            "position": [self.position.x, self.position.y]
+            "position": [int(self.position.x), int(self.position.y)]
         }
         
         return data
@@ -50,9 +65,12 @@ class Player(NetworkObject):
 
         self.__velocity = Vector.zero()
         self.__speed = 400
-    
+        
     def update(self):
         super().update()
+        
+        if self.is_server() and self.__bot:
+            self.position.set_x(math.sin(Time.cur_time) * 50)
         
         if self.is_proxy():
             self.image.fill((0, 255, 0))
