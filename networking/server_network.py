@@ -36,7 +36,7 @@ class ServerNetwork(BaseNetwork):
     __clients: list[Client]
     __client_handlers: list[Thread]
     
-    def __init__(self, host: str, port: int):
+    def __init__(self, host: str, port: int, port_udp: int):
         super().__init__()
 
         self.__host = host

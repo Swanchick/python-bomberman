@@ -32,8 +32,8 @@ class BaseNetwork(ABC):
     def remove_client(self):
         ...
     
-    def register(self, action: str, command: Command):
-        self._message_handler.register(action, command)
+    def register(self, action: str, command: Command, udp: bool = False):
+        self._message_handler.register(action, command, udp)
 
     def set_client(self, client: Client):
         ...
@@ -67,4 +67,8 @@ class BaseNetwork(ABC):
 
     @property
     def clients(self) -> list[Client]:
+        ...
+    
+    @property
+    def port_udp(self) -> int:
         ...

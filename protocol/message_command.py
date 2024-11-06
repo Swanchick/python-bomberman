@@ -14,15 +14,19 @@ class MessageHandler:
     def __init__(self):
         self.__commands = {}
 
-    def register(self, action: str, command: Command):
-        self.__commands[action] = command
+    def register(self, action: str, command: Command, udp: bool = False):
+        self.__commands[action] = (udp, command)
     
-    def handle(self, message_protocol: MessageProtocol, *args):
+    def handle(self, message_protocol: MessageProtocol, udp: bool, *args):
         action = message_protocol.action
         
-        command = self.__commands.get(action)
-        if command is None:
+        data = self.__commands.get(action)
+        if data is None:
             print(f"Unable to handle message \"{action}\"")
             return 
         
+        if data[0] != udp:
+            return
+
+        command: Command = data[1]
         command.execute(message_protocol, *args)

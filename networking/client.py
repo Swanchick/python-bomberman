@@ -8,10 +8,15 @@ class Client(BaseClient):
     __sock: Socket 
     __id: str
     __name: str
+    __address: str
+    __port_udp: int
 
-    def __init__(self, sock: Socket, name: str, id: Optional[str] = None):
+    def __init__(self, sock: Socket, name: str, port_udp: int, id: Optional[str] = None):
         self.__sock = sock
         self.__name = name
+        self.__port_udp = port_udp
+        self.__address, _ = self.__sock.getsockname()
+
         if id is None:
             self.__id = str(uuid4())
         else:
@@ -20,6 +25,11 @@ class Client(BaseClient):
     def send(self, action: str, data: dict, client_sender: dict = None):        
         data = MessageProtocol.encode(action, client_sender, data, True)
         self.__sock.send(data)
+    
+    def send_fast(self, socket_udp: Socket, action: str, data: dict, client_sender: dict = None):
+        data = MessageProtocol.encode(action, client_sender, data, True)
+
+        socket_udp.sendto(data, (self.__address, self.__port_udp))
 
     def close(self):
         self.__sock.close()

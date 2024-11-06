@@ -1,7 +1,7 @@
 from socket import socket as Socket
-from socket import AF_INET, SOCK_STREAM
-from socket import timeout as SocketTimeOut
+from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
 from threading import Thread
+from time import sleep as time_sleep
 
 from protocol import MessageProtocol
 
@@ -25,45 +25,70 @@ class OnClientInitialized(ClientCommand):
 class ClientNetwork(BaseNetwork):
     __host: str
     __port: int
-    __sock: Socket
+    __sock_tcp: Socket
+    __sock_udp: Socket
     __client_run: bool
-    __server_handler: Thread
+    __server_handler_tcp: Thread
+    __server_handler_udp: Thread
+
     __client: Client
 
     def __init__(self, host: str, port: int):
         super().__init__()
         self.__host = host
         self.__port = port
+
+        print(port)
         self.__client_run = False
         self.__client = None
 
         self._message_handler.register(ON_CLIENT_CONNECTED, OnClientInitialized(self))
 
-        self.__sock = Socket(AF_INET, SOCK_STREAM)
-        self.__client_run = True
+        self.__sock_tcp = Socket(AF_INET, SOCK_STREAM)
+        self.__sock_udp = Socket(AF_INET, SOCK_DGRAM)
+
+        self.__server_handler_tcp = Thread(target=self.__handle_server_tcp)
+        self.__server_handler_udp = Thread(target=self.__handle_server_udp)
     
     def start(self):
-        if not self.__client_run:
-            raise Exception("Client is not initialized!")
+        self.__client_run = True
         
-        self.__sock.connect((self.__host, self.__port))
-
-        self.__server_handler = Thread(target=self.__handle_server)
-        self.__server_handler.start()
+        self.__sock_tcp.connect((self.__host, 50000))
+        self.__client_run = True
+        print("Client connected to server")
+        
+        self.__server_handler_udp.start()
+        self.__server_handler_tcp.start()
     
-    def __handle_server(self):
+    def __handle_server_tcp(self):
+        # _, udp_port = self.__sock_udp.getsockname()
+
         self.send(ON_CLIENT_CONNECTED, {"client_name": "Swanchick"})
         
         while self.__client_run:
             try:
-                received_data = self.__sock.recv(2048)
+                received_data = self.__sock_tcp.recv(2048)
                 
                 data: MessageProtocol = MessageProtocol.decode(received_data)
                 
                 if data is None:
                     break
                 
-                self._message_handler.handle(data)
+                self._message_handler.handle(data, False)
+            except OSError:
+                break
+    
+    def __handle_server_udp(self):
+        while self.__client_run:
+            try:
+                received_data = self.__sock_udp.recvfrom(2048)
+                
+                data: MessageProtocol = MessageProtocol.decode(received_data)
+                
+                if data is None:
+                    break
+                
+                self._message_handler.handle(data, True)
             except OSError:
                 break
 
@@ -77,7 +102,7 @@ class ClientNetwork(BaseNetwork):
         
         data = MessageProtocol.encode(action, client_data, data)
 
-        self.__sock.send(data)
+        self.__sock_tcp.send(data)
 
     def stop(self):
         print("Stopping client...")
@@ -86,10 +111,14 @@ class ClientNetwork(BaseNetwork):
         
         self.__client_run = False
 
-        self.__sock.close()
+        self.__sock_tcp.close()
+        self.__sock_udp.close()
 
-        if self.__server_handler.is_alive():
-            self.__server_handler.join()
+        if self.__server_handler_tcp.is_alive():
+            self.__server_handler_tcp.join()
+        
+        if self.__server_handler_udp.is_alive():
+            self.__server_handler_udp.join()
 
         print("Client is stopped!")
 
