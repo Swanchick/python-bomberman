@@ -19,10 +19,6 @@ from .network_object import NetworkObject, NETWORK_CLASSES
 # Server
 
 class OnClientInitialize(ServerCommand):
-    SERVER_ADDRESS = "127.0.0.1"
-    TCP_PORT = 27015
-    UDP_PORT = 25015
-
     __game: BaseGame
     
     def __init__(self, server_network: BaseNetwork, game: BaseGame):
@@ -173,7 +169,7 @@ class NetworkManager(GameObject):
         super().__init__(id)
         
         if "--server" in argv:
-            self.__network = ServerNetwork("127.0.0.1", 50000, 50001)
+            self.__network = ServerNetwork("127.0.0.1", 50000)
         else:
             self.__network = ClientNetwork("127.0.0.1", 50000)
         
@@ -190,7 +186,11 @@ class NetworkManager(GameObject):
         if self.__network.is_server():
             self.__network.register(ON_CLINET_INITIALIZE, OnClientInitialize(self.__network, self.game))
 <<<<<<< HEAD
+<<<<<<< HEAD
             self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game), False)
+=======
+            self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game))
+>>>>>>> parent of f52e536 (Started adding udp to network)
             bot = Player()
         
             bot.set_bot(True)
@@ -202,7 +202,7 @@ class NetworkManager(GameObject):
         
         if self.__network.is_client():
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
-            self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game), False)
+            self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game))
         
         bot = Player()
         
