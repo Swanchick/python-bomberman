@@ -168,7 +168,7 @@ class NetworkManager(GameObject):
         super().__init__(id)
         
         if "--server" in argv:
-            self.__network = ServerNetwork("127.0.0.1", 50000)
+            self.__network = ServerNetwork("127.0.0.1", 50000, 50001)
         else:
             self.__network = ClientNetwork("127.0.0.1", 50000)
         

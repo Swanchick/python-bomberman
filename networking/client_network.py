@@ -1,9 +1,9 @@
 from socket import socket as Socket
-from socket import AF_INET, SOCK_STREAM
+from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
 from socket import timeout as SocketTimeOut
 from threading import Thread
 
-from protocol import MessageProtocol
+from protocol import MessageProtocol, ProtocolType
 
 from .base_network import BaseNetwork
 from .client import Client
@@ -25,9 +25,10 @@ class OnClientInitialized(ClientCommand):
 class ClientNetwork(BaseNetwork):
     __host: str
     __port: int
-    __sock: Socket
+    __sock_tcp: Socket
     __client_run: bool
-    __server_handler: Thread
+    __server_handler_tcp: Thread
+    __server_handler_udp: Thread
     __client: Client
 
     def __init__(self, host: str, port: int):
@@ -36,37 +37,53 @@ class ClientNetwork(BaseNetwork):
         self.__port = port
         self.__client_run = False
         self.__client = None
-
+        
+        self.__sock_tcp = Socket(AF_INET, SOCK_STREAM)
+        self.__sock_udp = Socket(AF_INET, SOCK_DGRAM)
+        
+        self.__server_handler_tcp = Thread(target=self.__handle_server_tcp)
+        self.__server_handler_udp = Thread(target=self.__handle_server_udp)
+        
         self._message_handler.register(ON_CLIENT_CONNECTED, OnClientInitialized(self))
-
-        self.__sock = Socket(AF_INET, SOCK_STREAM)
-        self.__client_run = True
     
     def start(self):
-        if not self.__client_run:
-            raise Exception("Client is not initialized!")
+        self.__client_run = True
         
-        self.__sock.connect((self.__host, self.__port))
-
-        self.__server_handler = Thread(target=self.__handle_server)
-        self.__server_handler.start()
+        self.__sock_tcp.connect((self.__host, self.__port))
+        
+        self.__server_handler_tcp.start()
+        self.__server_handler_udp.start()
     
-    def __handle_server(self):
+    def __handle_server_tcp(self):
         self.send(ON_CLIENT_CONNECTED, {"client_name": "Swanchick"})
         
         while self.__client_run:
             try:
-                received_data = self.__sock.recv(2048)
+                received_data = self.__sock_tcp.recv(2048)
                 
                 data: MessageProtocol = MessageProtocol.decode(received_data)
                 
                 if data is None:
                     break
                 
-                self._message_handler.handle(data)
+                self._message_handler.handle(data, ProtocolType.TCP)
             except OSError:
                 break
 
+    def __handle_server_udp(self):
+        while self.__client_run:
+            try:
+                received_data, server_address = self.__sock_tcp.recvfrom(2048)
+                
+                data: MessageProtocol = MessageProtocol.decode(received_data)
+                
+                if data is None:
+                    break
+                
+                # self._message_handler.handle(data, ProtocolType.UDP)
+            except OSError:
+                break
+    
     def send(self, action: str, data: dict = {}):
         if not self.__client_run:
             return
@@ -77,7 +94,7 @@ class ClientNetwork(BaseNetwork):
         
         data = MessageProtocol.encode(action, client_data, data)
 
-        self.__sock.send(data)
+        self.__sock_tcp.send(data)
 
     def stop(self):
         print("Stopping client...")
@@ -86,7 +103,7 @@ class ClientNetwork(BaseNetwork):
         
         self.__client_run = False
 
-        self.__sock.close()
+        self.__sock_tcp.close()
 
         if self.__server_handler.is_alive():
             self.__server_handler.join()
