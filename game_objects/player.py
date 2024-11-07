@@ -26,7 +26,8 @@ class Player(NetworkObject):
     def __init__(self, id: str = None, is_proxy: bool = False, client: Client = None):
         super().__init__(id, is_proxy, client)
         
-        self.__position_to = Vector(0, 0)
+        self.position = Vector(100, 100)
+        self.__position_to = self.position
         self.__bot = False
     
     def set_bot(self, bot):

@@ -189,16 +189,25 @@ class NetworkManager(GameObject):
         
         if self.__network.is_server():
             self.__network.register(ON_CLINET_INITIALIZE, OnClientInitialize(self.__network, self.game))
+<<<<<<< HEAD
             self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game), False)
             bot = Player()
         
             bot.set_bot(True)
             bot.setup_properties(position=(500, 100))
             self.game.spawn(bot)
+=======
+            self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game))
+>>>>>>> parent of 2576ddc (update)
         
         if self.__network.is_client():
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
             self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game), False)
+        
+        bot = Player()
+        
+        bot.set_bot(True)
+        self.game.spawn(bot)
         
     
     def sync_data_between_clients(self):
