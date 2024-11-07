@@ -13,12 +13,32 @@ from .network_commands import ServerCommand
 class OnClientConnect(ServerCommand):
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
         data = message_protocol.data
-        client = Client(socket, data["client_name"])
+        client = Client(socket, data["client_name"], self._server_network)
         self._server_network.add_client(client)
-        
-        send_data = MessageProtocol.encode(ON_CLIENT_CONNECTED, None, {"client_id": client.id, "client_name": client.name}, from_server=True)
+
+        data = {
+            "client_id": client.id, 
+            "client_name": client.name,
+            "port_udp": self._server_network.port_udp
+        }
+
+        send_data = MessageProtocol.encode(ON_CLIENT_CONNECTED, None, data, from_server=True)
         socket.send(send_data)
         
+
+class OnClientConnectUDP(ServerCommand):
+    def execute(self, message_protocol: MessageProtocol, client_address):
+        client_data = message_protocol.client
+        if client_data is None:
+            return
+        
+        _, port = client_address
+
+        print(client_address)
+        client: Client = self._server_network.get_client(client_data["id"])
+        client.set_port_udp(port)
+        
+
 
 class OnClientDisconnect(ServerCommand):
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
@@ -31,7 +51,7 @@ class ServerNetwork(BaseNetwork):
     __host: str
     __port_tcp: int
     __sock_tcp: Socket
-    __socket_udp: Socket
+    __sock_udp: Socket
     __server_run: bool
     __accept_clients_thread: Thread
     __clients: list[Client]
@@ -48,10 +68,12 @@ class ServerNetwork(BaseNetwork):
         self.__client_handlers = []
 
         self.__sock_tcp = Socket(AF_INET, SOCK_STREAM)
-        self.__socket_udp = Socket(AF_INET, SOCK_DGRAM)
+        self.__sock_udp = Socket(AF_INET, SOCK_DGRAM)
 
         self._message_handler.register(ON_CLIENT_CONNECTED, OnClientConnect(self))
         self._message_handler.register(ON_CLIENT_DISCONNECTED, OnClientDisconnect(self))
+
+        self._message_handler.register(ON_CLIENT_CONNECTED, OnClientConnectUDP(self), ProtocolType.UDP)
         
         self.__accept_clients_thread = Thread(target=self.__accept_handler)
         self.__client_handler_udp = Thread(target=self.__handle_clients_udp)
@@ -61,7 +83,7 @@ class ServerNetwork(BaseNetwork):
         
         self.__sock_tcp.bind((self.__host, self.__port_tcp))
         self.__sock_tcp.listen(2)
-        self.__socket_udp.bind((self.__host, self.__port_udp))
+        self.__sock_udp.bind((self.__host, self.__port_udp))
         
         self.__accept_clients_thread.start()
         self.__client_handler_udp.start()
@@ -80,7 +102,7 @@ class ServerNetwork(BaseNetwork):
                 handler.join()
 
         self.__sock_tcp.close()
-        self.__socket_udp.close()
+        self.__sock_udp.close()
 
         if self.__accept_clients_thread.is_alive():
             self.__accept_clients_thread.join()
@@ -122,11 +144,11 @@ class ServerNetwork(BaseNetwork):
     def __handle_clients(self, client_socket: Socket):
         while self.__server_run:
             try:
-                data_receive = client_socket.recv(2048)
-                if not data_receive:
+                received_data = client_socket.recv(2048)
+                if received_data is None:
                     break
                 
-                data: MessageProtocol = MessageProtocol.decode(data_receive)
+                data: MessageProtocol = MessageProtocol.decode(received_data)
                 if data is None:
                     continue
                 
@@ -138,16 +160,17 @@ class ServerNetwork(BaseNetwork):
     def __handle_clients_udp(self):
         while self.__server_run:
             try:
-                data_receive, client_address = self.__socket_udp.recvfrom(2048)
-                if not data_receive:
+                received_data, client_address = self.__sock_udp.recvfrom(2048)
+                print(received_data.decode("utf-8"))
+                
+                if received_data is None:
                     break
                 
-                data: MessageProtocol = MessageProtocol.decode(data_receive)
+                data: MessageProtocol = MessageProtocol.decode(received_data)
                 if data is None:
                     continue
                 
                 self._message_handler.handle(data, ProtocolType.UDP, client_address)
-                
             except OSError:
                 break
     
@@ -164,10 +187,16 @@ class ServerNetwork(BaseNetwork):
                 if client.id == client_out["id"] and ignore:
                     continue
             
-            socket = client.socket
-            socket.send(MessageProtocol.encode(action, client_out, data, True))
-            
+            client.send(action, data, client_out)
     
+    def broadcast_udp(self, action: str, data: dict, client_out: dict = None, ignore: bool = False):
+        for client in self.__clients:
+            if client_out is not None:
+                if client.id == client_out["id"] and ignore:
+                    continue
+            
+            client.send_udp(action, data, client_out)
+
     def get_client(self, client_id: str) -> Client:
         for client in self.__clients:
             if client.id == client_id:
@@ -183,5 +212,13 @@ class ServerNetwork(BaseNetwork):
         return False
 
     @property
+    def socket_udp(self) -> Socket:
+        return self.__sock_udp
+
+    @property
     def clients(self) -> list[Client]:
         return self.__clients
+
+    @property
+    def port_udp(self) -> int:
+        return self.__port_udp

@@ -38,7 +38,7 @@ class NetworkObject(GameObject):
             "sync_data": self.get_data_to_sync()
         }
         
-        self._network.send(SYNC_OBJECT, data)
+        self._network.send_udp(SYNC_OBJECT, data)
     
     def is_server(self):
         return self._network.is_server()

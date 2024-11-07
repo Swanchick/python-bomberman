@@ -10,7 +10,7 @@ from networking.network_commands import ClientCommand, ServerCommand
 from networking.network_keys import *
 from utils import Time
 
-from protocol import MessageProtocol
+from protocol import MessageProtocol, ProtocolType
 
 from .player import Player
 from .network_object import NetworkObject, NETWORK_CLASSES
@@ -64,7 +64,7 @@ class OnClientInitialize(ServerCommand):
     
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
         client_data = message_protocol.client
-        
+
         self.sync_all_objects(client_data, socket)
         self.create_player(client_data)
 
@@ -184,11 +184,11 @@ class NetworkManager(GameObject):
         
         if self.__network.is_server():
             self.__network.register(ON_CLINET_INITIALIZE, OnClientInitialize(self.__network, self.game))
-            self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game))
+            self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game), ProtocolType.UDP)
         
         if self.__network.is_client():
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
-            self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game))
+            self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game), ProtocolType.UDP)
         
     
     def sync_data_between_clients(self):
@@ -217,9 +217,10 @@ class NetworkManager(GameObject):
                 "sync_data": sync_data
             }
             
-            self.__network.broadcast(SYNC_OBJECT, data, client_data, True)
+            self.__network.broadcast_udp(SYNC_OBJECT, data, client_data, True)
     
     def update(self):
+        # ...
         self.sync_data_between_clients()
     
     def stop(self):

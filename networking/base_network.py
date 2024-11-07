@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from socket import socket as Socket
 
 from .client import Client
-from protocol import MessageHandler, Command
+from protocol import MessageHandler, Command, ProtocolType
 
 
 class BaseNetwork(ABC):
@@ -13,17 +13,19 @@ class BaseNetwork(ABC):
 
         self._message_handler = MessageHandler()
 
-    def _call(self, name: str, *args):
-        func = self.__registered_handlers.get(name)
-        if func is None:
-            return
-        
-        func(*args)
+    def setup_udp(self, port_udp: int):
+        ...
 
     def broadcast(self, action: str, data: dict, client_out: dict, ignore: bool):
         ...
 
+    def broadcast_udp(self, action: str, data: dict, client_out: dict, ignore: bool):
+        ...
+
     def send(self, action: str, data: dict = {}):
+        ...
+    
+    def send_udp(self, action: str, data: dict = {}):
         ...
 
     def add_client(self):
@@ -32,8 +34,8 @@ class BaseNetwork(ABC):
     def remove_client(self):
         ...
     
-    def register(self, action: str, command: Command):
-        self._message_handler.register(action, command)
+    def register(self, action: str, command: Command, protocol_type: ProtocolType = ProtocolType.TCP):
+        self._message_handler.register(action, command, protocol_type)
 
     def set_client(self, client: Client):
         ...
@@ -62,9 +64,17 @@ class BaseNetwork(ABC):
         ...
 
     @property
+    def socket_udp(self) -> Socket:
+        ...
+
+    @property
     def client(self) -> Client:
         ...
 
     @property
     def clients(self) -> list[Client]:
+        ...
+    
+    @property
+    def port_udp(self) -> int:
         ...

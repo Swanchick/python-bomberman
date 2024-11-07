@@ -22,18 +22,22 @@ class MessageHandler:
         self.__commands = {}
 
     def register(self, action: str, command: Command, protocol_type: ProtocolType = ProtocolType.TCP):
-        self.__commands[action] = (protocol_type, command)
+        register = self.__commands.get(action)
+        if register is None:
+            self.__commands[action] = {}
+        
+        self.__commands[action][protocol_type] = command
     
     def handle(self, message_protocol: MessageProtocol, protocol_type: ProtocolType, *args):
         action = message_protocol.action
         
-        protocol_type, command = self.__commands.get(action)
-        
-        if protocol_type != protocol_type:
-            return
-        
-        if command is None:
+        register: dict[ProtocolType, Command] = self.__commands.get(action)
+        if register is None:
             print(f"Unable to handle message \"{action}\"")
             return
         
+        command: Command = register.get(protocol_type)
+        if command is None:
+            return
+
         command.execute(message_protocol, *args)
