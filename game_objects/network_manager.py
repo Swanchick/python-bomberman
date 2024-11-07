@@ -85,7 +85,6 @@ class SyncObjectWithServer(ServerCommand):
         sync_data = data.get("sync_data")
         
         client_id = "BOT" if message_protocol.client is None else message_protocol.client.get("id")
-        
         client = self._server_network.get_client(client_id)
         
         if id is None or sync_data is None or client is None:
@@ -123,11 +122,11 @@ class SpawnObject(ClientCommand):
         cls = NETWORK_CLASSES.get(name)
         if cls is None:
             return
-
+        
         is_proxy = True
         if client_data is not None:
             is_proxy = not self._network.client.id == client_data.get("id")
-
+        
         game_object: NetworkObject = cls(id=id, is_proxy=is_proxy)
         game_object.sync_data(sync_data)
         
@@ -185,29 +184,11 @@ class NetworkManager(GameObject):
         
         if self.__network.is_server():
             self.__network.register(ON_CLINET_INITIALIZE, OnClientInitialize(self.__network, self.game))
-<<<<<<< HEAD
-<<<<<<< HEAD
-            self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game), False)
-=======
             self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game))
->>>>>>> parent of f52e536 (Started adding udp to network)
-            bot = Player()
-        
-            bot.set_bot(True)
-            bot.setup_properties(position=(500, 100))
-            self.game.spawn(bot)
-=======
-            self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game))
->>>>>>> parent of 2576ddc (update)
         
         if self.__network.is_client():
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
             self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game))
-        
-        bot = Player()
-        
-        bot.set_bot(True)
-        self.game.spawn(bot)
         
     
     def sync_data_between_clients(self):
