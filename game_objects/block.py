@@ -14,7 +14,5 @@ class Block(GameObject):
         if texture is None:
             return
         
-        print(texture)
-        
         self.image = image_load(texture)
         self.rect = self.image.get_rect()

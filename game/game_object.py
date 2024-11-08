@@ -27,6 +27,8 @@ class GameObject(Sprite, BaseGameObject):
     def setup_properties(self, **properties):
         position = properties.get("position", [0, 0])
         self.position = Vector(position[0], position[1])
+        
+        self._layer = properties.get("layer", -1)
     
     def spawn(self, game_object):
         self.game.spawn(game_object)

@@ -2,7 +2,17 @@
 Bomber man with multiplayer
 
 
-## ToDo
-1. Make network manager, which will deal with all network stuff
-2. Make player be connected and synchronize all gameobjects that are exists in this current game
-3. Synchronize variables between clients
+## ToDo Code
+1. Level editor
+2. Block collision
+3. Change camera's position and scale
+4. Gamepad support
+5. Main menu
+6. Player animation system
+7. Make unbreakable blocks and viceversa
+8. Make bombs
+
+## ToDo Graphics
+1. Player character texture
+2. Bomb texture
+3. 

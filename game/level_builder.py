@@ -23,7 +23,7 @@ class LevelBuilder:
             
             try:
                 level_data = json_loads(data)
-            except:
+            except Exception as e:
                 level_data = None
             finally:
                 file.close()
@@ -35,7 +35,15 @@ class LevelBuilder:
         if level_data is None:
             return
         
-        for game_object_data in level_data:
+        settings = level_data.get("settings")
+        if settings is None:
+            return
+        
+        objects = level_data.get("objects")
+        if objects is None:
+            return
+        
+        for game_object_data in objects:
             class_name = game_object_data.get("class_name")
             if class_name is None:
                 continue
