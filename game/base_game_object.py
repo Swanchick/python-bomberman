@@ -32,3 +32,7 @@ class BaseGameObject(ABC):
     @property
     def layer(self) -> int:
         return
+    
+    @property
+    def id(self) -> str:
+        return

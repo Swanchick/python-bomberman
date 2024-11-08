@@ -52,7 +52,7 @@ class Game(AbstractGroup, BaseGame):
         super().add(game_object)
         
         game_object.start()
-
+    
     def stop(self):
         game_objects: list[BaseGameObject] = self.sprites()
 

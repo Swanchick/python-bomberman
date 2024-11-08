@@ -1,6 +1,5 @@
 from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
-from socket import timeout as SocketTimeOut
 from threading import Thread
 
 from protocol import MessageProtocol, ProtocolType
@@ -63,7 +62,6 @@ class ClientNetwork(BaseNetwork):
         while self.__client_run:
             try:
                 received_data = self.__sock_tcp.recv(2048)
-                # print(received_data.decode("utf-8"))
 
                 data: MessageProtocol = MessageProtocol.decode(received_data)
                 
@@ -85,7 +83,6 @@ class ClientNetwork(BaseNetwork):
         while self.__client_run:
             try:
                 received_data, server_address = self.__sock_udp.recvfrom(2048)
-                print(received_data.decode("utf-8"))
                 
                 data: MessageProtocol = MessageProtocol.decode(received_data)
                 if data is None:
