@@ -6,6 +6,10 @@ from networking.network_keys import *
 
 NETWORK_CLASSES = {}
 
+def register_network_class(cls):
+    NETWORK_CLASSES[cls.__name__] = cls
+    return cls
+
 
 class NetworkObject(GameObject):
     _network: BaseNetwork
@@ -20,7 +24,7 @@ class NetworkObject(GameObject):
         else:
             self._network = Network.get()
         
-        if self._network.is_server():
+        if self.is_server():
             self.client = client
     
     def get_data_to_sync(self) -> dict:
@@ -30,7 +34,7 @@ class NetworkObject(GameObject):
         ...
     
     def update(self):
-        if not self._network.is_client():
+        if not self.is_client():
             return
         
         data = {
@@ -41,10 +45,19 @@ class NetworkObject(GameObject):
         self._network.send_udp(SYNC_OBJECT, data)
     
     def is_server(self):
+        if self._network is None:
+            return False
+        
         return self._network.is_server()
     
     def is_client(self):
+        if self._network is None:
+            return False
+        
         return self._network.is_client()
     
     def is_proxy(self):
+        if self._network is None:
+            return False
+        
         return self._network.is_proxy()

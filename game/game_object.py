@@ -1,4 +1,5 @@
 from pygame.sprite import Sprite, Group
+from pygame import Surface
 from uuid import uuid4
 
 from utils import Vector
@@ -10,6 +11,9 @@ class GameObject(Sprite, BaseGameObject):
     _layer: int
 
     def __init__(self, id: str = None):
+        self.image = Surface((32, 32))
+        self.rect = self.image.get_rect()
+        
         self._layer = 1
         self.position = Vector.zero()
 
@@ -19,6 +23,10 @@ class GameObject(Sprite, BaseGameObject):
             self._id = id
 
         super().__init__()
+    
+    def setup_properties(self, **properties):
+        position = properties.get("position", [0, 0])
+        self.position = Vector(position[0], position[1])
     
     def spawn(self, game_object):
         self.game.spawn(game_object)

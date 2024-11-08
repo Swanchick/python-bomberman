@@ -4,6 +4,7 @@ from pygame import Surface
 
 from game.game_object import GameObject
 from game.base_game import BaseGame
+from game.level_builder import LevelBuilder
 
 from networking import BaseNetwork, ServerNetwork, ClientNetwork, Network, ProxyNetwork
 from networking.network_commands import ClientCommand, ServerCommand
@@ -216,6 +217,7 @@ class RemoveObject(ClientCommand):
         self.remove_object(game_object_id)
 
 
+@LevelBuilder.register_object
 class NetworkManager(GameObject):
     HOST = "127.0.0.1"
     PORT = 50000

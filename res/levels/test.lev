@@ -1,0 +1,29 @@
+[
+    {
+        "class_name": "NetworkManager",
+        "properties": {
+            "position": [-100, -100]
+        }
+    },
+    {
+        "class_name": "Block",
+        "properties": {
+            "position": [0, 0],
+            "texture": "res/textures/Brick.png"
+        }
+    },
+    {
+        "class_name": "Block",
+        "properties": {
+            "position": [32, 0],
+            "texture": "res/textures/Brick.png"
+        }
+    },
+    {
+        "class_name": "Block",
+        "properties": {
+            "position": [64, 0],
+            "texture": "res/textures/Brick.png"
+        }
+    }
+]

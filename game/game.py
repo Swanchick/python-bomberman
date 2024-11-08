@@ -1,21 +1,22 @@
 from pygame.sprite import AbstractGroup
 
-from networking import Network
-# from networking.network_keys import *
 from game_objects import *
 
 from .base_game_object import BaseGameObject
 from .base_game import BaseGame
 
-from game_objects.network_manager import NetworkManager
-from game_objects.player import Player
+from .level_builder import LevelBuilder
+
 
 class Game(AbstractGroup, BaseGame):
+    __level_builder: LevelBuilder
+    
     def __init__(self):
         super().__init__()
 
-        network = NetworkManager()
-        self.spawn(network)
+        self.__level_builder = LevelBuilder("test.lev", self)
+        
+        self.__level_builder.build()
     
     def start(self):        
         game_objects: list[BaseGameObject] = self.sprites()
