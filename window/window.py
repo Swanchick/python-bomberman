@@ -32,6 +32,7 @@ class Window(BaseWindow):
     __level_surface: Surface
     
     __level_pos: Vector
+    __level_size: Vector
 
     __window_run: bool
     __clock: Clock
@@ -52,9 +53,8 @@ class Window(BaseWindow):
         self.__game_surface = Surface(tuple(self.__res))
         self.__level_surface = Surface(tuple(self.__res))
         self.__level_pos = Vector(0, 0)
+        self.__level_size = res
         self.__game = Game(self)
-        
-        self.__test = True
         
         display_set_caption(self.__title)
 
@@ -62,6 +62,12 @@ class Window(BaseWindow):
         self.__level_surface = Surface(tuple(size))
     
     def set_camera_pos(self, pos: Vector):
+        visible_width = self.__res.x // self.__current_scale.x
+        visible_height = self.__res.y // self.__current_scale.y
+
+        pos.set_x(max(min(0, pos.x), -(self.__level_size.x - visible_width)))
+        pos.set_y(max(min(0, pos.y), -(self.__level_size.y - visible_height)))
+
         self.__level_pos = pos
 
     def set_camera_scale(self, scale: Vector):
