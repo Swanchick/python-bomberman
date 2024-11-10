@@ -29,6 +29,18 @@ class BaseGameObject(ABC):
     def setup_properties(self, **kwargs):
         ...
     
+    def set_camera_pos(self, pos: Vector):
+        ...
+    
+    def set_camera_scale(self, scale: Vector):
+        ...
+
+    def get_camera_pos(self) -> Vector:
+        ...
+    
+    def get_camera_scale(self) -> Vector:
+        ...
+
     @property
     def layer(self) -> int:
         return

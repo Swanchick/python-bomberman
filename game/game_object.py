@@ -33,6 +33,18 @@ class GameObject(Sprite, BaseGameObject):
     def spawn(self, game_object):
         self.game.spawn(game_object)
     
+    def set_camera_pos(self, pos):
+        self.game.set_camera_pos(pos)
+    
+    def set_camera_scale(self, scale):
+        self.game.set_camera_scale(scale)
+
+    def get_camera_pos(self):
+        return self.game.get_camera_pos()
+
+    def get_camera_scale(self):
+        return self.game.get_camera_scale()
+
     @property
     def layer(self) -> int:
         return self._layer

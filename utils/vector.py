@@ -49,10 +49,10 @@ class Vector(object):
     def lerp(self, to, t: float):
         if not isinstance(to, Vector):
             return self
-
         
         new_x = self.__x + (to.x - self.__x) * t
         new_y = self.__y + (to.y - self.__y) * t
+
         return Vector(new_x, new_y)
     
     def normalize(self):
@@ -60,7 +60,7 @@ class Vector(object):
 
         self.__x = vec.x
         self.__y = vec.y
-    
+
     @staticmethod
     def zero():
         return Vector(0, 0)

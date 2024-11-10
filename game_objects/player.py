@@ -14,6 +14,10 @@ from networking.client import Client
 from utils import Time, Vector
 from .network_object import NetworkObject, register_network_class
 
+import math
+
+WIDTH = 800
+HEIGHT = 600
 
 @register_network_class
 class Player(NetworkObject):
@@ -21,17 +25,14 @@ class Player(NetworkObject):
     __speed: float
 
     __position_to: Vector
-    __bot: bool
+    __camera_pos_to: Vector
     
     def __init__(self, id: str = None, is_proxy: bool = False, client: Client = None):
         super().__init__(id, is_proxy, client)
         
         self.position = Vector(100, 100)
         self.__position_to = self.position
-        self.__bot = False
-    
-    def set_bot(self, bot):
-        self.__bot = bot
+        self.__camera_pos_to = Vector.zero()
     
     def get_data_to_sync(self) -> dict:
         data = {
@@ -54,11 +55,14 @@ class Player(NetworkObject):
     def start(self):
         self._layer = 1
 
-        self.image = Surface((32, 32))
+        self.image = Surface((16, 16))
         self.rect = self.image.get_rect()
 
         self.__velocity = Vector.zero()
-        self.__speed = 400
+        self.__speed = 200
+
+        if self.is_client():
+            self.set_camera_scale(Vector(2, 2))
         
     def update(self):
         super().update()
@@ -68,12 +72,23 @@ class Player(NetworkObject):
             self.move_smoothly()
         elif self.is_client():
             self.image.fill((255, 0, 0))
-        
+            self.move_camera()
             self.controls()
     
     def move_smoothly(self):
         self.position = self.position.lerp(self.__position_to, 10 * Time.delta)
     
+    def move_camera(self):
+        camera_pos = Vector.zero()
+        scale = self.get_camera_scale()
+
+        camera_pos.set_x(-self.position.x + (WIDTH // scale.x) // 2 - 16 // 2)
+        camera_pos.set_y(-self.position.y + (HEIGHT // scale.y) // 2 - 16 // 2)
+
+        self.__camera_pos_to = self.__camera_pos_to.lerp(camera_pos, Time.delta * 10)
+
+        self.set_camera_pos(self.__camera_pos_to)
+
     def controls(self):
         keys = get_keys()
 

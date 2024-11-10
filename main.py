@@ -1,6 +1,6 @@
 from networking import ServerNetwork, Network
 from game.game import Game
-from window import Window
+from window.window import Window
 from console import Console
 from sys import argv
 from settings import Settings

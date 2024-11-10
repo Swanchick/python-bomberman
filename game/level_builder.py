@@ -11,11 +11,9 @@ class LevelBuilder:
     registered_classes: dict = {}
     
     __level_name: str
-    __game: BaseGame
     
-    def __init__(self, level_name: str, game: BaseGame) -> None:
+    def __init__(self, level_name: str) -> None:
         self.__level_name = level_name
-        self.__game = game
         
     def __open_file(self) -> dict:
         with open(self.LEVEL_PATH + self.__level_name, "r") as file:
@@ -30,7 +28,7 @@ class LevelBuilder:
                 
                 return level_data
     
-    def build(self):
+    def build(self, game):
         level_data = self.__open_file()
         if level_data is None:
             return
@@ -58,9 +56,8 @@ class LevelBuilder:
             
             game_object = game_object_cls()
             game_object.setup_properties(**properties)
-            self.__game.spawn(game_object)
-            
-    
+            game.spawn(game_object)
+
     @classmethod
     def register_object(cls, game_object_cls: type) -> None:
         class_name = game_object_cls.__name__

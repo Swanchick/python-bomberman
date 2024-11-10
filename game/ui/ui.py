@@ -9,9 +9,6 @@ class UI(BaseGame):
     def spawn(self, game_object):
         self._sprites.append(game_object)
     
-    
-    
-    
     def draw(self, screen):
         for sprite in self._sprites:
             sprite.draw(screen)
