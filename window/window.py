@@ -9,14 +9,18 @@ from pygame.time import Clock
 from pygame import (
     Surface, 
     QUIT,
+    SRCALPHA,
     init as pygame_init, 
     quit as pygame_quit
 )
 from pygame.transform import scale as pygame_scale
 
+from pygame.draw import rect as pyg_rect
+
 from utils.colors import *
 from utils import Time, Vector
 from game.game import Game
+from game import LevelBuilder, UI
 
 from .base_window import BaseWindow
 
@@ -30,7 +34,9 @@ class Window(BaseWindow):
 
     __game_surface: Surface
     __level_surface: Surface
+    __ui_surface: Surface
     
+    __level_builder: LevelBuilder
     __level_pos: Vector
     __level_size: Vector
 
@@ -38,6 +44,7 @@ class Window(BaseWindow):
     __clock: Clock
 
     __game: Game
+    __ui: UI
 
     def __init__(self, res: Vector, title: str, max_fps=60):
         self.__res = res
@@ -51,10 +58,12 @@ class Window(BaseWindow):
         pygame_init()
         self.__display = display_set_mode(tuple(self.__res))
         self.__game_surface = Surface(tuple(self.__res))
-        self.__level_surface = Surface(tuple(self.__res))
+        self.__ui_surface = Surface(tuple(self.__res), SRCALPHA)
+        self.__level_size = Vector(1000, 1000)
+        self.__level_surface = Surface(tuple(self.__level_size))
         self.__level_pos = Vector(0, 0)
-        self.__level_size = res
         self.__game = Game(self)
+        self.__ui = UI()
         
         display_set_caption(self.__title)
 
@@ -82,7 +91,10 @@ class Window(BaseWindow):
         return self.__current_scale
     
     def start(self):
+        self.__level_builder = LevelBuilder("test.lev")
+        self.__level_builder.build(self.__game, self.__ui)
         self.__game.start()
+        # self.__ui.start()
 
         try:
             while self.__window_run:
@@ -103,8 +115,12 @@ class Window(BaseWindow):
                 self.__game_surface.blit(self.__level_surface, tuple(self.__level_pos))
                 self.__level_surface.fill(WHITE)
                 self.__game.draw(self.__level_surface)
+                
+                self.__display.blit(self.__ui_surface, (0, 0))
 
                 display_set_caption(str(self.__clock.get_fps()))
+                
+                # pyg_rect(self.__ui_surface, RED, (100, 100, 100, 100))
 
                 display_flip()
         except KeyboardInterrupt:

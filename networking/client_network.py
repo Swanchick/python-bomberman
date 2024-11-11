@@ -15,7 +15,6 @@ class OnClientInitialized(ClientCommand):
         name = data["client_name"]
         port_udp = data["port_udp"]
         client_id = data["client_id"]
-        print(client_id)
         
         client = Client(self._network.socket, name, self._network, client_id)
         self._network.set_client(client)

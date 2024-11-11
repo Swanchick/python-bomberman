@@ -14,7 +14,6 @@ from networking.client import Client
 from utils import Time, Vector
 from .network_object import NetworkObject, register_network_class
 
-import math
 
 WIDTH = 800
 HEIGHT = 600
@@ -29,9 +28,6 @@ class Player(NetworkObject):
     
     def __init__(self, id: str = None, is_proxy: bool = False, client: Client = None):
         super().__init__(id, is_proxy, client)
-        
-        self.position = Vector(100, 100)
-        self.__position_to = self.position
         self.__camera_pos_to = Vector.zero()
     
     def get_data_to_sync(self) -> dict:
@@ -54,15 +50,15 @@ class Player(NetworkObject):
         
     def start(self):
         self._layer = 1
+        self.size = 32
 
-        self.image = Surface((16, 16))
+        self.__position_to = self.position
+        
+        self.image = Surface((self.size, self.size))
         self.rect = self.image.get_rect()
 
         self.__velocity = Vector.zero()
-        self.__speed = 200
-
-        if self.is_client():
-            self.set_camera_scale(Vector(2, 2))
+        self.__speed = 400
         
     def update(self):
         super().update()
@@ -82,8 +78,8 @@ class Player(NetworkObject):
         camera_pos = Vector.zero()
         scale = self.get_camera_scale()
 
-        camera_pos.set_x(-self.position.x + (WIDTH // scale.x) // 2 - 16 // 2)
-        camera_pos.set_y(-self.position.y + (HEIGHT // scale.y) // 2 - 16 // 2)
+        camera_pos.set_x(-self.position.x + (WIDTH // scale.x) // 2 - self.size // 2)
+        camera_pos.set_y(-self.position.y + (HEIGHT // scale.y) // 2 - self.size // 2)
 
         self.__camera_pos_to = self.__camera_pos_to.lerp(camera_pos, Time.delta * 10)
 

@@ -4,6 +4,9 @@
         "width": 1000,
         "height": 1000
     },
+    "ui": [
+        
+    ],
     "objects" : [
         {
             "class_name": "NetworkManager",
@@ -21,21 +24,7 @@
         {
             "class_name": "Block",
             "properties": {
-                "position": [32, 0],
-                "texture": "res/textures/Brick.png"
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
                 "position": [64, 0],
-                "texture": "res/textures/Brick.png"
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [96, 0],
                 "texture": "res/textures/Brick.png"
             }
         },
@@ -49,48 +38,22 @@
         {
             "class_name": "Block",
             "properties": {
-                "position": [160, 0],
+                "position": [192, 0],
                 "texture": "res/textures/Brick.png"
             }
         },
         {
             "class_name": "Block",
             "properties": {
-                "position": [0, 32],
-                "texture": "res/textures/Grass.png"
-            }
-        },        {
-            "class_name": "Block",
-            "properties": {
-                "position": [32, 32],
-                "texture": "res/textures/Grass.png"
+                "position": [256, 0],
+                "texture": "res/textures/Brick.png"
             }
         },
         {
             "class_name": "Block",
             "properties": {
-                "position": [64, 32],
-                "texture": "res/textures/Grass.png"
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [96, 32],
-                "texture": "res/textures/Grass.png"
-            }
-        },        {
-            "class_name": "Block",
-            "properties": {
-                "position": [128, 32],
-                "texture": "res/textures/Grass.png"
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [160, 32],
-                "texture": "res/textures/Grass.png"
+                "position": [320, 0],
+                "texture": "res/textures/Brick.png"
             }
         },
         {
@@ -102,24 +65,11 @@
         },        {
             "class_name": "Block",
             "properties": {
-                "position": [32, 64],
-                "texture": "res/textures/Grass.png"
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
                 "position": [64, 64],
                 "texture": "res/textures/Grass.png"
             }
         },
         {
-            "class_name": "Block",
-            "properties": {
-                "position": [96, 64],
-                "texture": "res/textures/Grass.png"
-            }
-        },        {
             "class_name": "Block",
             "properties": {
                 "position": [128, 64],
@@ -129,47 +79,60 @@
         {
             "class_name": "Block",
             "properties": {
-                "position": [160, 64],
-                "texture": "res/textures/Grass.png"
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [0, 96],
+                "position": [192, 64],
                 "texture": "res/textures/Grass.png"
             }
         },        {
             "class_name": "Block",
             "properties": {
-                "position": [32, 96],
+                "position": [256, 64],
                 "texture": "res/textures/Grass.png"
             }
         },
         {
             "class_name": "Block",
             "properties": {
-                "position": [64, 96],
+                "position": [320, 64],
                 "texture": "res/textures/Grass.png"
             }
         },
         {
             "class_name": "Block",
             "properties": {
-                "position": [96, 96],
+                "position": [0, 128],
                 "texture": "res/textures/Grass.png"
             }
         },        {
             "class_name": "Block",
             "properties": {
-                "position": [128, 96],
+                "position": [64, 128],
                 "texture": "res/textures/Grass.png"
             }
         },
         {
             "class_name": "Block",
             "properties": {
-                "position": [160, 96],
+                "position": [128, 128],
+                "texture": "res/textures/Grass.png"
+            }
+        },
+        {
+            "class_name": "Block",
+            "properties": {
+                "position": [192, 128],
+                "texture": "res/textures/Grass.png"
+            }
+        },        {
+            "class_name": "Block",
+            "properties": {
+                "position": [256, 128],
+                "texture": "res/textures/Grass.png"
+            }
+        },
+        {
+            "class_name": "Block",
+            "properties": {
+                "position": [320, 128],
                 "texture": "res/textures/Grass.png"
             }
         }

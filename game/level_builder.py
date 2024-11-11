@@ -28,7 +28,7 @@ class LevelBuilder:
                 
                 return level_data
     
-    def build(self, game):
+    def build(self, game: BaseGame, ui: BaseGame):
         level_data = self.__open_file()
         if level_data is None:
             return

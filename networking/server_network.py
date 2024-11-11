@@ -21,7 +21,8 @@ class OnClientConnect(ServerCommand):
             "client_name": client.name,
             "port_udp": self._server_network.port_udp
         }
-
+        
+        print(f"Client connected: {client.name} {client.id}")
         send_data = MessageProtocol.encode(ON_CLIENT_CONNECTED, None, data, from_server=True)
         socket.send(send_data)
         
@@ -33,17 +34,16 @@ class OnClientConnectUDP(ServerCommand):
             return
         
         _, port = client_address
-
-        print(client_address)
         client: Client = self._server_network.get_client(client_data["id"])
         client.set_port_udp(port)
-        
 
 
 class OnClientDisconnect(ServerCommand):
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
         client = message_protocol.client
 
+        print(f"Client ({client['name']} {client['id']}) have been disconnected.")
+        
         self._server_network.remove_client(client["id"])
 
 
@@ -125,8 +125,6 @@ class ServerNetwork(BaseNetwork):
         while self.__server_run:
             try:
                 client, address = self.__sock_tcp.accept()
-
-                print(client)
                 print(f"Client ({address}) have been accepted.")
 
                 handle_clients_thread = Thread(target=self.__handle_clients, args=(client, ))
@@ -161,7 +159,6 @@ class ServerNetwork(BaseNetwork):
         while self.__server_run:
             try:
                 received_data, client_address = self.__sock_udp.recvfrom(2048)
-                print(received_data.decode("utf-8"))
                 
                 if received_data is None:
                     break

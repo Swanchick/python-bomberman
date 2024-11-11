@@ -6,20 +6,14 @@ from window import BaseWindow
 from .base_game_object import BaseGameObject
 from .base_game import BaseGame
 
-from .level_builder import LevelBuilder
-
 
 class Game(AbstractGroup, BaseGame):
-    __level_builder: LevelBuilder
     __window: BaseWindow
     
     def __init__(self, window: BaseWindow):
         super().__init__()
 
         self.__window = window
-
-        self.__level_builder = LevelBuilder("test.lev")
-        self.__level_builder.build(self)
     
     def start(self):        
         game_objects: list[BaseGameObject] = self.sprites()
@@ -61,7 +55,7 @@ class Game(AbstractGroup, BaseGame):
 
         for game_object in game_objects:
             game_object.stop()
-
+    
     def set_camera_pos(self, pos):
         self.__window.set_camera_pos(pos)
     
