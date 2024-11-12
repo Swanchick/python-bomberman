@@ -10,7 +10,14 @@ from .base_game import BaseGame
 class BaseGameObject(ABC):
     position: Vector
     game: BaseGame
+    id: str
+    layer: int
+    name: str
     
+    def __init__(self):
+        self.position = Vector.zero()
+        self.layer = 1
+
     def start(self):
         ...
     

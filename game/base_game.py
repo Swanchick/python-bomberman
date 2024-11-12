@@ -4,6 +4,15 @@ from pygame.sprite import Sprite
 from utils import Vector
 
 class BaseGame(ABC):
+    def start(self):
+        ...
+
+    def update(self):
+        ...
+    
+    def draw(self):
+        ...
+
     def spawn(self, game_object):        
         ...
     

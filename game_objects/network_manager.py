@@ -241,7 +241,7 @@ class NetworkManager(GameObject):
         self.image = Surface((32, 32))
         self.rect = self.image.get_rect()
 
-        self._layer = -1
+        self.layer = -1
         
         if self.__network.is_server():
             self.__network.register(ON_CLINET_INITIALIZE, OnClientInitialize(self.__network, self.game))

@@ -7,28 +7,28 @@ from .base_game_object import BaseGameObject
 
 
 class GameObject(Sprite, BaseGameObject):
-    _id: str
-    _layer: int
+    id: str
+    layer: int
 
     def __init__(self, id: str = None):
         self.image = Surface((32, 32))
         self.rect = self.image.get_rect()
         
-        self._layer = 1
+        self.layer = 1
         self.position = Vector.zero()
 
         if id is None:
-            self._id = str(uuid4())
+            self.id = str(uuid4())
         else:
-            self._id = id
+            self.id = id
 
         super().__init__()
     
     def setup_properties(self, **properties):
         position = properties.get("position", [0, 0])
         self.position = Vector(position[0], position[1])
-        
-        self._layer = properties.get("layer", -1)
+        self.layer = properties.get("layer", -1)
+        self.name = properties.get("name", "gameobject")
     
     def spawn(self, game_object):
         self.game.spawn(game_object)
@@ -44,11 +44,3 @@ class GameObject(Sprite, BaseGameObject):
 
     def get_camera_scale(self):
         return self.game.get_camera_scale()
-
-    @property
-    def layer(self) -> int:
-        return self._layer
-
-    @property
-    def id(self) -> str:
-        return self._id

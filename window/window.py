@@ -94,7 +94,7 @@ class Window(BaseWindow):
         self.__level_builder = LevelBuilder("test.lev")
         self.__level_builder.build(self.__game, self.__ui)
         self.__game.start()
-        # self.__ui.start()
+        self.__ui.start()
 
         try:
             while self.__window_run:
