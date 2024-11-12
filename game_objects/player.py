@@ -49,7 +49,7 @@ class Player(NetworkObject):
             self.position = Vector(position[0], position[1])
         
     def start(self):
-        self.layer = 1
+        self._layer = 1
         self.size = 32
 
         self.__position_to = self.position

@@ -12,7 +12,7 @@ class UI(AbstractGroup, BaseGame):
     def spawn(self, game_object):
         self._sprites.append(game_object)
     
-    def start():
+    def start(self):
         ...
 
     def update(self):

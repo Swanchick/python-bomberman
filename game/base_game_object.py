@@ -1,4 +1,4 @@
-from pygame.sprite import Group
+from pygame import Surface
 from abc import ABC
 
 from utils import Vector
@@ -7,13 +7,14 @@ from networking.client import Client
 
 from .base_game import BaseGame
 
+
 class BaseGameObject(ABC):
     position: Vector
     game: BaseGame
     id: str
-    layer: int
+    _layer: int
     name: str
-
+    
     def start(self):
         ...
     
@@ -45,9 +46,6 @@ class BaseGameObject(ABC):
         ...
 
     @property
-    def layer(self) -> int:
-        return
+    def layer(self):
+        return self._layer
     
-    @property
-    def id(self) -> str:
-        return
