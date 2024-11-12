@@ -13,10 +13,6 @@ class BaseGameObject(ABC):
     id: str
     layer: int
     name: str
-    
-    def __init__(self):
-        self.position = Vector.zero()
-        self.layer = 1
 
     def start(self):
         ...
