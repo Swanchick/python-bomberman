@@ -9,6 +9,8 @@ from pygame.time import Clock
 from pygame import (
     Surface, 
     QUIT,
+    MOUSEBUTTONDOWN,
+    MOUSEBUTTONUP,
     SRCALPHA,
     init as pygame_init, 
     quit as pygame_quit
@@ -101,11 +103,17 @@ class Window(BaseWindow):
                 for event in pygame_event_get():
                     if event.type == QUIT:
                         self.__window_run = False
+                    
+                    if event.type == MOUSEBUTTONDOWN:
+                        self.__ui.mouse_button_down()
+                    elif event.type == MOUSEBUTTONUP:
+                        self.__ui.mouse_button_up()
                 
                 Time.delta = self.__clock.tick(self.__max_fps) / 1000.0
                 Time.cur_time += Time.delta
                 
                 self.__game.update()
+                self.__ui.update()
 
                 scaled_surface = pygame_scale(self.__game_surface, tuple(self.__res))
                 self.__display.fill(BLACK)
@@ -117,10 +125,9 @@ class Window(BaseWindow):
                 self.__game.draw(self.__level_surface)
                 
                 self.__display.blit(self.__ui_surface, (0, 0))
+                self.__ui.draw(self.__ui_surface, SRCALPHA)
 
                 display_set_caption(str(self.__clock.get_fps()))
-                
-                # pyg_rect(self.__ui_surface, RED, (100, 100, 100, 100))
 
                 display_flip()
         except KeyboardInterrupt:

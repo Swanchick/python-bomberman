@@ -5,7 +5,12 @@
         "height": 1000
     },
     "ui": [
-        
+        {
+            "class_name": "TestPanel",
+            "properties": {
+                "position": [100, 100]
+            }
+        }
     ],
     "objects" : [
         {

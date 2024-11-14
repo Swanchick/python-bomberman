@@ -38,26 +38,43 @@ class LevelBuilder:
             return
         
         objects = level_data.get("objects")
-        if objects is None:
-            return
+        if objects is not None:
+            for game_object_data in objects:
+                class_name = game_object_data.get("class_name")
+                if class_name is None:
+                    continue
+                
+                game_object_cls = self.registered_classes.get(class_name)
+                if game_object_cls is None:
+                    continue
+                
+                properties = game_object_data.get("properties")
+                if properties is None:
+                    continue
+                
+                game_object = game_object_cls()
+                game_object.setup_properties(**properties)
+                game.spawn(game_object)
         
-        for game_object_data in objects:
-            class_name = game_object_data.get("class_name")
-            if class_name is None:
-                continue
-            
-            game_object_cls = self.registered_classes.get(class_name)
-            if game_object_cls is None:
-                continue
-            
-            properties = game_object_data.get("properties")
-            if properties is None:
-                continue
-            
-            game_object = game_object_cls()
-            game_object.setup_properties(**properties)
-            game.spawn(game_object)
-
+        panels = level_data.get("ui")
+        if panels is not None:
+            for panel_data in panels:
+                class_name = panel_data.get("class_name")
+                if class_name is None:
+                    continue
+                
+                panel_cls = self.registered_classes.get(class_name)
+                if panel_cls is None:
+                    continue
+                
+                properties = panel_data.get("properties")
+                if properties is None:
+                    continue
+                
+                panel = panel_cls()
+                panel.setup_properties(**properties)
+                ui.spawn(panel)
+    
     @classmethod
     def register_object(cls, game_object_cls: type) -> None:
         class_name = game_object_cls.__name__
