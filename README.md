@@ -8,8 +8,8 @@ Bomber man with multiplayer
     * Button +
     * Text +
     * Label +
+2. Change camera's position and scale +
 
-2. Change camera's position and scale
 3. Block collision
 4. Level editor
 5. Main menu
