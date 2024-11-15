@@ -6,7 +6,7 @@
     },
     "ui": [
         {
-            "class_name": "TestPanel",
+            "class_name": "Button",
             "properties": {
                 "position": [100, 100]
             }

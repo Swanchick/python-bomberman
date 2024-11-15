@@ -10,7 +10,7 @@ from ..base_game_object import BaseGameObject
 
 
 class Panel(Sprite, BaseGameObject):
-    __clicked: bool
+    _clicked: bool
     
     def __init__(self, id=None):
         self.image = Surface((32, 32))
@@ -18,7 +18,7 @@ class Panel(Sprite, BaseGameObject):
         
         self.position = Vector.zero()
         
-        self.__clicked = False
+        self._clicked = False
 
         if id is None:
             self.id = str(uuid4())
@@ -42,12 +42,12 @@ class Panel(Sprite, BaseGameObject):
     
     def mouse_button_down(self):
         if self.is_hovered():
-            self.__clicked = True
+            self._clicked = True
             
     
     def mouse_button_up(self):
-        if self.__clicked:
-            self.__clicked = False
+        if self._clicked:
+            self._clicked = False
     
     def is_hovered(self) -> bool:
         pos = get_pos()
