@@ -1,4 +1,5 @@
 from pygame.key import get_pressed as get_keys
+from pygame.sprite import collide_rect
 from pygame import (
     Surface,
     K_a, K_LEFT,
@@ -8,11 +9,15 @@ from pygame import (
     K_SPACE
 )
 
+from game.base_game_object import BaseGameObject
 from game.level_builder import LevelBuilder
+
 
 from networking.client import Client
 from utils import Time, Vector
+
 from .network_object import NetworkObject, register_network_class
+from .block import Block
 
 
 WIDTH = 800
@@ -58,7 +63,7 @@ class Player(NetworkObject):
         self.rect = self.image.get_rect()
 
         self.__velocity = Vector.zero()
-        self.__speed = 400
+        self.__speed = 200
         
     def update(self):
         super().update()
@@ -91,10 +96,15 @@ class Player(NetworkObject):
         horizontal = int(keys[K_d] or keys[K_RIGHT]) - int(keys[K_a] or keys[K_LEFT])
         vertical = int(keys[K_s] or keys[K_DOWN]) - int(keys[K_w] or keys[K_UP])
 
-        dir = Vector(horizontal, vertical)
-        dir.normalize()
+        direction = Vector(horizontal, vertical)
+        direction.normalize()
 
-        velocity = dir * self.__speed * Time.delta
-
-        self.__velocity = self.__velocity.lerp(velocity, 10 * Time.delta)
+        velocity = direction * self.__speed * Time.delta
+        self.__velocity = self.__velocity.lerp(velocity, Time.delta * 10)
+        self.collide()
+        
         self.position += self.__velocity
+        self.rect.topleft = (self.position.x, self.position.y)
+    
+    def collide(self):
+        ...

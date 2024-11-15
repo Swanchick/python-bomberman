@@ -1,10 +1,32 @@
-class A:
-    pos: str
+import json
 
-    def __init__(self, pos: str):
-        self.pos = pos
+level = [
+    "#############",
+    "#...........#",
+    "#...........#",
+    "#...........#",
+    "#...........#",
+    "#...........#",
+    "#...........#",
+    "#...........#",
+]
 
 
-a = A("123")
+f = open("test_level.json", "w")
+out = []
 
-print(getattr(a, "pos"))
+for i, line in enumerate(level):
+    for j, block in enumerate(line):
+        if block == "#":
+            out.append({
+                "class_name": "Block",
+                "properties": {
+                    "position": [64 * j, 64 * i],
+                    "texture": "res/textures/Brick.png"
+                }
+            })
+
+out_json = json.dumps(out, indent=4)
+
+f.write(out_json)
+f.close()
