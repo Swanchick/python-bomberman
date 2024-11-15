@@ -5,7 +5,6 @@ from uuid import uuid4
 
 from utils import Vector
 
-
 from ..base_game_object import BaseGameObject
 
 

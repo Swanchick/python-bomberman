@@ -23,6 +23,7 @@ from utils.colors import *
 from utils import Time, Vector
 from game.game import Game
 from game import LevelBuilder, UI
+from utils import Global
 
 from .base_window import BaseWindow
 
@@ -66,6 +67,8 @@ class Window(BaseWindow):
         self.__level_pos = Vector(0, 0)
         self.__game = Game(self)
         self.__ui = UI()
+        
+        Global.set("resolution", self.__res)
         
         display_set_caption(self.__title)
 
@@ -125,7 +128,7 @@ class Window(BaseWindow):
                 self.__game.draw(self.__level_surface)
                 
                 self.__display.blit(self.__ui_surface, (0, 0))
-                self.__ui.draw(self.__ui_surface, SRCALPHA)
+                self.__ui.draw(self.__ui_surface)
 
                 display_set_caption(str(self.__clock.get_fps()))
 

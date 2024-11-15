@@ -9,7 +9,8 @@ class UI(AbstractGroup, BaseGame):
         super().__init__()
         self._sprites = []
 
-    def spawn(self, game_object):
+    def spawn(self, game_object: BaseGameObject):
+        game_object.game = self
         self._sprites.append(game_object)
     
     def start(self):
@@ -22,14 +23,18 @@ class UI(AbstractGroup, BaseGame):
         panels: list[Panel] = self.sprites()
         
         for panel in panels:
-            panel.rect.x = panel.position.x
-            panel.rect.y = panel.position.y
+            if hasattr(panel, "image"):
+                panel.rect.x = panel.position.x
+                panel.rect.y = panel.position.y
             
             panel.update()
     
-    def draw(self, surface, special_flags=1):
+    def draw(self, surface):
         sprites = self.sprites()
         for spr in sprites:
+            if not hasattr(spr, "image"):
+                continue
+            
             surface.blit(spr.image, spr.rect)
     
     def mouse_button_down(self):

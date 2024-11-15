@@ -6,7 +6,7 @@ Bomber man with multiplayer
 1. UI
     * Panel +
     * Button +
-    * Text
+    * Text +
     * Label
 
 2. Change camera's position and scale

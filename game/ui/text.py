@@ -1,5 +1,5 @@
-from pygame import Surface 
-from pygame.font import Font
+from pygame import Surface, SRCALPHA
+from pygame.font import Font, get_default_font
 
 from utils import Vector
 
@@ -9,8 +9,11 @@ class Text:
     __text: str
     __color: tuple[int, int, int]
     
-    def __init__(self, font: str, size: int, text: str, color: tuple[int, int, int]):
-        self.__font = Font(font, size)
+    def __init__(self, size: int, text: str, color: tuple[int, int, int], font=None):
+        self.__font = font
+        if self.__font is None:
+            self.__font = Font(get_default_font(), size)
+        
         self.__text = text
         self.__color = color
         
