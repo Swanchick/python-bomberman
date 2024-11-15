@@ -22,7 +22,7 @@ class HUD(Panel):
         self.game.spawn(self.__button)
         
         self.__label = Label(Text(16, "Test Label", (0, 0, 0)))
-        self.__label.position = Vector(100, 150)
+        self.__label.position = Vector(100, 200)
         self.game.spawn(self.__label)
         self.__label.start()
         

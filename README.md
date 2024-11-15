@@ -3,11 +3,11 @@ Bomber man with multiplayer
 
 
 ## ToDo Code
-1. UI
+1. UI +
     * Panel +
     * Button +
     * Text +
-    * Label
+    * Label +
 
 2. Change camera's position and scale
 3. Block collision

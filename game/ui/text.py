@@ -1,7 +1,9 @@
+import math
+
 from pygame import Surface, SRCALPHA
 from pygame.font import Font, get_default_font
 
-from utils import Vector
+from utils import Vector, Time
 
 class Text:
     __text_surface: Surface
@@ -10,14 +12,11 @@ class Text:
     __color: tuple[int, int, int]
     
     def __init__(self, size: int, text: str, color: tuple[int, int, int], font=None):
-        self.__font = font
-        if self.__font is None:
-            self.__font = Font(get_default_font(), size)
-        
+        self.__font = font if font is not None else Font(get_default_font(), size)
         self.__text = text
         self.__color = color
-        
-        self.__text_surface = self.__font.render(self.__text, True, color)
+
+        self.apply()
     
     def draw(self, surface: Surface, position: Vector):
         surface.blit(self.__text_surface, (position.x, position.y))
@@ -30,14 +29,14 @@ class Text:
     
     def apply(self):
         self.__text_surface = self.__font.render(self.__text, True, self.__color)
-    
+
     @property
     def width(self) -> int:
-        return self.__text_surface.get_width()
+        return self.__font.size(self.__text)[0]
     
     @property
     def height(self) -> int:
-        return self.__text_surface.get_height()
+        return self.__font.size(self.__text)[1]
     
     @property
     def text(self) -> str:
