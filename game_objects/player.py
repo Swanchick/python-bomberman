@@ -1,5 +1,6 @@
 from pygame.key import get_pressed as get_keys
 from pygame.sprite import collide_rect
+from pygame.rect import Rect
 from pygame import (
     Surface,
     K_a, K_LEFT,
@@ -63,7 +64,7 @@ class Player(NetworkObject):
         self.rect = self.image.get_rect()
 
         self.__velocity = Vector.zero()
-        self.__speed = 200
+        self.__speed = 400
         
     def update(self):
         super().update()
@@ -97,14 +98,53 @@ class Player(NetworkObject):
         vertical = int(keys[K_s] or keys[K_DOWN]) - int(keys[K_w] or keys[K_UP])
 
         direction = Vector(horizontal, vertical)
-        direction.normalize()
+        if direction.magnitude != 0:
+            direction.normalize()
 
         velocity = direction * self.__speed * Time.delta
+
         self.__velocity = self.__velocity.lerp(velocity, Time.delta * 10)
-        self.collide()
-        
+        self.__velocity = self.collide(self.__velocity)
+
         self.position += self.__velocity
-        self.rect.topleft = (self.position.x, self.position.y)
-    
-    def collide(self):
-        ...
+
+    def collide(self, velocity: Vector) -> Vector:
+        adjusted_velocity = Vector(velocity.x, velocity.y) 
+
+        player_left = self.position.x
+        player_right = self.position.x + self.size
+        player_top = self.position.y
+        player_bottom = self.position.y + self.size
+
+        game_objects: list[BaseGameObject] = self.game.sprites()
+
+        for game_object in game_objects:
+            if not isinstance(game_object, Block):
+                continue
+
+            block_left = game_object.position.x
+            block_right = game_object.position.x + 64
+            block_top = game_object.position.y
+            block_bottom = game_object.position.y + 64
+
+            future_left = player_left + adjusted_velocity.x
+            future_right = player_right + adjusted_velocity.x
+
+            if future_right > block_left and future_left < block_right:
+                if player_bottom > block_top and player_top < block_bottom:
+                    if adjusted_velocity.x > 0:
+                        adjusted_velocity.set_x(block_left - player_right)
+                    elif adjusted_velocity.x < 0:
+                        adjusted_velocity.set_x(block_right - player_left)
+
+            future_top = player_top + adjusted_velocity.y
+            future_bottom = player_bottom + adjusted_velocity.y
+
+            if future_bottom > block_top and future_top < block_bottom:
+                if player_right > block_left and player_left < block_right:
+                    if adjusted_velocity.y > 0:
+                        adjusted_velocity.set_y(block_top - player_bottom)
+                    elif adjusted_velocity.y < 0:
+                        adjusted_velocity.set_y(block_bottom - player_top)
+
+        return adjusted_velocity
