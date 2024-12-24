@@ -22,7 +22,18 @@ for i, line in enumerate(level):
                 "class_name": "Block",
                 "properties": {
                     "position": [64 * j, 64 * i],
-                    "texture": "res/textures/Brick.png"
+                    "texture": "res/textures/Brick.png",
+                    "collider": 0
+                }
+            })
+        
+        if block == ".":
+            out.append({
+                "class_name": "Block",
+                "properties": {
+                    "position": [64 * j, 64 * i],
+                    "texture": "res/textures/Grass.png",
+                    "collider": 2
                 }
             })
 
@@ -30,3 +41,4 @@ out_json = json.dumps(out, indent=4)
 
 f.write(out_json)
 f.close()
+

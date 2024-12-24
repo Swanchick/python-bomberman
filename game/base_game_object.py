@@ -6,14 +6,17 @@ from networking import BaseNetwork
 from networking.client import Client
 
 from .base_game import BaseGame
+from .collider_type import ColliderType
 
 
 class BaseGameObject(ABC):
+    _layer: int
+
     position: Vector
     game: BaseGame
     id: str
-    _layer: int
     name: str
+    
     
     def start(self):
         ...
