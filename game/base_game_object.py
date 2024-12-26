@@ -2,11 +2,9 @@ from pygame import Surface
 from abc import ABC
 
 from utils import Vector
-from networking import BaseNetwork
-from networking.client import Client
 
 from .base_game import BaseGame
-from .collider_type import ColliderType
+from .collider import Collider
 
 
 class BaseGameObject(ABC):
@@ -16,8 +14,11 @@ class BaseGameObject(ABC):
     game: BaseGame
     id: str
     name: str
-    
-    
+
+    surface: Surface
+
+    collider: Collider
+
     def start(self):
         ...
     
@@ -27,6 +28,9 @@ class BaseGameObject(ABC):
     def draw(self):
         ...
     
+    def draw_debug(self, surface):
+        ...
+
     def stop(self):
         ...
         

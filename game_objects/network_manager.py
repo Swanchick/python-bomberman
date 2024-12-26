@@ -28,7 +28,7 @@ class OnClientInitialize(ServerCommand):
         self.__game = game
     
     def sync_all_objects(self, client_data: dict, socket: Socket):
-        game_objects = self.__game.sprites()
+        game_objects = self.__game.gameobjects
         
         for game_object in game_objects:
             if not isinstance(game_object, NetworkObject):
@@ -79,7 +79,7 @@ class SyncObjectWithServer(ServerCommand):
         self.__game = game
     
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
-        game_objects: list[GameObject] = self.__game.sprites()
+        game_objects: list[GameObject] = self.__game.gameobjects
         
         data = message_protocol.data
         id = data.get("id")
@@ -112,7 +112,7 @@ class PlayerDisconnect(ServerCommand):
     def execute(self, message_protocol: MessageProtocol, socket: Socket):
         client_data = message_protocol.client
         
-        for game_object in self.__game.sprites():
+        for game_object in self.__game.gameobjects:
             if not isinstance(game_object, NetworkObject):
                 continue
             
@@ -169,7 +169,7 @@ class SyncObjectOnClient(ClientCommand):
         self.__game = game
     
     def sync_objects(self, id, sync_data):        
-        for game_object in self.__game.sprites():
+        for game_object in self.__game.gameobjects:
             if not isinstance(game_object, NetworkObject):
                 continue
             
@@ -260,7 +260,7 @@ class NetworkManager(GameObject):
         if not self.__network.is_server():
             return
         
-        game_objects = self.game.sprites()
+        game_objects = self.game.gameobjects
         
         for game_object in game_objects:
             if not isinstance(game_object, NetworkObject):

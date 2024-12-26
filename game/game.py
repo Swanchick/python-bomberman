@@ -1,4 +1,4 @@
-from pygame.sprite import AbstractGroup
+from pygame import Surface
 
 from game_objects import *
 from window import BaseWindow
@@ -7,51 +7,61 @@ from .base_game_object import BaseGameObject
 from .base_game import BaseGame
 
 
-class Game(AbstractGroup, BaseGame):
+class Game(BaseGame):
     __window: BaseWindow
     
-    def __init__(self, window: BaseWindow):
-        super().__init__()
+    __game_objects: list[BaseGameObject]
 
+    def __init__(self, window: BaseWindow):
         self.__window = window
+
+        self.__game_objects = []
     
     def start(self):        
-        game_objects: list[BaseGameObject] = self.sprites()
+        game_objects: list[BaseGameObject] = self.__game_objects
 
         for game_object in game_objects:
             game_object.start()
 
     def update(self):
-        game_objects: list[BaseGameObject] = self.sprites()
+        game_objects: list[BaseGameObject] = self.__game_objects
 
         for game_object in game_objects:
-            game_object.rect.x = game_object.position.x
-            game_object.rect.y = game_object.position.y
+            game_object.collider.update(game_object.position)
 
             game_object.update()       
 
-    def draw(self, surface, bgsurf=None, special_flags=0):
-        game_objects: list[BaseGameObject] = self.sprites() 
+    def draw(self, surface: Surface, bgsurf=None, special_flags=0):
+        game_objects: list[BaseGameObject] = self.__game_objects
 
         game_objects.sort(key=lambda x: x.layer)
 
-        for obj in game_objects:
-            self.spritedict[obj] = surface.blit(obj.image, obj.rect, None, special_flags)
+        for game_object in game_objects:
+            if game_object.surface is None:
+                continue
+            
+            surface.blit(game_object.surface, (game_object.position.x, game_object.position.y))
 
-        self.lostsprites = []
-        dirty = self.lostsprites
+    def draw_debug(self, surface: Surface):
+        game_objects: list[BaseGameObject] = self.__game_objects
 
-        return dirty
+        for game_object in game_objects:
+            if game_object.surface is None:
+                continue
+            
+            if game_object.collider.collider_type.value == 2:
+                continue
+
+            game_object.draw_debug(surface)
 
     def spawn(self, game_object: BaseGameObject):
         game_object.game = self
-        
-        super().add(game_object)
+        self.__game_objects.append(game_object)
         
         game_object.start()
     
     def stop(self):
-        game_objects: list[BaseGameObject] = self.sprites()
+        game_objects: list[BaseGameObject] = self.__game_objects
 
         for game_object in game_objects:
             game_object.stop()
@@ -70,4 +80,4 @@ class Game(AbstractGroup, BaseGame):
     
     @property
     def gameobjects(self) -> list[BaseGameObject]:
-        return self.sprites()
+        return self.__game_objects

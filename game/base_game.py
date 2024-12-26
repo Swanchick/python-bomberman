@@ -33,3 +33,7 @@ class BaseGame(ABC):
     
     def get_camera_scale(self) -> Vector:
         ...
+
+    @property
+    def gameobjects(self):
+        ...

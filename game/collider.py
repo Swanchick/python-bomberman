@@ -1,52 +1,65 @@
+from pygame.draw import rect as draw_rect
+from pygame import Surface
+
+
+from utils import Vector
+
 from .collider_type import ColliderType
 
-
 class Collider:
-    __w: int
-    __h: int
+    position: Vector
+
+    w: int
+    h: int
+    
+    collider_type: ColliderType
 
     __left: int
     __right: int
     __top: int
-    __down: int
+    __bottom: int
 
-    __collider_type: ColliderType
+    colliding: bool
 
-    def __init__(self, collider_type: ColliderType, x: int, y: int, w: int, h: int):
-        self.__collider_type = collider_type
 
-        self.__w = w
-        self.__h = h
+    def __init__(self, collider_type: ColliderType, position: Vector, w: int, h: int):
+        self.collider_type = collider_type
+
+        self.w = w
+        self.h = h
         
-        self.update(x, y)
-    
-    def update(self, x: int, y: int):
-        self.__left = x
-        self.__right = x + self.w
+        self.update(position)
 
-        self.__top = y
-        self.__down = y + self.h
-
-    def set_width(self, w: int):
-        self.__w = w
+        self.colliding = False
     
-    def set_height(self, h: int):
-        self.__h = h
+    def update(self, position: Vector):
+        self.position = position
 
-    def collide(self, collider) -> bool:
-        pass
+        self.__left = position.x
+        self.__right = position.x + self.w
 
-    @property
-    def collider_type(self) -> ColliderType:
-        return self.__collider_type
-    
-    @property
-    def width(self) -> int:
-        return self.__w
-    
-    @property
-    def height(self) -> int:
-        return self.__h
+        self.__top = position.y
+        self.__bottom = position.y + self.h
+
+    def draw(self, surface: Surface):
+        color = (0, 0, 255)
+
+        if self.colliding:
+            color = (0, 255, 0)
+
+        draw_rect(surface, color, (self.position.x, self.position.y, self.w, self.h), 2)
+
+    def collide_horizontal(self, collider, horizontal: float) -> bool:
+        future_right = self.right + horizontal
+        future_left = self.left + horizontal
+        
+        return ((future_right > collider.left) and (future_left < collider.right)) and ((self.bottom > collider.top) and (self.top < collider.bottom))
+
+    def collide_vertical(self, collider, vertical: float) -> bool:
+        future_top = self.top + vertical
+        future_bottom = self.bottom + vertical
+        
+        return ((future_bottom > collider.top) and (future_top < collider.bottom)) and ((self.right > collider.left) and (self.left < collider.right))
 
     @property
     def left(self) -> int:
@@ -61,5 +74,5 @@ class Collider:
         return self.__top
     
     @property
-    def down(self) -> int:
-        return self.__down
+    def bottom(self) -> int:
+        return self.__bottom

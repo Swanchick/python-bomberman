@@ -1,6 +1,9 @@
 from pygame.key import get_pressed as get_keys
 from pygame.sprite import collide_rect
-from pygame.rect import Rect
+from pygame.draw import (
+    rect as draw_rect,
+    line as draw_line
+    )
 from pygame import (
     Surface,
     K_a, K_LEFT,
@@ -12,7 +15,7 @@ from pygame import (
 
 from game.base_game_object import BaseGameObject
 from game.level_builder import LevelBuilder
-
+from game.collider_type import ColliderType
 
 from networking.client import Client
 from utils import Time, Vector
@@ -36,6 +39,7 @@ class Player(NetworkObject):
         super().__init__(id, is_proxy, client)
         self.__camera_pos_to = Vector.zero()
         self.position = Vector.zero()
+        self.__velocity = Vector.zero()
     
     def get_data_to_sync(self) -> dict:
         data = {
@@ -61,8 +65,8 @@ class Player(NetworkObject):
 
         self.__position_to = self.position
         
-        self.image = Surface((self.size, self.size))
-        self.rect = self.image.get_rect()
+        self.surface = Surface((self.size, self.size))
+        self.set_collider(ColliderType.SOLID)
 
         self.__velocity = Vector.zero()
         self.__speed = 400
@@ -71,10 +75,10 @@ class Player(NetworkObject):
         super().update()
         
         if self.is_proxy():
-            self.image.fill((0, 255, 0))
+            self.surface.fill((0, 255, 0))
             self.move_smoothly()
         elif self.is_client():
-            self.image.fill((255, 0, 0))
+            self.surface.fill((255, 0, 0))
             self.move_camera()
             self.controls()
     
@@ -105,49 +109,52 @@ class Player(NetworkObject):
         velocity = direction * self.__speed * Time.delta
 
         self.__velocity = self.__velocity.lerp(velocity, Time.delta * 10)
-        self.__velocity = self.collide(self.__velocity)
-
+        self.__velocity = self.collide()
         self.position += self.__velocity
 
-    def collide(self, velocity: Vector) -> Vector:
-        pass
+    def draw_debug(self, surface):
+        super().draw_debug(surface)
+
+        start_x = self.position.x + self.collider.w / 2
+        start_y = self.position.y + self.collider.h / 2
+
+        end_x = self.position.x + self.__velocity.x * 5 + self.collider.w / 2
+        end_y = self.position.y + self.__velocity.y * 5 + self.collider.h / 2
+
+        draw_line(surface, (0, 255, 0), (start_x, start_y), (end_x, end_y))
         
-        # adjusted_velocity = Vector(velocity.x, velocity.y) 
+        draw_rect(surface, (0, 255, 0), (self.position.x + self.__velocity.x * 5, self.position.y + self.__velocity.y * 5, self.size, self.size), 1)
 
-        # player_left = self.position.x
-        # player_right = self.position.x + self.size
-        # player_top = self.position.y
-        # player_bottom = self.position.y + self.size
+    def collide(self) -> Vector:
+        adjusted_velocity = Vector(self.__velocity.x, self.__velocity.y)
+        game_objects: list[BaseGameObject] = self.game.gameobjects
 
-        # game_objects: list[BaseGameObject] = self.game.sprites()
+        for game_object in game_objects:
+            collider = game_object.collider
 
-        # for game_object in game_objects:
-        #     if not isinstance(game_object, Block):
-        #         continue
+            if game_object is self:
+                continue
 
-        #     block_left = game_object.position.x
-        #     block_right = game_object.position.x + 64
-        #     block_top = game_object.position.y
-        #     block_bottom = game_object.position.y + 64
+            if collider.collider_type != ColliderType.SOLID:
+                continue
 
-        #     future_left = player_left + adjusted_velocity.x
-        #     future_right = player_right + adjusted_velocity.x
+            if self.collider.collide_horizontal(collider, adjusted_velocity.x):
+                collider.colliding = True
+                
+                if adjusted_velocity.x > 0:
+                    adjusted_velocity.set_x(collider.left - self.collider.right)
+                
+                if adjusted_velocity.x < 0:
+                    adjusted_velocity.set_x(collider.right - self.collider.left)
+            elif self.collider.collide_vertical(collider, adjusted_velocity.y):
+                collider.colliding = True
+                
+                if adjusted_velocity.y > 0:
+                    adjusted_velocity.set_y(collider.top - self.collider.bottom)
+                
+                if adjusted_velocity.y < 0:
+                    adjusted_velocity.set_y(collider.bottom - self.collider.top)
+            else:
+                collider.colliding = False
 
-        #     if future_right > block_left and future_left < block_right:
-        #         if player_bottom > block_top and player_top < block_bottom:
-        #             if adjusted_velocity.x > 0:
-        #                 adjusted_velocity.set_x(block_left - player_right)
-        #             elif adjusted_velocity.x < 0:
-        #                 adjusted_velocity.set_x(block_right - player_left)
-
-        #     future_top = player_top + adjusted_velocity.y
-        #     future_bottom = player_bottom + adjusted_velocity.y
-
-        #     if future_bottom > block_top and future_top < block_bottom:
-        #         if player_right > block_left and player_left < block_right:
-        #             if adjusted_velocity.y > 0:
-        #                 adjusted_velocity.set_y(block_top - player_bottom)
-        #             elif adjusted_velocity.y < 0:
-        #                 adjusted_velocity.set_y(block_bottom - player_top)
-
-        # return adjusted_velocity
+        return adjusted_velocity

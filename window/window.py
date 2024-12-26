@@ -126,7 +126,8 @@ class Window(BaseWindow):
                 self.__game_surface.blit(self.__level_surface, tuple(self.__level_pos))
                 self.__level_surface.fill(WHITE)
                 self.__game.draw(self.__level_surface)
-                
+                self.__game.draw_debug(self.__level_surface)
+
                 self.__display.blit(self.__ui_surface, (0, 0))
                 self.__ui.draw(self.__ui_surface)
 
