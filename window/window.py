@@ -4,8 +4,6 @@ from pygame.display import (
     flip as display_flip
 )
 
-from pygame.event import get as pygame_event_get
-from pygame.time import Clock
 from pygame import (
     Surface, 
     QUIT,
@@ -15,9 +13,18 @@ from pygame import (
     init as pygame_init, 
     quit as pygame_quit
 )
-from pygame.transform import scale as pygame_scale
 
-from pygame.draw import rect as pyg_rect
+from pygame.joystick import (
+    init as joystick_init,
+    get_count as joystick_get_count,
+    quit as joystick_quit,
+    Joystick,
+    JoystickType
+)
+
+from pygame.event import get as pygame_event_get
+from pygame.time import Clock
+from pygame.transform import scale as pygame_scale
 
 from utils.colors import *
 from utils import Time, Vector
@@ -49,6 +56,9 @@ class Window(BaseWindow):
     __game: Game
     __ui: UI
 
+    __joystick_connected: bool
+    __joystick: JoystickType
+
     def __init__(self, res: Vector, title: str, max_fps=60):
         self.__res = res
         self.__title = title
@@ -59,6 +69,8 @@ class Window(BaseWindow):
         self.__current_scale = Vector.one()
         
         pygame_init()
+        joystick_init()
+
         self.__display = display_set_mode(tuple(self.__res))
         self.__game_surface = Surface(tuple(self.__res))
         self.__ui_surface = Surface(tuple(self.__res), SRCALPHA)
@@ -68,6 +80,13 @@ class Window(BaseWindow):
         self.__game = Game(self)
         self.__ui = UI()
         
+        self.__joystick_connected = joystick_get_count() > 0
+
+        if self.__joystick_connected:
+            self.__joystick = Joystick(0)
+
+            print(f"Controller connected: {self.__joystick.get_name()}")
+
         Global.set("resolution", self.__res)
         
         display_set_caption(self.__title)
@@ -131,6 +150,10 @@ class Window(BaseWindow):
                 self.__display.blit(self.__ui_surface, (0, 0))
                 self.__ui.draw(self.__ui_surface)
 
+                if self.__joystick_connected:
+                    if self.__joystick.get_button(1):
+                        self.__window_run = False
+
                 display_set_caption(str(self.__clock.get_fps()))
 
                 display_flip()
@@ -139,3 +162,4 @@ class Window(BaseWindow):
         finally:
             self.__game.stop()
             pygame_quit()
+            joystick_quit()

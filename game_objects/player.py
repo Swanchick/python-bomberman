@@ -3,7 +3,8 @@ from pygame.sprite import collide_rect
 from pygame.draw import (
     rect as draw_rect,
     line as draw_line
-    )
+)
+
 from pygame import (
     Surface,
     K_a, K_LEFT,
@@ -11,6 +12,12 @@ from pygame import (
     K_w, K_UP,
     K_s, K_DOWN,
     K_SPACE
+)
+
+from pygame.joystick import (
+    get_count as joystick_get_count,
+    Joystick,
+    JoystickType
 )
 
 from game.base_game_object import BaseGameObject
@@ -34,6 +41,9 @@ class Player(NetworkObject):
 
     __position_to: Vector
     __camera_pos_to: Vector
+
+    __joystick_connected: bool
+    __joystick: JoystickType
     
     def __init__(self, id: str = None, is_proxy: bool = False, client: Client = None):
         super().__init__(id, is_proxy, client)
@@ -70,6 +80,11 @@ class Player(NetworkObject):
 
         self.__velocity = Vector.zero()
         self.__speed = 400
+
+        self.__joystick_connected = joystick_get_count() > 0 
+
+        if self.is_client() and self.__joystick_connected:
+            self.__joystick = Joystick(0)
         
     def update(self):
         super().update()
@@ -102,11 +117,19 @@ class Player(NetworkObject):
         horizontal = int(keys[K_d] or keys[K_RIGHT]) - int(keys[K_a] or keys[K_LEFT])
         vertical = int(keys[K_s] or keys[K_DOWN]) - int(keys[K_w] or keys[K_UP])
 
+        if self.__joystick_connected:
+            horizontal = self.__joystick.get_axis(0)
+            vertical = self.__joystick.get_axis(1)
+
         direction = Vector(horizontal, vertical)
-        if direction.magnitude != 0:
+
+
+        if direction.magnitude != 0 and not self.__joystick_connected:
             direction.normalize()
 
         velocity = direction * self.__speed * Time.delta
+        if self.__joystick_connected and direction.magnitude < 0.5:
+            velocity = Vector.zero()
 
         self.__velocity = self.__velocity.lerp(velocity, Time.delta * 10)
         self.__velocity = self.collide()

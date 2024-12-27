@@ -1,5 +1,5 @@
 # python-bomberman
-Bomber man with multiplayer
+Bomber man with multiplayer created on python pygame and low-level network systems.
 
 
 ## ToDo Code
@@ -10,13 +10,13 @@ Bomber man with multiplayer
     * Label +
 2. Change camera's position and scale +
 
-3. Block collision
-4. Level editor
-5. Main menu
-6. Player animation system
-7. Make unbreakable blocks and viceversa
-8. Make bombs
-9. Gamepad support
+3. Gamepad support
+4. Make bombs
+5. Block collision +
+6. Level editor
+7. Main menu
+8. Player animation system
+9. Make breakable and unbreakable blocks
 
 ## ToDo Graphics
 1. Player character texture
