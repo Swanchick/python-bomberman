@@ -133,7 +133,7 @@ class Player(NetworkObject):
         for game_object in game_objects:
             collider = game_object.collider
 
-            if game_object is self:
+            if  isinstance(game_object, Player):
                 continue
 
             if collider.collider_type != ColliderType.SOLID:

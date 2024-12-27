@@ -145,7 +145,9 @@ class ServerNetwork(BaseNetwork):
                 received_data = client_socket.recv(2048)
                 if received_data is None:
                     break
-                
+
+
+                print(received_data)
                 data: MessageProtocol = MessageProtocol.decode(received_data)
                 if data is None:
                     continue

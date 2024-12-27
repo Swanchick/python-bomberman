@@ -113,14 +113,18 @@ class PlayerDisconnect(ServerCommand):
         client_data = message_protocol.client
         
         for game_object in self.__game.gameobjects:
+            print("Hello World 1")
+            
             if not isinstance(game_object, NetworkObject):
                 continue
             
+            print("Hello World 2")
+
             client = game_object.client
             
             if client.id == client_data["id"]:
                 self.__game.remove(game_object)
-                
+                print("Hello World 3")
                 self._server_network.broadcast(REMOVE_OBJECT, {"game_object_id": game_object.id}, client_data, True)
 
 # Client
@@ -198,11 +202,13 @@ class RemoveObject(ClientCommand):
         self.__game = game
     
     def remove_object(self, game_object_id):
-        for game_object in self.__game.sprites():
+        for game_object in self.__game.gameobjects:
             if not isinstance(game_object, NetworkObject):
                 continue
             
             if game_object.id == game_object_id:
+                print("Hello World")
+                
                 self.__game.remove(game_object)
                 
                 break

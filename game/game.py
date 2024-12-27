@@ -66,6 +66,9 @@ class Game(BaseGame):
         for game_object in game_objects:
             game_object.stop()
     
+    def remove(self, game_object):
+        self.__game_objects.remove(game_object)
+
     def set_camera_pos(self, pos):
         self.__window.set_camera_pos(pos)
     
