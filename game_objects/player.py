@@ -115,15 +115,16 @@ class Player(NetworkObject):
     def draw_debug(self, surface):
         super().draw_debug(surface)
 
+        distance = 5
+
         start_x = self.position.x + self.collider.w / 2
         start_y = self.position.y + self.collider.h / 2
 
-        end_x = self.position.x + self.__velocity.x * 5 + self.collider.w / 2
-        end_y = self.position.y + self.__velocity.y * 5 + self.collider.h / 2
+        end_x = self.position.x + self.__velocity.x * distance + self.collider.w / 2
+        end_y = self.position.y + self.__velocity.y * distance + self.collider.h / 2
 
         draw_line(surface, (0, 255, 0), (start_x, start_y), (end_x, end_y))
-        
-        draw_rect(surface, (0, 255, 0), (self.position.x + self.__velocity.x * 5, self.position.y + self.__velocity.y * 5, self.size, self.size), 1)
+        draw_rect(surface, (0, 255, 0), (self.position.x + self.__velocity.x * distance, self.position.y + self.__velocity.y * distance, self.size, self.size), 1)
 
     def collide(self) -> Vector:
         adjusted_velocity = Vector(self.__velocity.x, self.__velocity.y)
@@ -137,7 +138,7 @@ class Player(NetworkObject):
 
             if collider.collider_type != ColliderType.SOLID:
                 continue
-
+                
             if self.collider.collide_horizontal(collider, adjusted_velocity.x):
                 collider.colliding = True
                 
@@ -146,6 +147,7 @@ class Player(NetworkObject):
                 
                 if adjusted_velocity.x < 0:
                     adjusted_velocity.set_x(collider.right - self.collider.left)
+
             elif self.collider.collide_vertical(collider, adjusted_velocity.y):
                 collider.colliding = True
                 
@@ -154,7 +156,8 @@ class Player(NetworkObject):
                 
                 if adjusted_velocity.y < 0:
                     adjusted_velocity.set_y(collider.bottom - self.collider.top)
+                    
             else:
                 collider.colliding = False
-
+        
         return adjusted_velocity

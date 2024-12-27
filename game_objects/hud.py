@@ -25,7 +25,6 @@ class HUD(Panel):
         self.__label.position = Vector(100, 200)
         self.game.spawn(self.__label)
         self.__label.start()
-        
     
     def press(self):
         print("Hello World")
