@@ -1,6 +1,7 @@
 from socket import socket as Socket
 from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
 from threading import Thread
+from time import sleep as time_sleep
 
 from protocol import MessageProtocol, ProtocolType
 
@@ -61,7 +62,7 @@ class ClientNetwork(BaseNetwork):
         while self.__client_run:
             try:
                 received_data = self.__sock_tcp.recv(2048)
-
+                
                 data: MessageProtocol = MessageProtocol.decode(received_data)
                 
                 if data is None:
@@ -118,6 +119,8 @@ class ClientNetwork(BaseNetwork):
     def stop(self):
         print("Stopping client...")
 
+        time_sleep(0.1)
+        
         self.send(ON_CLIENT_DISCONNECTED)
         
         self.__client_run = False
