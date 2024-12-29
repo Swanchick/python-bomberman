@@ -27,12 +27,14 @@ from game.collider_type import ColliderType
 from networking.client import Client
 from utils import Time, Vector
 
-from .network_object import NetworkObject, register_network_class
+from .game_object_network.network_object import NetworkObject, register_network_class
 from .block import Block
 
 
 WIDTH = 800
 HEIGHT = 600
+
+
 
 @register_network_class
 class Player(NetworkObject):

@@ -10,7 +10,7 @@ Bomber man with multiplayer created on python pygame and low-level network syste
     * Label +
 2. Change camera's position and scale +
 
-3. Gamepad support
+3. Gamepad support +
 4. Make bombs
 5. Block collision +
 6. Level editor

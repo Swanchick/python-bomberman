@@ -14,6 +14,12 @@
             }
         },
         {
+            "class_name": "Bomb",
+            "properties": {
+                "position": [200, 200]
+            }
+        },
+        {
             "class_name": "Block",
             "properties": {
                 "position": [

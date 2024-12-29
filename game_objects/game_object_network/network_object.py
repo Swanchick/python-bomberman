@@ -27,6 +27,9 @@ class NetworkObject(GameObject):
         if self.is_server():
             self.client = client
     
+    def spawn_network_object(self, id, name, sync_data):
+        ...
+    
     def get_data_to_sync(self) -> dict:
         ...
     
