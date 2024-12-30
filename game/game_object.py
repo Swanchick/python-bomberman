@@ -15,6 +15,7 @@ class GameObject(BaseGameObject):
     def __init__(self, id: str = None):
         self.surface = None
         self.collider = Collider(ColliderType.BLANK, Vector.zero(), 32, 32)
+        self.position = Vector.zero()
 
         if id is None:
             self.id = str(uuid4())

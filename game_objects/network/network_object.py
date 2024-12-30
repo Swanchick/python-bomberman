@@ -30,11 +30,25 @@ class NetworkObject(GameObject):
     def spawn_network_object(self, id, name, sync_data):
         ...
     
+    def get_start_data(self):
+        ...
+    
     def get_data_to_sync(self) -> dict:
         ...
     
     def sync_data(self, data: dict):
         ...
+    
+    def spawn_network(self, game_object):
+        if not self.is_server():
+            return
+        
+        data = {
+            "name": game_object.__class__.__name__,
+            "start_data": game_object.get_start_data()
+        }
+        
+        self._network.send(SPAWN_OBJECT, data)
     
     def update(self):
         if not self.is_client():

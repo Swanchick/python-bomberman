@@ -24,6 +24,18 @@ class Vector(object):
         
         return self
     
+    def __truediv__(self, other):
+        if isinstance(other, Vector):
+            self.__x /= other.x
+            self.__y /= other.y
+
+            return self
+
+        self.__x /= other
+        self.__y /= other
+        
+        return self
+    
     def __add__(self, other):
         if isinstance(other, Vector):
             self.__x += other.x
@@ -61,6 +73,12 @@ class Vector(object):
         self.__x = vec.x
         self.__y = vec.y
 
+    def round(self):
+        self.__x = round(self.__x)
+        self.__y = round(self.__y)
+        
+        return self
+    
     @staticmethod
     def zero():
         return Vector(0, 0)

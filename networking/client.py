@@ -29,6 +29,7 @@ class Client(BaseClient):
             self.__id = id
 
     def send(self, action: str, data: dict, client_sender: dict = None):        
+        print(f"data sended: {data}")
         data = MessageProtocol.encode(action, client_sender, data, True)
         self.__sock.send(data)
 
@@ -45,8 +46,8 @@ class Client(BaseClient):
         self.__sock.close()
 
     def set_port_udp(self, port: int):
-        self.__port_udp = port        
-
+        self.__port_udp = port
+    
     @property
     def id(self) -> str:
         return self.__id

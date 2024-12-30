@@ -1,21 +1,22 @@
-from socket import socket as Socket
 from sys import argv
 from pygame import Surface
 
 from game.game_object import GameObject
-from game.base_game import BaseGame
 from game.level_builder import LevelBuilder
 
-from networking import BaseNetwork, ServerNetwork, ClientNetwork, Network, ProxyNetwork
-from networking.network_commands import ClientCommand, ServerCommand
+from networking import BaseNetwork, ServerNetwork, ClientNetwork, Network
 from networking.network_keys import *
-from protocol import MessageProtocol, ProtocolType
+from protocol import ProtocolType
 
+from .sv_commands import (
+    OnClientInitialize, 
+    PlayerDisconnect, 
+    SyncObjectOnServer, 
+    SpawnObjectOnServer
+)
 from .cl_commands import SpawnObject, SyncObjectOnClient, RemoveObject
-from .sv_commands import OnClientInitialize, PlayerDisconnect, SyncObjectWithServer
 
-
-from .network_object import NetworkObject, NETWORK_CLASSES
+from .network_object import NetworkObject
 
 
 @LevelBuilder.register_object
@@ -38,25 +39,19 @@ class NetworkManager(GameObject):
 
         self.__network.start()
     
-    def start(self):        
-        self.image = Surface((32, 32))
-        self.rect = self.image.get_rect()
-
-        self._layer = -1
-        
+    def start(self):
         if self.__network.is_server():
             self.__network.register(ON_CLINET_INITIALIZE, OnClientInitialize(self.__network, self.game))
             self.__network.register(PLAYER_DISCONNECT, PlayerDisconnect(self.__network, self.game))
             
-            self.__network.register(SYNC_OBJECT, SyncObjectWithServer(self.__network, self.game), ProtocolType.UDP)
+            self.__network.register(SYNC_OBJECT, SyncObjectOnServer(self.__network, self.game), ProtocolType.UDP)
+            self.__network.register(SPAWN_OBJECT, SpawnObjectOnServer(self.__network, self.game))
         
         if self.__network.is_client():
+            self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game), ProtocolType.UDP)
             self.__network.register(SPAWN_OBJECT, SpawnObject(self.__network, self.game))
             self.__network.register(REMOVE_OBJECT, RemoveObject(self.__network, self.game))
             
-            self.__network.register(SYNC_OBJECT, SyncObjectOnClient(self.__network, self.game), ProtocolType.UDP)
-        
-    
     def sync_data_between_clients(self):
         if not self.__network.is_server():
             return

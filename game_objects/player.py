@@ -1,5 +1,4 @@
 from pygame.key import get_pressed as get_keys
-from pygame.sprite import collide_rect
 from pygame.draw import (
     rect as draw_rect,
     line as draw_line
@@ -21,10 +20,10 @@ from pygame.joystick import (
 )
 
 from game.base_game_object import BaseGameObject
-from game.level_builder import LevelBuilder
 from game.collider_type import ColliderType
 
 from networking.client import Client
+from networking.network_keys import *
 from utils import Time, Vector
 
 from .network.network_object import NetworkObject, register_network_class
@@ -33,7 +32,6 @@ from .block import Block
 
 WIDTH = 800
 HEIGHT = 600
-
 
 
 @register_network_class
@@ -47,11 +45,20 @@ class Player(NetworkObject):
     __joystick_connected: bool
     __joystick: JoystickType
     
+    __spawned: bool
+    __delay: float
+    
     def __init__(self, id: str = None, is_proxy: bool = False, client: Client = None):
         super().__init__(id, is_proxy, client)
         self.__camera_pos_to = Vector.zero()
         self.position = Vector.zero()
         self.__velocity = Vector.zero()
+        self.__spawned = False
+        self.__delay = 0
+    
+    def setup_properties(self, **properties):
+        position = properties.get("position", (0, 0))
+        self.position = Vector(position[0], position[1])
     
     def get_data_to_sync(self) -> dict:
         data = {
@@ -98,6 +105,12 @@ class Player(NetworkObject):
             self.surface.fill((255, 0, 0))
             self.move_camera()
             self.controls()
+            
+            if self.__spawned:
+                self.__delay += Time.delta
+                if self.__delay >= 0.5:
+                    self.__spawned = False
+                    self.__delay = 0
     
     def move_smoothly(self):
         self.position = self.position.lerp(self.__position_to, 10 * Time.delta)
@@ -116,15 +129,18 @@ class Player(NetworkObject):
     def controls(self):
         keys = get_keys()
 
+        if keys[K_SPACE] and not self.__spawned:
+            self._network.send(SPAWN_OBJECT, {"name": "Bomb", "start_data": {"position": [int(self.position.x), int(self.position.y)]}})
+            self.__spawned = True
+        
         horizontal = int(keys[K_d] or keys[K_RIGHT]) - int(keys[K_a] or keys[K_LEFT])
         vertical = int(keys[K_s] or keys[K_DOWN]) - int(keys[K_w] or keys[K_UP])
-
+        
         if self.__joystick_connected:
             horizontal = self.__joystick.get_axis(0)
             vertical = self.__joystick.get_axis(1)
 
         direction = Vector(horizontal, vertical)
-
 
         if direction.magnitude != 0 and not self.__joystick_connected:
             direction.normalize()

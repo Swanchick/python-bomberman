@@ -1,15 +1,19 @@
 from socket import socket as Socket
+from time import sleep as time_sleep
 
 from networking.network_commands import ServerCommand
 from networking.network_keys import *
 from networking import BaseNetwork
+
 from protocol import MessageProtocol
+
 from game.base_game import BaseGame
 from game.game_object import GameObject
 
 from .network_object import NetworkObject, NETWORK_CLASSES
 
 from ..player import Player
+
 
 class OnClientInitialize(ServerCommand):
     __game: BaseGame
@@ -62,7 +66,7 @@ class OnClientInitialize(ServerCommand):
         self.create_player(client_data)
 
 
-class SyncObjectWithServer(ServerCommand):
+class SyncObjectOnServer(ServerCommand):
     __game: BaseGame
     
     def __init__(self, server_network: BaseNetwork, game: BaseGame):
@@ -115,7 +119,8 @@ class PlayerDisconnect(ServerCommand):
                 self.__game.remove(game_object)
                 self._server_network.broadcast(REMOVE_OBJECT, {"game_object_id": game_object.id}, client_data, True)
 
-class RequestToSpawnObjet(ServerCommand):
+
+class SpawnObjectOnServer(ServerCommand):
     __game: BaseGame
     
     def __init__(self, server_network: BaseNetwork, game: BaseGame):
@@ -123,5 +128,36 @@ class RequestToSpawnObjet(ServerCommand):
         
         self.__game = game
     
-    def execute(self, message_protocol, socket):
-        ...
+    def __spawn(self, name, data, client_data):
+        if name not in NETWORK_CLASSES:
+            return
+        
+        cls = NETWORK_CLASSES.get(name)
+        if cls is None:
+            return
+        
+        game_object: NetworkObject = cls()
+        game_object.setup_properties(**data)
+        
+        self.__game.spawn(game_object)
+
+        
+        data = {
+            "id": game_object.id, 
+            "name": name, 
+            "sync_data": game_object.get_data_to_sync()
+        }
+        
+        self._server_network.broadcast(SPAWN_OBJECT, data, client_data, False)
+    
+    def execute(self, message_protocol: MessageProtocol, socket: Socket):
+        data = message_protocol.data
+        name = data.get("name")
+        start_data = data.get("start_data")
+        client_data = message_protocol.client
+        
+        if name is None or start_data is None or client_data is None:
+            return
+
+        self.__spawn(name, start_data, client_data)
+        

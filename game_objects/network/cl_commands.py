@@ -25,10 +25,14 @@ class SpawnObject(ClientCommand):
             is_proxy = not self._network.client.id == client_data.get("id")
         
         game_object: NetworkObject = cls(id=id, is_proxy=is_proxy)
-        game_object.sync_data(sync_data)
+        if sync_data is not None:
+            game_object.sync_data(sync_data)
         
         self.__game.spawn(game_object)
-    
+        print("===========")
+        print(game_object)
+        print("===========")
+        
     def execute(self, message_protocol: MessageProtocol, *args):
         data = message_protocol.data
         id = data.get("id") 
@@ -36,7 +40,7 @@ class SpawnObject(ClientCommand):
         sync_data = data.get("sync_data")
         client_data = message_protocol.client
         
-        if id is None or name is None or sync_data is None:
+        if id is None or name is None:
             return
         
         self.spawn_object(client_data, id, name, sync_data)

@@ -62,6 +62,7 @@ class ClientNetwork(BaseNetwork):
         while self.__client_run:
             try:
                 received_data = self.__sock_tcp.recv(2048)
+                print(received_data)
                 
                 data: MessageProtocol = MessageProtocol.decode(received_data)
                 
