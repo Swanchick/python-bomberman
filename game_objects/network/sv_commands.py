@@ -52,12 +52,6 @@ class OnClientInitialize(ServerCommand):
             "sync_data": player.get_data_to_sync()
         }
         
-        print("Server has created a player")
-        print("============")
-        for client in self._server_network.clients:
-            print(client.data)
-        print("============")
-        
         self._server_network.broadcast(SPAWN_OBJECT, data, client_data)
         
     

@@ -2,7 +2,7 @@ from pygame import Surface
 
 from game.collider_type import ColliderType
 
-from .game_object_network.network_object import NetworkObject, register_network_class
+from .network.network_object import NetworkObject, register_network_class
 
 
 @register_network_class

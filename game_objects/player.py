@@ -27,7 +27,7 @@ from game.collider_type import ColliderType
 from networking.client import Client
 from utils import Time, Vector
 
-from .game_object_network.network_object import NetworkObject, register_network_class
+from .network.network_object import NetworkObject, register_network_class
 from .block import Block
 
 
