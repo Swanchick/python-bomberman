@@ -1,7 +1,7 @@
 {
     "settings": {
-        "width": 1472,
-        "height": 960
+        "width": 1000,
+        "height": 1000
     },
     "ui": {},
     "objects": [
@@ -543,14 +543,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     128,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -565,14 +565,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     256,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -587,14 +587,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     384,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -609,14 +609,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     512,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -631,14 +631,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     640,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -653,14 +653,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     768,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -675,14 +675,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     896,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -697,14 +697,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1024,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -719,14 +719,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1152,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -741,14 +741,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1280,
                     128
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1049,14 +1049,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     128,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1071,14 +1071,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     256,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1093,14 +1093,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     384,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1115,14 +1115,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     512,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1137,14 +1137,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     640,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1159,14 +1159,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     768,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1181,14 +1181,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     896,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1203,14 +1203,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1024,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1225,14 +1225,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1152,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1247,14 +1247,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1280,
                     256
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1555,14 +1555,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     128,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1577,14 +1577,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     256,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1599,14 +1599,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     384,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1621,14 +1621,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     512,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1643,14 +1643,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     640,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1665,14 +1665,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     768,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1687,14 +1687,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     896,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1709,14 +1709,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1024,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1731,14 +1731,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1152,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -1753,14 +1753,14 @@
             }
         },
         {
-            "class_name": "Block",
+            "class_name": "Blank",
             "properties": {
                 "position": [
                     1280,
                     384
                 ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
+                "texture": "res/textures/Grass.png",
+                "collider": 2
             }
         },
         {
@@ -2050,14 +2050,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     64,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2072,14 +2072,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     192,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2094,14 +2094,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     320,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2116,14 +2116,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     448,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2138,14 +2138,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     576,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2160,14 +2160,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     704,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2182,14 +2182,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     832,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2204,14 +2204,14 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     960,
                     512
                 ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
+                "texture": "res/textures/Brick.png",
+                "collider": 0
             }
         },
         {
@@ -2226,65 +2226,10 @@
             }
         },
         {
-            "class_name": "Blank",
+            "class_name": "Block",
             "properties": {
                 "position": [
                     1088,
-                    512
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1152,
-                    512
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1216,
-                    512
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1280,
-                    512
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1344,
-                    512
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1408,
                     512
                 ],
                 "texture": "res/textures/Brick.png",
@@ -2295,1471 +2240,8 @@
             "class_name": "Block",
             "properties": {
                 "position": [
-                    0,
-                    576
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    64,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    128,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    192,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    256,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    320,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    384,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    448,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    512,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    576,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    640,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    704,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    768,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    832,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    896,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    960,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1024,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1088,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
                     1152,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1216,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1280,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1344,
-                    576
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1408,
-                    576
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    0,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    64,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    128,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    192,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    256,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    320,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    384,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    448,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    512,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    576,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    640,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    704,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    768,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    832,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    896,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    960,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1024,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1088,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1152,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1216,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1280,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1344,
-                    640
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1408,
-                    640
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    0,
-                    704
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    64,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    128,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    192,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    256,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    320,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    384,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    448,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    512,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    576,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    640,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    704,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    768,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    832,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    896,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    960,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1024,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1088,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1152,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1216,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1280,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1344,
-                    704
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1408,
-                    704
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    0,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    64,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    128,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    192,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    256,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    320,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    384,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    448,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    512,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    576,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    640,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    704,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    768,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    832,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    896,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    960,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1024,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1088,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1152,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1216,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1280,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1344,
-                    768
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1408,
-                    768
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    0,
-                    832
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    64,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    128,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    192,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    256,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    320,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    384,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    448,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    512,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    576,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    640,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    704,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    768,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    832,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    896,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    960,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1024,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1088,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1152,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1216,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1280,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Blank",
-            "properties": {
-                "position": [
-                    1344,
-                    832
-                ],
-                "texture": "res/textures/Grass.png",
-                "collider": 2
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1408,
-                    832
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    0,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    64,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    128,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    192,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    256,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    320,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    384,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    448,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    512,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    576,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    640,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    704,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    768,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    832,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    896,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    960,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1024,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1088,
-                    896
-                ],
-                "texture": "res/textures/Brick.png",
-                "collider": 0
-            }
-        },
-        {
-            "class_name": "Block",
-            "properties": {
-                "position": [
-                    1152,
-                    896
+                    512
                 ],
                 "texture": "res/textures/Brick.png",
                 "collider": 0
@@ -3770,7 +2252,7 @@
             "properties": {
                 "position": [
                     1216,
-                    896
+                    512
                 ],
                 "texture": "res/textures/Brick.png",
                 "collider": 0
@@ -3781,7 +2263,7 @@
             "properties": {
                 "position": [
                     1280,
-                    896
+                    512
                 ],
                 "texture": "res/textures/Brick.png",
                 "collider": 0
@@ -3792,7 +2274,7 @@
             "properties": {
                 "position": [
                     1344,
-                    896
+                    512
                 ],
                 "texture": "res/textures/Brick.png",
                 "collider": 0
@@ -3803,7 +2285,7 @@
             "properties": {
                 "position": [
                     1408,
-                    896
+                    512
                 ],
                 "texture": "res/textures/Brick.png",
                 "collider": 0

@@ -2,6 +2,8 @@ from pygame import Surface
 
 from game_objects import *
 from window import BaseWindow
+from utils import Vector
+
 
 from .base_game_object import BaseGameObject
 from .base_game import BaseGame
@@ -36,8 +38,20 @@ class Game(BaseGame):
 
         game_objects.sort(key=lambda x: x.layer)
 
+        camera_pos = self.__window.get_camera_pos()
+        resolution = self.__window.resolution
+        offset = 64*2
+    
         for game_object in game_objects:
             if game_object.surface is None:
+                continue
+            
+            game_object_position = game_object.position
+            
+            if game_object_position.x + offset < -camera_pos.x or game_object_position.x - offset > -camera_pos.x + resolution.x:
+                continue
+            
+            if game_object_position.y + offset < -camera_pos.y or game_object_position.y - offset > -camera_pos.y + resolution.y:
                 continue
             
             surface.blit(game_object.surface, (game_object.position.x, game_object.position.y))

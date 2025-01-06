@@ -1,24 +1,45 @@
 import json
 
 level = [
-    "#############",
-    "#...........#",
-    "#...........#",
-    "#...........#",
-    "#...........#",
-    "#...........#",
-    "#...........#",
-    "#...........#",
+    "#######################",
+    "#.....................#",
+    "#.#.#.#.#.#.#.#.#.#.#.#",
+    "#.....................#",
+    "#.#.#.#.#.#.#.#.#.#.#.#",
+    "#.....................#",
+    "#.#.#.#.#.#.#.#.#.#.#.#",
+    "#.....................#",
+    "#.#.#.#.#.#.#.#.#.#.#.#",
+    "#.....................#",
+    "#.#.#.#.#.#.#.#.#.#.#.#",
+    "#.....................#",
+    "#.#.#.#.#.#.#.#.#.#.#.#",
+    "#.....................#",
+    "#######################",
 ]
 
 
-f = open("test_level.json", "w")
-out = []
+f = open("res/levels/test.lev", "w")
+out = {
+    "settings": {
+        "width": len(level[0]) * 64,
+        "height": len(level) * 64
+    },
+    "ui": {},
+    "objects": [
+        {
+            "class_name": "NetworkManager",
+            "properties": {
+                "position": [-100, -100]
+            }
+        }
+    ]
+}
 
 for i, line in enumerate(level):
     for j, block in enumerate(line):
         if block == "#":
-            out.append({
+            out["objects"].append({
                 "class_name": "Block",
                 "properties": {
                     "position": [64 * j, 64 * i],
@@ -28,8 +49,8 @@ for i, line in enumerate(level):
             })
         
         if block == ".":
-            out.append({
-                "class_name": "Block",
+            out["objects"].append({
+                "class_name": "Blank",
                 "properties": {
                     "position": [64 * j, 64 * i],
                     "texture": "res/textures/Grass.png",

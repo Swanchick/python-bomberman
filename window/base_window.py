@@ -14,3 +14,7 @@ class BaseWindow(ABC):
     
     def get_camera_scale(self) -> Vector:
         ...
+    
+    @property
+    def resolution(self) -> Vector:
+        ...

@@ -8,7 +8,8 @@ from .collider_type import ColliderType
 
 class Collider:
     position: Vector
-
+    local_position: Vector
+    
     w: int
     h: int
     
@@ -21,13 +22,13 @@ class Collider:
 
     colliding: bool
 
-
-    def __init__(self, collider_type: ColliderType, position: Vector, w: int, h: int):
+    def __init__(self, collider_type: ColliderType, position: Vector, w: int, h: int, local_position=Vector(0, 0)):
         self.collider_type = collider_type
 
         self.w = w
         self.h = h
         
+        self.local_position = local_position
         self.update(position)
 
         self.colliding = False
@@ -35,19 +36,19 @@ class Collider:
     def update(self, position: Vector):
         self.position = position
 
-        self.__left = position.x
-        self.__right = position.x + self.w
+        self.__left = position.x + self.local_position.x
+        self.__right = position.x + self.local_position.x + self.w
 
-        self.__top = position.y
-        self.__bottom = position.y + self.h
+        self.__top = position.y + self.local_position.y
+        self.__bottom = position.y + self.local_position.y + self.h
 
     def draw(self, surface: Surface):
         color = (0, 0, 255)
 
         if self.colliding:
             color = (0, 255, 0)
-
-        draw_rect(surface, color, (self.position.x, self.position.y, self.w, self.h), 2)
+        
+        draw_rect(surface, color, (self.position.x + self.local_position.x, self.position.y + self.local_position.y, self.w, self.h), 2)
 
     def collide_horizontal(self, collider, horizontal: float) -> bool:
         future_right = self.right + horizontal

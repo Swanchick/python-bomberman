@@ -56,10 +56,6 @@ class Player(NetworkObject):
         self.__spawned = False
         self.__delay = 0
     
-    def setup_properties(self, **properties):
-        position = properties.get("position", (0, 0))
-        self.position = Vector(position[0], position[1])
-    
     def get_data_to_sync(self) -> dict:
         data = {
             "position": [int(self.position.x), int(self.position.y)]

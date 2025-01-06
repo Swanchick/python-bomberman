@@ -47,7 +47,7 @@ class OnClientInitialize(ServerCommand):
         
         player = Player(client=client)
         
-        player.setup_properties(position=(100, 100))
+        player.setup_properties(position=(64, 64))
         self.__game.spawn(player)
         
         data = {

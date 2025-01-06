@@ -12,6 +12,9 @@ class LevelBuilder:
     
     __level_name: str
     
+    __width: int
+    __height: int
+    
     def __init__(self, level_name: str) -> None:
         self.__level_name = level_name
         
@@ -36,6 +39,9 @@ class LevelBuilder:
         settings = level_data.get("settings")
         if settings is None:
             return
+        
+        self.__width = settings.get("width")
+        self.__height = settings.get("height")
         
         objects = level_data.get("objects")
         if objects is not None:
@@ -74,6 +80,14 @@ class LevelBuilder:
                 panel = panel_cls()
                 panel.setup_properties(**properties)
                 ui.spawn(panel)
+    
+    @property
+    def width(self) -> int:
+        return self.__width
+    
+    @property
+    def height(self) -> int:
+        return self.__height
     
     @classmethod
     def register_object(cls, game_object_cls: type) -> None:

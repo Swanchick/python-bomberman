@@ -1,4 +1,3 @@
-from pygame import Surface
 from pygame.image import load as image_load
 
 from utils import Vector
@@ -10,7 +9,7 @@ from game.collider import Collider
 from game.collider_type import ColliderType
 
 @LevelBuilder.register_object
-class Block(GameObject):    
+class Blank(GameObject):
     def setup_properties(self, **properties):
         super().setup_properties(**properties)
         
@@ -19,4 +18,3 @@ class Block(GameObject):
             return
         
         self.surface = image_load(texture)
-        self.collider = Collider(ColliderType.SOLID, Vector.zero(), 64, 64)

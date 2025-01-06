@@ -22,6 +22,8 @@ from pygame.joystick import (
     JoystickType
 )
 
+from pygame.draw import rect as draw_rect
+
 from pygame.event import get as pygame_event_get
 from pygame.time import Clock
 from pygame.transform import scale as pygame_scale
@@ -72,13 +74,6 @@ class Window(BaseWindow):
         joystick_init()
 
         self.__display = display_set_mode(tuple(self.__res))
-        self.__game_surface = Surface(tuple(self.__res))
-        self.__ui_surface = Surface(tuple(self.__res), SRCALPHA)
-        self.__level_size = Vector(1000, 1000)
-        self.__level_surface = Surface(tuple(self.__level_size))
-        self.__level_pos = Vector(0, 0)
-        self.__game = Game(self)
-        self.__ui = UI()
         
         self.__joystick_connected = joystick_get_count() > 0
 
@@ -116,7 +111,17 @@ class Window(BaseWindow):
     
     def start(self):
         self.__level_builder = LevelBuilder("test.lev")
+        
+        self.__game = Game(self)
+        self.__ui = UI()
         self.__level_builder.build(self.__game, self.__ui)
+        
+        self.__game_surface = Surface(tuple(self.__res))
+        self.__ui_surface = Surface(tuple(self.__res), SRCALPHA)
+        self.__level_size = Vector(self.__level_builder.width, self.__level_builder.height)
+        self.__level_surface = Surface(tuple(self.__level_size))
+        self.__level_pos = Vector(0, 0)
+        
         self.__game.start()
         self.__ui.start()
 
@@ -154,6 +159,8 @@ class Window(BaseWindow):
                     if self.__joystick.get_button(1):
                         self.__window_run = False
 
+                draw_rect(self.__level_surface, RED, (-self.__level_pos.x, -self.__level_pos.y, self.__res.x, self.__res.y), 2)
+                
                 display_set_caption(str(self.__clock.get_fps()))
 
                 display_flip()
@@ -163,3 +170,8 @@ class Window(BaseWindow):
             self.__game.stop()
             pygame_quit()
             joystick_quit()
+
+    @property
+    def resolution(self) -> Vector:
+        return self.__res
+    
